@@ -11,7 +11,9 @@ LDLIBS  = -Lraylib/src -lraylib -lm
 
 all: main
 
-main: main.o
+main: main.o spaceship.o
+
+spaceship.o: spaceship.h
 
 clean:
 	$(RM) *.o main

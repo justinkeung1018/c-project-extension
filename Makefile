@@ -11,7 +11,7 @@ LDLIBS  = -Lraylib/src -lraylib -lm
 
 all: main
 
-main: main.o
+main: main.o bullet.o
 
 clean:
 	$(RM) *.o main

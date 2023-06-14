@@ -1,6 +1,6 @@
 #include "raylib.h"
 
-#define FPS           240
+#define FPS             60
 
 int main(void) {
 

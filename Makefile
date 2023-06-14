@@ -9,9 +9,12 @@ LDLIBS  = -Lraylib/src -lraylib -lm
 
 .PHONY: all clean
 
-all: main screen
+all: main loading
+
 
 main: main.o
+
+loading: loading.o
 
 clean:
 	$(RM) *.o main

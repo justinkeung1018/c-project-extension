@@ -4,7 +4,7 @@
 #include "raylib.h"
 
 struct asteroid {
-  int size;
+  double size;
   Vector2 position;
   double speed;
   double rotation;

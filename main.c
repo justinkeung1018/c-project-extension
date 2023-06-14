@@ -19,9 +19,11 @@ int main(void) {
   asteroid *as = create_asteroids(NUM_ASTEROIDS);
 
   while (!WindowShouldClose()) {
+    BeginDrawing();
     // update game state
     draw_asteroids(as);
     move_asteroids(as);
+    EndDrawing();
   }
 
   // free memory

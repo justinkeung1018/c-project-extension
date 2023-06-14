@@ -9,7 +9,7 @@ LDLIBS  = -Lraylib/src -lraylib -lm
 
 .PHONY: all clean
 
-all: main
+all: main screen
 
 main: main.o
 

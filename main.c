@@ -1,22 +1,42 @@
 #include "raylib.h"
 
-#define FPS           60
-#define SCREEN_WIDTH  1920
-#define SCREEN_HEIGHT 1080
+#define FPS           240
 
 int main(void) {
-  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Asteroids");
+
+  // [Initialise]
+  InitWindow(0, 0, "Asteroids");  
+  ToggleFullscreen();
+  int screen_width = GetScreenWidth();
+  int screen_height = GetScreenHeight();
 
   SetTargetFPS(FPS);
 
-  // initialise variables
+  InitAudioDevice();
 
+  Music music = LoadMusicStream("resources/bgm.mp3");
+  Sound sound = LoadSound("resources/ring.wav");
+
+  PlayMusicStream(music);
+
+  // [Drawing]
   while (!WindowShouldClose()) {
-    // update game state
+    UpdateMusicStream(music);
+
+    if (IsKeyPressed(KEY_SPACE)) PlaySound(sound);
+    
+    BeginDrawing();
+
+      ClearBackground(BLACK);
+      DrawFPS(screen_width - 90, 10);
+      DrawText(TextFormat("Screen resolution: %ix%i", screen_width, screen_height), 10, 10, 20, DARKBLUE);
+
+    EndDrawing();
   }
 
-  // free memory
-
+  // [Free]
+  UnloadMusicStream(music);
+  CloseAudioDevice();
   CloseWindow();
 
   return 0;

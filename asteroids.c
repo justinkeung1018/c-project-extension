@@ -6,7 +6,8 @@
 
 #define SEED 42
 
-static double random_num(void) { return ((double)rand()) / RAND_MAX;
+static double random_num(void) {
+  return ((double)rand()) / RAND_MAX;
 }
 
 static void init_asteroid(asteroid a, double size, Vector2 position, double speed, double rotation) {

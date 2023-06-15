@@ -11,7 +11,6 @@
 #define COEFF_FRICTION     0.01
 
 #define ACCELERATION_STEP  0.1
-#define DECELERATION_STEP  0.3
 #define ROTATION_STEP      10
 
 #define MIN_SPEED          0
@@ -112,9 +111,8 @@ void spaceship_accelerate(Spaceship *s) {
   s->acceleration = clamp(s->acceleration, MIN_ACCELERATION, MAX_ACCELERATION);
 }
 
-void spaceship_decelerate(Spaceship *s) {
-  s->acceleration -= DECELERATION_STEP;
-  s->acceleration = clamp(s->acceleration, MIN_ACCELERATION, MAX_ACCELERATION);
+void spaceship_reset_acceleration(Spaceship *s) {
+  s->acceleration = 0;
 }
 
 void spaceship_rotate_left(Spaceship *s) {

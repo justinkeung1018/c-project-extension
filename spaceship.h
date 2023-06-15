@@ -21,37 +21,37 @@ extern Spaceship *spaceship_initialise(void);
 /**
  * Draws the spaceship.
  *
- * @param The spaceship.
+ * @param s The spaceship.
  */
-extern void spaceship_draw(Spaceship *spaceship);
+extern void spaceship_draw(Spaceship *s);
 
 /**
  * Accelerates the spaceship.
  *
- * @param The spaceship.
+ * @param s The spaceship.
  */
-extern void spaceship_accelerate(Spaceship *spaceship);
+extern void spaceship_accelerate(Spaceship *s);
 
 /**
- * Decelerates the spaceship.
+ * Sets the acceleration of the spaceship to 0.
  *
- * @param The spaceship.
+ * @param s The spaceship.
  */
-extern void spaceship_decelerate(Spaceship *spaceship);
+extern void spaceship_reset_acceleration(Spaceship *s);
 
 /**
  * Rotates the spaceship left.
  *
- * @param The spaceship.
+ * @param s The spaceship.
  */
-extern void spaceship_rotate_left(Spaceship *spaceship);
+extern void spaceship_rotate_left(Spaceship *s);
 
 /**
  * Rotates the spaceship right.
  *
- * @param The spaceship.
+ * @param s The spaceship.
  */
-extern void spaceship_rotate_right(Spaceship *spaceship);
+extern void spaceship_rotate_right(Spaceship *s);
 
 #endif
 

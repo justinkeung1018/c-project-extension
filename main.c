@@ -23,11 +23,7 @@ int main(void) {
     if (IsKeyDown(KEY_UP)) {
       spaceship_accelerate(spaceship);
     } else {
-      spaceship->acceleration = 0;
-    }
-
-    if (IsKeyDown(KEY_DOWN)) {
-      spaceship_decelerate(spaceship);
+      spaceship_reset_acceleration(spaceship);
     }
 
     if (IsKeyDown(KEY_LEFT)) {

@@ -29,7 +29,7 @@ static void display_debugging_stats(void) {
 }
 
 int main(void) {
-  // [Initialise Screen]
+  // [Initialise screen]
   InitWindow(0, 0, "Asteroids");
   ToggleFullscreen();
   SetTargetFPS(FPS);
@@ -37,15 +37,14 @@ int main(void) {
   // [Initialise variables]
   Spaceship *spaceship = spaceship_initialise();
 
-  // [Initialise Audio]
+  // [Initialise audio]
   InitAudioDevice();
   Music music = LoadMusicStream("resources/bgm.mp3");
   Sound sound = LoadSound("resources/shoot.wav");
   // to implement explosion when we combine other files
-
   PlayMusicStream(music);
 
-  // [Initialise Exit]
+  // [Initialise exit variables]
   SetExitKey(KEY_NULL);
   bool exit_window_requested = false;
   bool exit_window = false;

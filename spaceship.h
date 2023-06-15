@@ -5,7 +5,7 @@
 
 typedef struct {
   Vector2 position;
-  double speed;
+  Vector2 velocity;
   double acceleration;
   double rotation;
   Color color;

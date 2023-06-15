@@ -6,30 +6,38 @@
 
 #include "raylib.h"
 
-#define SPACESHIP_HEIGHT 100
-#define SPACESHIP_WIDTH  50
-#define ACCELERATION_STEP  0.3 
-#define DECELERATION_STEP  0.3
-#define ROTATION_STEP      20 
+#define SPACESHIP_HEIGHT   200
+#define SPACESHIP_WIDTH    100
+#define COEFF_FRICTION     0.01
 
+#define ACCELERATION_STEP  0.1
+#define DECELERATION_STEP  0.3
+#define ROTATION_STEP      10
+
+#define MIN_SPEED          0
+#define MAX_SPEED          10
+#define MIN_ACCELERATION   (-10)
+#define MAX_ACCELERATION   0.3
+
+// Macros
 #define MAX(x, y) ((x > y) ? x : y)
 #define MIN(x, y) ((x < y) ? x : y)
 #define RADIANS(x) (x * M_PI / 180)
 
 Spaceship *spaceship_initialise(void) {
-  Spaceship *spaceship = malloc(sizeof(Spaceship));
-  if (spaceship == NULL) {
+  Spaceship *s = malloc(sizeof(Spaceship));
+  if (s == NULL) {
     fprintf(stderr, "Memory allocation for spaceship failed.\n");
     exit(EXIT_FAILURE);
   }
 
-  spaceship->position = (Vector2){ GetScreenWidth() / 2, GetScreenHeight() / 2 };
-  spaceship->speed = 0.0;
-  spaceship->acceleration = 0.0;
-  spaceship->rotation = 0.0;
-  spaceship->color = RED;
+  s->position = (Vector2){ GetScreenWidth() / 2, GetScreenHeight() / 2 };
+  s->velocity = (Vector2){ 0, 0 };
+  s->acceleration = 0.2;
+  s->rotation = 0.0;
+  s->color = RED;
 
-  return spaceship;
+  return s;
 }
 
 void spaceship_free(Spaceship *spaceship) {
@@ -47,55 +55,73 @@ static Vector2 add_vector(Vector2 v1, Vector2 v2) {
   return (Vector2){ v1.x + v2.x, v1.y + v2.y };
 }
 
-static void update_state(Spaceship *spaceship) {
-  spaceship->speed = MAX(MIN(spaceship->speed + spaceship->acceleration, 5), 0);
-  spaceship->position.x += spaceship->speed * sin(spaceship->rotation);
-  spaceship->position.y -= spaceship->speed * cos(spaceship->rotation);
+static double clamp(double value, double lo, double hi) {
+  return MIN(MAX(value, lo), hi);
 }
 
-void spaceship_draw(Spaceship *spaceship) {
-  update_state(spaceship);
+static double get_magnitude(Vector2 vector) {
+  return sqrt(vector.x * vector.x + vector.y * vector.y);
+}
 
-  Vector2 top = rotate((Vector2){ 0, -SPACESHIP_HEIGHT * 2 / 3 }, spaceship->rotation);
-  Vector2 left = rotate((Vector2){ -SPACESHIP_WIDTH / 2, 0 }, spaceship->rotation);
-  Vector2 right = rotate((Vector2){ SPACESHIP_WIDTH / 2, 0 }, spaceship->rotation);
+static Vector2 clamp_vector(Vector2 vector, double lo_magnitude, double hi_magnitude) {
+  Vector2 clamped_vector = vector;
 
-  /*
-  Vector2 top = (Vector2){
-      spaceship->position.x - SPACESHIP_HEIGHT / 2 * sin(spaceship->rotation),
-      spaceship->position.y + SPACESHIP_HEIGHT / 2 * cos(spaceship->rotation),
-    };
-  Vector2 left = (Vector2){
-      spaceship->position.x - SPACESHIP_WIDTH / 2 * cos(spaceship->rotation),
-      spaceship->position.y + SPACESHIP_HEIGHT / 2 * sin(spaceship->rotation),
-    };
-  Vector2 right = (Vector2){
-      spaceship->position.x - SPACESHIP_WIDTH / 2 * cos(spaceship->rotation),
-      spaceship->position.y - SPACESHIP_HEIGHT / 2 * sin(spaceship->rotation),
-    };
-  */
+  double magnitude = get_magnitude(vector);
+
+  if (magnitude == 0) {
+    return clamped_vector;
+  }
+
+  double clamped_magnitude = clamp(magnitude, lo_magnitude, hi_magnitude);
+
+  clamped_vector.x = clamped_vector.x / magnitude * clamped_magnitude;
+  clamped_vector.y = clamped_vector.y / magnitude * clamped_magnitude;
+
+  return clamped_vector;
+}
+
+static void update_state(Spaceship *s) {
+  Vector2 acceleration_vector = (Vector2){ s->acceleration * sin(s->rotation), -(s->acceleration * cos(s->rotation)) };
+  s->velocity = add_vector(s->velocity, acceleration_vector);
+  s->velocity = clamp_vector(s->velocity, MIN_SPEED, MAX_SPEED);
+
+  Vector2 friction = (Vector2){ -s->velocity.x * COEFF_FRICTION, -s->velocity.y * COEFF_FRICTION };
+  s->velocity = add_vector(s->velocity, friction);
+
+  s->position.x = clamp(s->position.x + s->velocity.x, 0, GetScreenWidth());
+  s->position.y = clamp(s->position.y + s->velocity.y, 0, GetScreenHeight());
+}
+
+void spaceship_draw(Spaceship *s) {
+  update_state(s);
+
+  Vector2 top = rotate((Vector2){ 0, -SPACESHIP_HEIGHT * 2 / 3 }, s->rotation);
+  Vector2 left = rotate((Vector2){ -SPACESHIP_WIDTH / 2, 0 }, s->rotation);
+  Vector2 right = rotate((Vector2){ SPACESHIP_WIDTH / 2, 0 }, s->rotation);
 
   DrawTriangle(
-      add_vector(spaceship->position, top),
-      add_vector(spaceship->position, left),
-      add_vector(spaceship->position, right),
-      spaceship->color
+      add_vector(s->position, top),
+      add_vector(s->position, left),
+      add_vector(s->position, right),
+      s->color
     );
 }
 
-void spaceship_accelerate(Spaceship *spaceship) {
-  spaceship->acceleration += ACCELERATION_STEP;
+void spaceship_accelerate(Spaceship *s) {
+  s->acceleration += ACCELERATION_STEP;
+  s->acceleration = clamp(s->acceleration, MIN_ACCELERATION, MAX_ACCELERATION);
 }
 
-void spaceship_decelerate(Spaceship *spaceship) {
-  spaceship->acceleration -= DECELERATION_STEP;
+void spaceship_decelerate(Spaceship *s) {
+  s->acceleration -= DECELERATION_STEP;
+  s->acceleration = clamp(s->acceleration, MIN_ACCELERATION, MAX_ACCELERATION);
 }
 
-void spaceship_rotate_left(Spaceship *spaceship) {
-  spaceship->rotation += RADIANS(ROTATION_STEP);
+void spaceship_rotate_left(Spaceship *s) {
+  s->rotation -= RADIANS(ROTATION_STEP);
 }
 
-void spaceship_rotate_right(Spaceship *spaceship) {
-  spaceship->rotation -= RADIANS(ROTATION_STEP);
+void spaceship_rotate_right(Spaceship *s) {
+  s->rotation += RADIANS(ROTATION_STEP);
 }
 

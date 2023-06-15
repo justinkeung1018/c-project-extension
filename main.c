@@ -10,18 +10,19 @@
 #define SMALL_FONT_SIZE       40
 #define EXTRA_SMALL_FONT_SIZE 20
 
-static void draw_exit_screen(void) {
+static void display_exit_screen(void) {
   const char exit_message[] = "Are you sure you want to quit? [Y/N]";
   const char save_message[] = "(your current progress will not be saved)";
 
   int exit_string_length = MeasureText(exit_message, LARGE_FONT_SIZE);
   int save_string_length = MeasureText(save_message, MEDIUM_FONT_SIZE);
 
+  DrawRectangle(0, GetScreenHeight() / 4 + 50, GetScreenWidth(), 1000, BLUE);
   DrawText(exit_message, GetScreenWidth() / 2 - exit_string_length / 2, GetScreenHeight() / 2 - 130, LARGE_FONT_SIZE, WHITE);
   DrawText(save_message, GetScreenWidth() / 2 - save_string_length / 2, GetScreenHeight() / 2 + 10, MEDIUM_FONT_SIZE, WHITE);
 }
 
-static void draw_debugging_stats(void) {
+static void display_debugging_stats(void) {
   DrawFPS(GetScreenWidth() - 80, 10);
   DrawText(TextFormat("Screen Resolution: %d x %d", GetScreenWidth(), GetScreenHeight()), 10, 10, EXTRA_SMALL_FONT_SIZE, LIME);
 }
@@ -69,8 +70,9 @@ int main(void) {
     }
 
     if (exit_window_requested) {
-      draw_exit_screen();
+      display_exit_screen();
     }
+
 
     UpdateMusicStream(music);
 
@@ -94,7 +96,7 @@ int main(void) {
 
     DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
     if (IsKeyDown(KEY_F1)) {
-      show_debugging_stats();
+      display_debugging_stats();
     }
 
     spaceship_draw(spaceship);

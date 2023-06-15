@@ -19,8 +19,8 @@ static void display_exit_screen(void) {
 
   DrawRectangle(0, GetScreenHeight() / 4 + 50, GetScreenWidth(), 1000, Fade(BLUE, 0.5f));
   DrawRectangleLines(0, GetScreenHeight() / 4 + 50, GetScreenWidth(), 1000, RED);
-  DrawText(exit_message, GetScreenWidth() / 2 - exit_string_length / 2, GetScreenHeight() / 2 - 130, LARGE_FONT_SIZE, WHITE);
-  DrawText(save_message, GetScreenWidth() / 2 - save_string_length / 2, GetScreenHeight() / 2 + 10, MEDIUM_FONT_SIZE, WHITE);
+  DrawText(exit_message, GetScreenWidth() / 2 - exit_string_width / 2, GetScreenHeight() / 2 - 130, LARGE_FONT_SIZE, WHITE);
+  DrawText(save_message, GetScreenWidth() / 2 - save_string_width / 2, GetScreenHeight() / 2 + 10, MEDIUM_FONT_SIZE, WHITE);
 }
 
 static void display_debugging_stats(void) {

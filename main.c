@@ -4,7 +4,7 @@
 
 int main(void) {
   // [Initialise Screen]
-  InitWindow(0, 0, "Asteroids");  
+  InitWindow(0, 0, "Asteroids");
   ToggleFullscreen();
   int screen_width = GetScreenWidth();
   int screen_height = GetScreenHeight();

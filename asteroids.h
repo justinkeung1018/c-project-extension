@@ -40,5 +40,13 @@ extern void asteroids_draw(List as);
  */
 extern void asteroids_move(List as);
 
+/**
+ * Breaks the asteroid into two. If it cannot be broken further, it is removed.
+ *
+ * @param as Dynamic array of asteroids.
+ * @param idx The index of the asteroid to break.
+ */
+extern void asteroid_break(List as, int idx);
+
 #endif
 

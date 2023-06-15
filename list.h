@@ -1,6 +1,8 @@
 #ifndef DYNARR_H
 #define DYNARR_H
 
+#include <stdbool.h>
+
 typedef void (*ListFf)(void *element);
 
 struct List {
@@ -52,8 +54,19 @@ extern void list_push(List l, void *element);
  * 
  * @param l The list to remove the element from.
  * @param idx The index of the element to remove.
+ *
+ * @return The element removed.
  */
-extern void list_remove(List l, int idx);
+extern void *list_remove(List l, int idx);
+
+/**
+ * Checks if the list is empty
+ * 
+ * @param l The list to check.
+ *
+ * @return True if empty, false otherwise.
+ */
+extern bool list_empty(List l);
 
 #endif
 

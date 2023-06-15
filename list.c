@@ -47,13 +47,20 @@ void list_push(List l, void *element) {
   l->arr[l->len++] = element;
 }
 
-void list_remove(List l, int idx) {
+void *list_remove(List l, int idx) {
   if (idx < 0 || idx >= l->len) {
-    return;
+    return NULL;
   }
+  void *element = l->arr[idx];
   for (int i = idx + 1; i < l->len; i++) {
-    l[i - 1] = l[i];
+    l->arr[i - 1] = l->arr[i];
   }
   l->len--;
+
+  return element;
+}
+
+bool list_empty(List l) {
+  return l->len == 0;
 }
 

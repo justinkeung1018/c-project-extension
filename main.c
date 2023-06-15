@@ -18,6 +18,7 @@ int main(void) {
   // [Initialise variables]
   Spaceship *spaceship = spaceship_initialise();
   List as = asteroids_create();
+  int breakable = 1;
 
   // [Initialise Audio]
   InitAudioDevice();
@@ -47,6 +48,17 @@ int main(void) {
 
     if (IsKeyDown(KEY_RIGHT)) {
       spaceship_rotate_right(spaceship);
+    }
+
+    if (IsKeyPressed(KEY_ENTER) && breakable == 1 && !list_empty(as)) {
+      asteroid_break(as, 0);
+      TraceLog(LOG_DEBUG, "Hi");
+      breakable = 0;
+    }
+
+    if (IsKeyPressed(KEY_TAB) && breakable == 0 && !list_empty(as)) {
+      asteroid_break(as, 0);
+      breakable = 1;
     }
 
     BeginDrawing();

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #include "raylib.h"
-#include <raymath.h>
+#include "raymath.h"
 
 #define SPACESHIP_HEIGHT   200
 #define SPACESHIP_WIDTH    100

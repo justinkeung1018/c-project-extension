@@ -1,8 +1,8 @@
-#include "raylib.h"
-#include "asteroids.h"
-#include "dynarr.h"
 #include <stdlib.h>
 
+#include "asteroids.h"
+#include "dynarr.h"
+#include "raylib.h"
 #include "spaceship.h"
 
 #define FPS 60
@@ -17,7 +17,7 @@ int main(void) {
 
   // [Initialise variables]
   Spaceship *spaceship = spaceship_initialise();
-  dynarr as = create_asteroids();
+  dynarr as = asteroids_create();
 
   // [Initialise Audio]
   InitAudioDevice();
@@ -52,8 +52,8 @@ int main(void) {
     BeginDrawing();
 
       ClearBackground(BLACK);
-      draw_asteroids(as);
-      move_asteroids(as);
+      asteroids_draw(as);
+      asteroids_move(as);
       DrawText("Press F1 for Debugging Stats", 10, screen_height - 20, 20, WHITE);
       if (IsKeyDown(KEY_F1)) {
         DrawFPS(screen_width - 90, 10);
@@ -67,7 +67,7 @@ int main(void) {
 
   // [Free]
   spaceship_free(spaceship);
-  free_asteroids(as);
+  asteroids_free(as);
   UnloadMusicStream(music);
   CloseAudioDevice();
   CloseWindow();

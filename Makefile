@@ -13,7 +13,7 @@ all: main
 
 main: main.o spaceship.o asteroids.o dynarr.o
 
-asteroids.o: dynarr.o
+asteroids.o: dynarr.h
 
 spaceship.o: spaceship.h
 

@@ -1,6 +1,9 @@
 #include "dynarr.h"
+
 #include <assert.h>
 #include <stdlib.h>
+
+#define CAPACITY_GROWTH 5
 
 dynarr dynarr_create(int capacity, dynarr_ff free_function) {
   dynarr da = malloc(sizeof(struct dynarr));
@@ -26,7 +29,7 @@ void dynarr_free(dynarr da) {
 
 static void grow(dynarr da) {
   if (da->len + 1 >= da->cap) {
-    da->cap += 5;
+    da->cap += CAPACITY_GROWTH;
     da->arr = realloc(da->arr, da->cap * sizeof(void *));
     assert(da->arr != NULL);
   }

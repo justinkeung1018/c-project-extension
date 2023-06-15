@@ -1,15 +1,21 @@
 #include "asteroids.h"
-#include "dynarr.h"
-#include "raylib.h"
+
+#include <assert.h>
 #include <math.h>
 #include <stdlib.h>
-#include <assert.h>
+
+#include "dynarr.h"
+#include "raylib.h"
 
 #define SEED 42
-#define NUM_ASTEROIDS 10
+#define NUM_ASTEROIDS 15
+
+#define BASE_SIZE 30
+#define VAR_SIZE 150
+#define SPEED 3
 
 static Texture2D asteroid_texture;
-static Rectangle asteroid_rec;
+static Rectangle asteroid_texture_rec;
 
 static double random_num(void) {
   return ((double)rand()) / RAND_MAX;
@@ -17,57 +23,68 @@ static double random_num(void) {
 
 void load_asteroid_texture(void) {
   asteroid_texture = LoadTexture("resources/asteroid.png");
-  asteroid_rec = (Rectangle){0.0f, 0.0f, asteroid_texture.width, asteroid_texture.height};
+  asteroid_texture_rec = (Rectangle){ 0.0f, 0.0f, asteroid_texture.width, asteroid_texture.height };
 }
 
 void unload_asteroid_texture(void) {
   UnloadTexture(asteroid_texture);
 }
 
-static void init_asteroid(asteroid a, double size, Vector2 position, double speed, double rotation) {
-  a->size = size;
-  a->position = position;
-  a->speed = speed;
-  a->rotation = rotation;
+static void asteroid_free(void *a) {
+  free((Asteroid)a);
 }
 
-static void free_asteroid(void *a) {
-  free((asteroid)a);
-}
-
-void free_asteroids(dynarr as) {
+void asteroids_free(dynarr as) {
   dynarr_free(as);
+  unload_asteroid_texture();
 }
 
-dynarr create_asteroids(void) {
+dynarr asteroids_create(void) {
   srand(SEED);
   load_asteroid_texture();
-  dynarr as = dynarr_create(NUM_ASTEROIDS, free_asteroid);
+  dynarr as = dynarr_create(NUM_ASTEROIDS, asteroid_free);
+
   for (int i = 0; i < NUM_ASTEROIDS; i++) {
-    dynarr_push(as, malloc(sizeof(struct asteroid)));
-    assert(((asteroid)dynarr_get(as, i)) != NULL);
+    dynarr_push(as, malloc(sizeof(struct Asteroid)));
+    Asteroid a = dynarr_get(as, i);
+    assert(a != NULL);
+
     Vector2 pos = { GetScreenWidth() * random_num(), GetScreenHeight() * random_num() };
-    init_asteroid(((asteroid)dynarr_get(as, i)), 30 + 150 * random_num(), pos, 3, M_PI * random_num());
+    a->size = BASE_SIZE + VAR_SIZE * random_num();
+    a->position = pos;
+    a->speed = SPEED;
+    a->rotation = 2 * M_PI * random_num();
   }
   return as;
 }
 
-void draw_asteroids(dynarr as) {
+void asteroids_draw(dynarr as) {
   for (int i = 0; i < as->len; i++) {
-    DrawTexturePro(asteroid_texture, asteroid_rec, (Rectangle){ ((asteroid)dynarr_get(as, i))->position.x, ((asteroid)dynarr_get(as, i))->position.y, ((asteroid)dynarr_get(as, i))->size, ((asteroid)dynarr_get(as, i))->size }, (Vector2){0.0f, 0.0f}, 0.0f, RAYWHITE);
+    Asteroid a = dynarr_get(as, i);
+    Rectangle a_rec = { a->position.x, a->position.y, a->size, a->size };
+
+    DrawTexturePro(
+        asteroid_texture,
+	asteroid_texture_rec,
+	a_rec,
+	(Vector2){ 0.0f, 0.0f },
+	0.0f,
+	RAYWHITE
+    );
   }
 }
 
-void move_asteroids(dynarr as) {
+void asteroids_move(dynarr as) {
   for (int i = 0; i < as->len; i++) {
-    ((asteroid)dynarr_get(as, i))->position.x += ((asteroid)dynarr_get(as, i))->speed  * cos(((asteroid)dynarr_get(as, i))->rotation);
-    if (((asteroid)dynarr_get(as, i))->position.x < 0 || ((asteroid)dynarr_get(as, i))->position.x > GetScreenWidth()) {
-      ((asteroid)dynarr_get(as, i))->position.x = GetScreenWidth() - ((asteroid)dynarr_get(as, i))->position.x;
+    Asteroid a = dynarr_get(as, i);
+    a->position.x += a->speed * cos(a->rotation);
+    if (a->position.x < 0 || a->position.x > GetScreenWidth()) {
+      a->position.x = GetScreenWidth() - a->position.x;
     }
 
-    ((asteroid)dynarr_get(as, i))->position.y += ((asteroid)dynarr_get(as, i))->speed * sin(((asteroid)dynarr_get(as, i))->rotation);
-    if (((asteroid)dynarr_get(as, i))->position.y < 0 || ((asteroid)dynarr_get(as, i))->position.y > GetScreenHeight()) {
-      ((asteroid)dynarr_get(as, i))->position.y = GetScreenHeight() - ((asteroid)dynarr_get(as, i))->position.y;
+    a->position.y += a->speed * sin(a->rotation);
+    if (a->position.y < 0 || a->position.y > GetScreenHeight()) {
+      a->position.y = GetScreenHeight() - a->position.y;
     }
   }
 }

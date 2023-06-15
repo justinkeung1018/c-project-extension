@@ -2,23 +2,30 @@
 
 #include "spaceship.h"
 
-#define FPS 60
+#define FPS                   60
+
 #define MAXIMUM_STRING_LENGTH 100
+
+// Font Sizes
+#define LARGE_FONT_SIZE       100
+#define MEDIUM_FONT_SIZE      80
+#define SMALL_FONT_SIZE       40
+#define EXTRA_SMALL_FONT_SIZE 20
 
 static void draw_exit_screen(void) {
   char exit_message[MAXIMUM_STRING_LENGTH] = "Are you sure you want to quit? [Y/N]";
   char save_message[MAXIMUM_STRING_LENGTH] = "(your current progress will not be saved)";
 
-  int exit_string_length = MeasureText(exit_message, 100);
-  int save_string_length = MeasureText(save_message, 80);
+  int exit_string_length = MeasureText(exit_message, LARGE_FONT_SIZE);
+  int save_string_length = MeasureText(save_message, MEDIUM_FONT_SIZE);
 
-  DrawText(exit_message, GetScreenWidth() / 2 - exit_string_length / 2, GetScreenHeight() / 2 - 130, 100, WHITE);
-  DrawText(save_message, GetScreenWidth() / 2 - save_string_length / 2, GetScreenHeight() / 2 + 10, 80, WHITE);
+  DrawText(exit_message, GetScreenWidth() / 2 - exit_string_length / 2, GetScreenHeight() / 2 - 130, LARGE_FONT_SIZE, WHITE);
+  DrawText(save_message, GetScreenWidth() / 2 - save_string_length / 2, GetScreenHeight() / 2 + 10, MEDIUM_FONT_SIZE, WHITE);
 }
 
 static void draw_debugging_tools(void) {
   DrawFPS(GetScreenWidth() - 80, 10);
-  DrawText(TextFormat("Screen Resolution: %d x %d", GetScreenWidth(), GetScreenHeight()), 10, 10, 20, LIME);
+  DrawText(TextFormat("Screen Resolution: %d x %d", GetScreenWidth(), GetScreenHeight()), 10, 10, EXTRA_SMALL_FONT_SIZE, LIME);
 }
 
 int main(void) {
@@ -45,6 +52,10 @@ int main(void) {
 
   // [Drawing]
   while (!exit_window) {
+    BeginDrawing();
+
+    ClearBackground(BLACK);
+
     if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) {
       // freeze all entities
       exit_window_requested = true;
@@ -57,6 +68,10 @@ int main(void) {
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_requested = false;
       }
+    }
+
+    if (exit_window_requested) {
+      draw_exit_screen();
     }
 
     UpdateMusicStream(music);
@@ -79,20 +94,12 @@ int main(void) {
       spaceship_rotate_right(spaceship);
     }
 
-    BeginDrawing();
-
-    ClearBackground(BLACK);
-
-    if (exit_window_requested) {
-      draw_exit_screen();
-    }
-
-    DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, 40, WHITE);
+    DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
     if (IsKeyDown(KEY_F1)) {
       draw_debugging_tools();
     }
 
-      spaceship_draw(spaceship);
+    spaceship_draw(spaceship);
 
     EndDrawing();
   }

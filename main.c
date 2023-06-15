@@ -9,8 +9,8 @@
 
 int main(void) {
 
-  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Asteroids");
-  //ToggleFullscreen();
+  InitWindow(0, 0, "Asteroids");
+  ToggleFullscreen();
 
   SetTargetFPS(FPS);
 

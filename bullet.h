@@ -2,6 +2,7 @@
 #define BULLET_H
 
 #include "raylib.h"
+#include "dynarr.h"
 
 typedef double degrees;
 
@@ -43,12 +44,24 @@ extern void bullet_free(Bullet *b);
 extern void bullet_draw(Bullet *b);
 
 /**
- * Moves a bullet. 
+ * Moves a bullet according to its position, speed, direction.
  * 
  * @param b The pointer to the bullet being moved.
  */
 extern void bullet_move(Bullet *b);
 
-extern void bullet_draw_all();
+/**
+ * Draws all bullets in bs.
+ * 
+ * @param bs A dynarr containing all bullets.
+ */
+extern void bullet_draw_all(dynarr bs);
+
+/**
+ * Moves all bullets in bs, according to their position, speed, direction.
+ * 
+ * @param bs A dynarr containing all bullets.
+ */
+extern void bullet_move_all(dynarr bs);
 
 #endif

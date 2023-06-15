@@ -41,4 +41,14 @@ void bullet_move(Bullet *b) {
   b->pos.y += sin(deg_to_rad(b->direction)) * b->speed * 100 * GetFrameTime();
 }
 
+void bullet_draw_all(dynarr bs) {
+  for (int i = 0; i < bs->len; i++) {
+    bullet_draw((Bullet*) dynarr_get(bs, i));
+  }
+}
 
+void bullet_move_all(dynarr bs) {
+  for (int i = 0; i < bs->len; i++) {
+    bullet_move((Bullet*) dynarr_get(bs, i));
+  }
+}

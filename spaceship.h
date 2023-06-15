@@ -2,6 +2,7 @@
 #define SPACESHIP_H
 
 #include "raylib.h"
+#include "dynarr.h"
 
 typedef struct {
   Vector2 position;
@@ -59,6 +60,14 @@ extern void spaceship_rotate_left(Spaceship *s);
  * @param s The spaceship.
  */
 extern void spaceship_rotate_right(Spaceship *s);
+
+/**
+ * Shoots a bullet from the space ship. A bullet is added to the dynarr,
+ * if it isn't full.
+ * 
+ * @param bullets The dynarr of bullets.
+ */
+extern void spaceship_shoot(Spaceship *s, dynarr bullets);
 
 #endif
 

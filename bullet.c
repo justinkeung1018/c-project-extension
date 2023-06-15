@@ -6,8 +6,14 @@
 
 #include "raylib.h"
 
+#define MAX_BULLETS 256
+#define NORMAL_RADIUS 5
+#define NORMAL_SPEED 25
+#define NORMAL_COLOUR RED
+#define RADIANS(x) (x * M_PI / 180) 
+
 // Caller must free using bullet_free()
-Bullet *bullet_init(float pos_x, float pos_y, double radius, double speed, degrees direction, Color color) {
+static Bullet *bullet_init(float pos_x, float pos_y, float radius, float speed, degrees direction, Color color) {
   Bullet *b = malloc(sizeof(Bullet));
 
   if (b == NULL) {
@@ -24,21 +30,22 @@ Bullet *bullet_init(float pos_x, float pos_y, double radius, double speed, degre
   return b;
 }
 
-void bullet_free(Bullet *b) {
-  free(b);
+// Caller must free using bullet_free()
+Bullet *bullet_init_normal(float pos_x, float pos_y, degrees direction) {
+  return bullet_init(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, direction, NORMAL_COLOUR);
+}
+
+void bullet_free(void *b) {
+  free((Bullet*) b);
 }
 
 void bullet_draw(Bullet *b) {
   DrawCircleV(b->pos, b->radius, b->color);
 }
 
-static float deg_to_rad(degrees deg) {
-  return deg / 180 * M_PI;
-}
-
 void bullet_move(Bullet *b) {
-  b->pos.x += cos(deg_to_rad(b->direction)) * b->speed * 100 * GetFrameTime();
-  b->pos.y += sin(deg_to_rad(b->direction)) * b->speed * 100 * GetFrameTime();
+  b->pos.x += cos(RADIANS(b->direction)) * b->speed * 100 * GetFrameTime();
+  b->pos.y += sin(RADIANS(b->direction)) * b->speed * 100 * GetFrameTime();
 }
 
 void bullet_draw_all(dynarr bs) {
@@ -51,4 +58,8 @@ void bullet_move_all(dynarr bs) {
   for (int i = 0; i < bs->len; i++) {
     bullet_move((Bullet*) dynarr_get(bs, i));
   }
+}
+
+dynarr bullet_init_all() {
+  return dynarr_create(MAX_BULLETS, &bullet_free);
 }

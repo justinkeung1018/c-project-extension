@@ -5,6 +5,9 @@
 #include <stdlib.h>
 
 #include "raylib.h"
+#include "raymath.h"
+#include "dynarr.h"
+#include "bullet.h" 
 
 #define SPACESHIP_HEIGHT   200
 #define SPACESHIP_WIDTH    100
@@ -22,6 +25,7 @@
 #define MAX(x, y) ((x > y) ? x : y)
 #define MIN(x, y) ((x < y) ? x : y)
 #define RADIANS(x) (x * M_PI / 180)
+#define DEGREES(x) (x * 180 / M_PI)
 
 Spaceship *spaceship_initialise(void) {
   Spaceship *s = malloc(sizeof(Spaceship));
@@ -121,5 +125,10 @@ void spaceship_rotate_left(Spaceship *s) {
 
 void spaceship_rotate_right(Spaceship *s) {
   s->rotation += RADIANS(ROTATION_STEP);
+}
+
+void spaceship_shoot(Spaceship *s, dynarr bullets) {
+  Vector2 tip = Vector2Add(s->position, Vector2Rotate((Vector2){ 0, -SPACESHIP_HEIGHT * 2 / 3 }, s->rotation));
+  dynarr_push(bullets, bullet_init_normal(tip.x, tip.y, DEGREES(s->rotation) - 90));
 }
 

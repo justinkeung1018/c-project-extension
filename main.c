@@ -4,9 +4,15 @@
 
 #define FPS 60
 
+
+static void display_help_ui(void) {
+  DrawText("Press Tab for Controls", 10, 10, 40, WHITE);
+}
+
 static void display_controls(void) {
-  DrawRectangle(10, 10, 800, 275, Fade(SKYBLUE, 0.5f));
-  DrawRectangleLines(10, 10, 800, 275, BLUE);
+  //remove magic numbers once merged with main
+  DrawRectangle(10, 10, 800, 260, Fade(SKYBLUE, 0.5f));
+  DrawRectangleLines(10, 10, 800, 260, BLUE);
 
   DrawText("Spaceship Controls:", 20, 20, 50, BLACK);
   DrawText("- Up Arrow to Accelerate", 40, 80, 50, BLACK);
@@ -43,6 +49,8 @@ int main(void) {
 
     if (IsKeyDown(KEY_TAB)) {
       display_controls();
+    } else {
+      display_help_ui();
     }
 
     if (IsKeyDown(KEY_UP)) {

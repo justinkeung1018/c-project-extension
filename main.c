@@ -14,8 +14,8 @@ static void display_exit_screen(void) {
   const char exit_message[] = "Are you sure you want to quit? [Y/N]";
   const char save_message[] = "(your current progress will not be saved)";
 
-  int exit_string_length = MeasureText(exit_message, LARGE_FONT_SIZE);
-  int save_string_length = MeasureText(save_message, MEDIUM_FONT_SIZE);
+  int exit_string_width = MeasureText(exit_message, LARGE_FONT_SIZE);
+  int save_string_width = MeasureText(save_message, MEDIUM_FONT_SIZE);
 
   DrawRectangle(0, GetScreenHeight() / 4 + 50, GetScreenWidth(), 1000, Fade(BLUE, 0.5f));
   DrawRectangleLines(0, GetScreenHeight() / 4 + 50, GetScreenWidth(), 1000, RED);

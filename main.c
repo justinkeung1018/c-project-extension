@@ -1,5 +1,7 @@
 #include "raylib.h"
 
+#include "spaceship.h"
+
 #define FPS 60
 #define MAXIMUM_STRING_LENGTH 100
 
@@ -24,6 +26,9 @@ int main(void) {
   InitWindow(0, 0, "Asteroids");
   ToggleFullscreen();
   SetTargetFPS(FPS);
+
+  // [Initialise variables]
+  Spaceship *spaceship = spaceship_initialise();
 
   // [Initialise Audio]
   InitAudioDevice();
@@ -60,6 +65,20 @@ int main(void) {
       PlaySound(sound); // combine this with other components
     }
 
+    if (IsKeyDown(KEY_UP)) {
+      spaceship_accelerate(spaceship);
+    } else {
+      spaceship_reset_acceleration(spaceship);
+    }
+
+    if (IsKeyDown(KEY_LEFT)) {
+      spaceship_rotate_left(spaceship);
+    }
+
+    if (IsKeyDown(KEY_RIGHT)) {
+      spaceship_rotate_right(spaceship);
+    }
+
     BeginDrawing();
 
     ClearBackground(BLACK);
@@ -73,10 +92,13 @@ int main(void) {
       draw_debugging_tools();
     }
 
+      spaceship_draw(spaceship);
+
     EndDrawing();
   }
 
   // [Free]
+  spaceship_free(spaceship);
   UnloadMusicStream(music);
   CloseAudioDevice();
   CloseWindow();

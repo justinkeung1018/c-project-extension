@@ -4,8 +4,6 @@
 
 #define FPS                   60
 
-#define MAXIMUM_STRING_LENGTH 100
-
 // Font Sizes
 #define LARGE_FONT_SIZE       100
 #define MEDIUM_FONT_SIZE      80
@@ -13,8 +11,8 @@
 #define EXTRA_SMALL_FONT_SIZE 20
 
 static void draw_exit_screen(void) {
-  char exit_message[MAXIMUM_STRING_LENGTH] = "Are you sure you want to quit? [Y/N]";
-  char save_message[MAXIMUM_STRING_LENGTH] = "(your current progress will not be saved)";
+  const char exit_message[] = "Are you sure you want to quit? [Y/N]";
+  const char save_message[] = "(your current progress will not be saved)";
 
   int exit_string_length = MeasureText(exit_message, LARGE_FONT_SIZE);
   int save_string_length = MeasureText(save_message, MEDIUM_FONT_SIZE);
@@ -23,7 +21,7 @@ static void draw_exit_screen(void) {
   DrawText(save_message, GetScreenWidth() / 2 - save_string_length / 2, GetScreenHeight() / 2 + 10, MEDIUM_FONT_SIZE, WHITE);
 }
 
-static void draw_debugging_tools(void) {
+static void draw_debugging_stats(void) {
   DrawFPS(GetScreenWidth() - 80, 10);
   DrawText(TextFormat("Screen Resolution: %d x %d", GetScreenWidth(), GetScreenHeight()), 10, 10, EXTRA_SMALL_FONT_SIZE, LIME);
 }
@@ -96,7 +94,7 @@ int main(void) {
 
     DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
     if (IsKeyDown(KEY_F1)) {
-      draw_debugging_tools();
+      show_debugging_stats();
     }
 
     spaceship_draw(spaceship);

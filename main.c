@@ -10,9 +10,8 @@ int main(void) {
   int screen_height = GetScreenHeight();
   SetTargetFPS(FPS);
 
-  // [Initialise ]
+  // [Initialise Audio]
   InitAudioDevice();
-
   Music music = LoadMusicStream("resources/bgm.mp3");
   Sound sound = LoadSound("resources/shoot.wav");
   // to implement explosion when we combine other files

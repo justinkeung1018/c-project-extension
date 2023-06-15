@@ -1,8 +1,4 @@
 #include "raylib.h"
-#include "bullet.h"
-#include "asteroids.h"
-#include "dynarr.h"
-#include <stdlib.h>
 
 #include "spaceship.h"
 
@@ -40,7 +36,6 @@ int main(void) {
 
   // [Initialise variables]
   Spaceship *spaceship = spaceship_initialise();
-  dynarr as = create_asteroids();
   dynarr bullets = bullet_init_all();
 
   // [Initialise audio]
@@ -83,6 +78,7 @@ int main(void) {
     UpdateMusicStream(music);
 
     if (IsKeyPressed(KEY_SPACE)) {
+      spaceship_shoot(spaceship, bullets);
       PlaySound(sound); // combine this with other components
     }
 
@@ -107,32 +103,11 @@ int main(void) {
 
     spaceship_draw(spaceship);
 
-    if (IsKeyPressed(KEY_SPACE)) {
-      spaceship_shoot(spaceship, bullets);
-    }
-
-    BeginDrawing();
-
-      ClearBackground(BLACK);
-      DrawText("Press F1 for Debugging Stats", 10, screen_height - 20, 20, WHITE);
-      if (IsKeyDown(KEY_F1)) {
-        DrawFPS(screen_width - 90, 10);
-        DrawText(TextFormat("Screen Resolution: %d x %d", screen_width, screen_height), 10, 10, 20, LIME);
-      }
-      
-      draw_asteroids(as);
-      move_asteroids(as);
-
-      bullet_draw_all(bullets);
-      bullet_move_all(bullets);
-
-      spaceship_draw(spaceship);
     EndDrawing();
   }
 
   // [Free]
   spaceship_free(spaceship);
-  dynarr_free(as);
   dynarr_free(bullets);
   UnloadMusicStream(music);
   CloseAudioDevice();

@@ -10,6 +10,12 @@
 #define SMALL_FONT_SIZE       40
 #define EXTRA_SMALL_FONT_SIZE 20
 
+// Text height
+#define SMALL_TEXT_HEIGHT 20
+
+// Padding 
+#define SMALL_PADDING 10
+
 static void display_exit_screen(void) {
   const char exit_message[] = "Are you sure you want to quit? [Y/N]";
   const char save_message[] = "(your current progress will not be saved)";
@@ -24,8 +30,11 @@ static void display_exit_screen(void) {
 }
 
 static void display_debugging_stats(void) {
-  DrawFPS(GetScreenWidth() - 80, 10);
-  DrawText(TextFormat("Screen Resolution: %d x %d", GetScreenWidth(), GetScreenHeight()), 10, 10, EXTRA_SMALL_FONT_SIZE, LIME);
+  DrawFPS(GetScreenWidth() - 80, SMALL_PADDING + SMALL_TEXT_HEIGHT);
+  const char *resolution_text = TextFormat("Screen Resolution: %d x %d", GetScreenWidth(), GetScreenHeight());
+
+  int screen_res_string_width = MeasureText(resolution_text, EXTRA_SMALL_FONT_SIZE);
+  DrawText(resolution_text, GetScreenWidth() - SMALL_PADDING - screen_res_string_width, SMALL_PADDING, EXTRA_SMALL_FONT_SIZE, LIME);
 }
 
 int main(void) {

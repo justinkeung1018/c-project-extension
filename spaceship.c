@@ -20,8 +20,6 @@
 #define MAX_ACCELERATION   0.3
 
 // Macros
-#define MAX(x, y) ((x > y) ? x : y)
-#define MIN(x, y) ((x < y) ? x : y)
 #define RADIANS(x) (x * M_PI / 180)
 
 Spaceship spaceship_initialise(void) {

@@ -3,7 +3,6 @@
 #define FPS 60
 
 int main(void) {
-
   // [Initialise]
   InitWindow(0, 0, "Asteroids");  
   ToggleFullscreen();
@@ -19,12 +18,13 @@ int main(void) {
 
   PlayMusicStream(music);
 
-
   // [Drawing]
   while (!WindowShouldClose()) {
     UpdateMusicStream(music);
 
-    if (IsKeyPressed(KEY_SPACE)) PlaySound(sound); // combine this with other components
+    if (IsKeyPressed(KEY_SPACE)) {
+      PlaySound(sound); // combine this with other components
+    } 
 
     BeginDrawing();
 
@@ -34,7 +34,7 @@ int main(void) {
         DrawFPS(screen_width - 90, 10);
         DrawText(TextFormat("Screen Resolution: %d x %d", screen_width, screen_height), 10, 10, 20, LIME);
       }
-      
+
     EndDrawing();
   }
 

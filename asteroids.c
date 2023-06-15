@@ -6,8 +6,20 @@
 
 #define SEED 42
 
+static Texture2D asteroid_texture;
+static Rectangle asteroid_rec;
+
 static double random_num(void) {
   return ((double)rand()) / RAND_MAX;
+}
+
+void load_asteroid_texture(void) {
+  asteroid_texture = LoadTexture("asteroid.png");
+  asteroid_rec = (Rectangle){0.0f, 0.0f, asteroid_texture.width, asteroid_texture.height};
+}
+
+void unload_asteroid_texture(void) {
+  UnloadTexture(asteroid_texture);
 }
 
 static void init_asteroid(asteroid a, double size, Vector2 position, double speed, double rotation) {
@@ -19,12 +31,13 @@ static void init_asteroid(asteroid a, double size, Vector2 position, double spee
 
 asteroid *create_asteroids(int n) {
   srand(SEED);
+  load_asteroid_texture();
   asteroid *as = malloc((n + 1) * sizeof(struct asteroid));
   for (int i = 0; i < n; i++) {
     as[i] = malloc(sizeof(struct asteroid));
     assert(as[i] != NULL);
     Vector2 pos = { GetScreenWidth() * random_num(), GetScreenHeight() * random_num() };
-    init_asteroid(as[i], random_num(), pos, 3, M_PI * random_num());
+    init_asteroid(as[i], 30 + 150 * random_num(), pos, 3, M_PI * random_num());
   }
   as[n] = NULL;
   return as;
@@ -42,33 +55,23 @@ void free_asteroids(asteroid *as) {
 }
 
 void draw_asteroids(asteroid *as) {
-  ClearBackground(RAYWHITE);
-  DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
   for (int i = 0; as[i] != NULL; i++) {
-    DrawCircleV(as[i]->position, 30 + 50 * as[i]->size, GRAY);
+    DrawTexturePro(asteroid_texture, asteroid_rec, (Rectangle){ as[i]->position.x, as[i]->position.y, as[i]->size, as[i]->size }, (Vector2){0.0f, 0.0f}, 0.0f, RAYWHITE);
   }
 }
 
 void move_asteroids(asteroid *as) {
   for (int i = 0; as[i] != NULL; i++) {
-    as[i]->position.x += as[i]->speed / (0.4 + as[i]->size) * cos(as[i]->rotation);
+    as[i]->position.x += as[i]->speed  * cos(as[i]->rotation);
     if (as[i]->position.x < 0 || as[i]->position.x > GetScreenWidth()) {
       as[i]->position.x = GetScreenWidth() - as[i]->position.x;
     }
 
-    as[i]->position.y += as[i]->speed / (0.4 +  as[i]->size) * sin(as[i]->rotation);
+    as[i]->position.y += as[i]->speed * sin(as[i]->rotation);
     if (as[i]->position.y < 0 || as[i]->position.y > GetScreenHeight()) {
       as[i]->position.y = GetScreenHeight() - as[i]->position.y;
     }
 
-    for (int j = i + 1; as[j] != NULL; j++) {
-      if (fabs(as[i]->position.x - as[j]->position.x) < 30 && fabs(as[i]->position.y - as[j]->position.y) < 30) {
-        Vector2 pos = { GetScreenWidth() * random_num(), GetScreenHeight() * random_num() };
-        init_asteroid(as[i], random_num(), pos, 3, M_PI * random_num());
-        Vector2 pos2 = { GetScreenWidth() * random_num(), GetScreenHeight() * random_num() };
-        init_asteroid(as[j], random_num(), pos2, 3, M_PI * random_num());
-      }
-    }
   }
 }
 

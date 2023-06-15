@@ -11,7 +11,7 @@
 int main(void) {
 
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Asteroids");
-  ToggleFullscreen();
+  //ToggleFullscreen();
 
   SetTargetFPS(FPS);
 
@@ -20,6 +20,7 @@ int main(void) {
 
   while (!WindowShouldClose()) {
     BeginDrawing();
+    ClearBackground(BLACK);
     // update game state
     draw_asteroids(as);
     move_asteroids(as);

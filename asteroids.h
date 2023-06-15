@@ -28,11 +28,15 @@ extern void asteroids_free(dynarr as);
 
 /**
  * Draws the asteroids.
+ *
+ * @param as Dynamic Array of asteroids to draw.
  */
 extern void asteroids_draw(dynarr as);
 
 /**
  * Moves the asteroids. To be called each action frame.
+ *
+ * @param as Dynamic Array of asteroids to move.
  */
 extern void asteroids_move(dynarr as);
 

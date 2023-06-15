@@ -18,6 +18,8 @@
 #define MAX_SPEED          10
 #define MIN_ACCELERATION   0
 #define MAX_ACCELERATION   0.3
+#define MIN_ROTATION       0
+#define MAX_ROTATION       (2 * M_PI)
 
 // Macros
 #define RADIANS(x) (x * M_PI / 180)
@@ -78,9 +80,11 @@ void spaceship_reset_acceleration(Spaceship s) {
 
 void spaceship_rotate_left(Spaceship s) {
   s->rotation -= RADIANS(ROTATION_STEP);
+  s->rotation = Wrap(s->rotation, MIN_ROTATION, MAX_ROTATION);
 }
 
 void spaceship_rotate_right(Spaceship s) {
   s->rotation += RADIANS(ROTATION_STEP);
+  s->rotation = Wrap(s->rotation, MIN_ROTATION, MAX_ROTATION);
 }
 

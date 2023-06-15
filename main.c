@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "asteroids.h"
 #include "list.h"
@@ -56,26 +57,28 @@ int main(void) {
 
   // [Drawing]
   while (!exit_window) {
-    breakable = 1;
+    breakable = true;
 
     BeginDrawing();
 
-    ClearBackground(BLACK);
-
-    if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) {
+    if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
       // freeze all entities
       exit_window_requested = true;
+      display_exit_screen();
     }
 
     if (exit_window_requested) {
-      display_exit_screen();
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
+	// save data here
         exit_window = true;
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_requested = false;
       }
-    } else {
+      EndDrawing();
+      continue;
+    }
 
+    ClearBackground(BLACK);
 
     UpdateMusicStream(music);
 
@@ -100,23 +103,19 @@ int main(void) {
     if (IsKeyPressed(KEY_ENTER) && breakable == 1 && !list_empty(as)) {
       asteroid_break(as, 0);
       TraceLog(LOG_DEBUG, "Hi");
-      breakable = 0;
+      breakable = false;
     }
 
-    BeginDrawing();
+    asteroids_draw(as);
+    asteroids_move(as);
+    DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
+    if (IsKeyDown(KEY_F1)) {
+      display_debugging_stats();
+    }
 
-      ClearBackground(BLACK);
-      asteroids_draw(as);
-      asteroids_move(as);
-      DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
-      if (IsKeyDown(KEY_F1)) {
-	display_debugging_stats();
-      }
-
-      spaceship_draw(spaceship);
+    spaceship_draw(spaceship);
 
     EndDrawing();
-    }
   }
 
   // [Free]

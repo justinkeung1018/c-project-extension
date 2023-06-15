@@ -13,7 +13,7 @@ int main(void) {
   SetTargetFPS(FPS);
 
   // [Initialise variables]
-  Spaceship *spaceship = spaceship_initialise();
+  Spaceship spaceship = spaceship_initialise();
 
   // [Initialise Audio]
   InitAudioDevice();

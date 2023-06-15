@@ -4,15 +4,15 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "dynarr.h"
+#include "list.h"
 #include "raylib.h"
 
-#define SEED 42
+#define SEED          42
 #define NUM_ASTEROIDS 15
 
-#define BASE_SIZE 30
-#define VAR_SIZE 150
-#define SPEED 3
+#define BASE_SIZE     30
+#define VAR_SIZE      150
+#define SPEED         3
 
 static Texture2D asteroid_texture;
 static Rectangle asteroid_texture_rec;
@@ -34,19 +34,19 @@ static void asteroid_free(void *a) {
   free((Asteroid)a);
 }
 
-void asteroids_free(dynarr as) {
-  dynarr_free(as);
+void asteroids_free(List as) {
+  list_free(as);
   unload_asteroid_texture();
 }
 
-dynarr asteroids_create(void) {
+List asteroids_create(void) {
   srand(SEED);
   load_asteroid_texture();
-  dynarr as = dynarr_create(NUM_ASTEROIDS, asteroid_free);
+  List as = list_create(NUM_ASTEROIDS, asteroid_free);
 
   for (int i = 0; i < NUM_ASTEROIDS; i++) {
-    dynarr_push(as, malloc(sizeof(struct Asteroid)));
-    Asteroid a = dynarr_get(as, i);
+    list_push(as, malloc(sizeof(struct Asteroid)));
+    Asteroid a = list_get(as, i);
     assert(a != NULL);
 
     Vector2 pos = { GetScreenWidth() * random_num(), GetScreenHeight() * random_num() };
@@ -58,9 +58,9 @@ dynarr asteroids_create(void) {
   return as;
 }
 
-void asteroids_draw(dynarr as) {
+void asteroids_draw(List as) {
   for (int i = 0; i < as->len; i++) {
-    Asteroid a = dynarr_get(as, i);
+    Asteroid a = list_get(as, i);
     Rectangle a_rec = { a->position.x, a->position.y, a->size, a->size };
 
     DrawTexturePro(
@@ -70,13 +70,13 @@ void asteroids_draw(dynarr as) {
 	(Vector2){ 0.0f, 0.0f },
 	0.0f,
 	RAYWHITE
-    );
+      );
   }
 }
 
-void asteroids_move(dynarr as) {
+void asteroids_move(List as) {
   for (int i = 0; i < as->len; i++) {
-    Asteroid a = dynarr_get(as, i);
+    Asteroid a = list_get(as, i);
     a->position.x += a->speed * cos(a->rotation);
     if (a->position.x < 0 || a->position.x > GetScreenWidth()) {
       a->position.x = GetScreenWidth() - a->position.x;

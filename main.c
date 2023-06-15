@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "asteroids.h"
-#include "dynarr.h"
+#include "list.h"
 #include "raylib.h"
 #include "spaceship.h"
 
@@ -17,7 +17,7 @@ int main(void) {
 
   // [Initialise variables]
   Spaceship *spaceship = spaceship_initialise();
-  dynarr as = asteroids_create();
+  List as = asteroids_create();
 
   // [Initialise Audio]
   InitAudioDevice();

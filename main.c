@@ -4,7 +4,7 @@
 
 #define FPS                   60
 
-// Font Sizes
+// Font sizes
 #define LARGE_FONT_SIZE       100
 #define MEDIUM_FONT_SIZE      80
 #define SMALL_FONT_SIZE       40

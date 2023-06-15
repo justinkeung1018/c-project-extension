@@ -1,6 +1,6 @@
 #include "raylib.h"
 
-#define FPS             60
+#define FPS 60
 
 int main(void) {
 
@@ -9,28 +9,32 @@ int main(void) {
   ToggleFullscreen();
   int screen_width = GetScreenWidth();
   int screen_height = GetScreenHeight();
-
   SetTargetFPS(FPS);
 
   InitAudioDevice();
 
   Music music = LoadMusicStream("resources/bgm.mp3");
-  Sound sound = LoadSound("resources/ring.wav");
+  Sound sound = LoadSound("resources/shoot.wav");
+  // to implement explosion when we combine other files
 
   PlayMusicStream(music);
+
 
   // [Drawing]
   while (!WindowShouldClose()) {
     UpdateMusicStream(music);
 
-    if (IsKeyPressed(KEY_SPACE)) PlaySound(sound);
-    
+    if (IsKeyPressed(KEY_SPACE)) PlaySound(sound); // combine this with other components
+
     BeginDrawing();
 
       ClearBackground(BLACK);
-      DrawFPS(screen_width - 90, 10);
-      DrawText(TextFormat("Screen resolution: %ix%i", screen_width, screen_height), 10, 10, 20, DARKBLUE);
-
+      DrawText("Press F1 for Debugging Stats", 10, screen_height - 20, 20, WHITE);
+      if (IsKeyDown(KEY_F1)) {
+        DrawFPS(screen_width - 90, 10);
+        DrawText(TextFormat("Screen Resolution: %d x %d", screen_width, screen_height), 10, 10, 20, LIME);
+      }
+      
     EndDrawing();
   }
 

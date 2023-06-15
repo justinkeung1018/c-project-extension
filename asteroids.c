@@ -16,7 +16,7 @@ static double random_num(void) {
 }
 
 void load_asteroid_texture(void) {
-  asteroid_texture = LoadTexture("asteroid.png");
+  asteroid_texture = LoadTexture("resources/asteroid.png");
   asteroid_rec = (Rectangle){0.0f, 0.0f, asteroid_texture.width, asteroid_texture.height};
 }
 

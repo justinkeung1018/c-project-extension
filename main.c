@@ -45,7 +45,7 @@ int main(void) {
       spaceship_rotate_right(spaceship);
     }
 
-    spaceship_update(spaceship);
+    spaceship_move(spaceship);
 
     BeginDrawing();
 

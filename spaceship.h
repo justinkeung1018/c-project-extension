@@ -28,11 +28,11 @@ extern Spaceship spaceship_initialise(void);
 extern void spaceship_free(Spaceship s);
 
 /**
- * Updates the state of the spaceship after each frame.
+ * Moves the spaceship to its new state after each frame.
  *
  * @param s The spaceship.
  */
-extern void spaceship_update(Spaceship s);
+extern void spaceship_move(Spaceship s);
 
 /**
  * Draws the spaceship.

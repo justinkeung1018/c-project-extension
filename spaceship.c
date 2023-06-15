@@ -42,7 +42,7 @@ void spaceship_free(Spaceship s) {
   free(s);
 }
 
-void spaceship_update(Spaceship s) {
+void spaceship_move(Spaceship s) {
   Vector2 acceleration_vector = (Vector2){ s->acceleration * sin(s->rotation), -(s->acceleration * cos(s->rotation)) };
   s->velocity = Vector2Add(s->velocity, acceleration_vector);
   s->velocity = Vector2ClampValue(s->velocity, MIN_SPEED, MAX_SPEED);

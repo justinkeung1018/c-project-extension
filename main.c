@@ -24,7 +24,7 @@ int main(void) {
 
     if (IsKeyPressed(KEY_SPACE)) {
       PlaySound(sound); // combine this with other components
-    } 
+    }
 
     BeginDrawing();
 

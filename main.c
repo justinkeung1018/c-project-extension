@@ -6,20 +6,10 @@
 
 #include "spaceship.h"
 
+
 #define FPS 60
 
 int main(void) {
-<<<<<<< HEAD
-
-  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Asteroids");
-  //ToggleFullscreen();
-
-  SetTargetFPS(FPS);
-
-  // initialise variables
-  //asteroid *as = create_asteroids(NUM_ASTEROIDS);
-  dynarr as = create_asteroids();
-=======
   // [Initialise Screen]
   InitWindow(0, 0, "Asteroids");
   ToggleFullscreen();
@@ -29,7 +19,7 @@ int main(void) {
 
   // [Initialise variables]
   Spaceship *spaceship = spaceship_initialise();
->>>>>>> origin/master
+  dynarr as = create_asteroids();
 
   // [Initialise Audio]
   InitAudioDevice();

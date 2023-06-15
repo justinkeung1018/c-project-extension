@@ -9,7 +9,7 @@
 // Caller must free using bullet_free()
 Bullet *bullet_init(float pos_x, float pos_y, double radius, double speed, degrees direction, Color color) {
   Bullet *b = malloc(sizeof(Bullet));
-  
+
   if (b == NULL) {
     fprintf(stderr, "Failed to malloc bullet");
     exit(EXIT_FAILURE);
@@ -40,7 +40,7 @@ static float deg_to_rad(degrees deg) {
 
 void bullet_move(Bullet *b) {
   b->pos.x += cos(deg_to_rad(b->direction)) * b->speed * 100 * GetFrameTime();
-  b->pos.y += sin(deg_to_rad(b->direction)) * b->speed * 100 * GetFrameTime(); 
+  b->pos.y += sin(deg_to_rad(b->direction)) * b->speed * 100 * GetFrameTime();
 }
 
 

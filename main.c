@@ -31,21 +31,6 @@ int main(void) {
 
   // [Drawing]
   while (!WindowShouldClose()) {
-<<<<<<< HEAD
-    BeginDrawing();
-
-    ClearBackground(BLACK);
-    // update game state
-    draw_asteroids(as);
-    move_asteroids(as);
-    EndDrawing();
-  }
-
-  // free memory
-  
-  free_asteroids(as);
-
-=======
     UpdateMusicStream(music);
 
     if (IsKeyPressed(KEY_SPACE)) {
@@ -84,7 +69,6 @@ int main(void) {
   spaceship_free(spaceship);
   UnloadMusicStream(music);
   CloseAudioDevice();
->>>>>>> origin/master
   CloseWindow();
 
   return 0;

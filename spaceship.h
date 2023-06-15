@@ -19,6 +19,13 @@ typedef struct {
 extern Spaceship *spaceship_initialise(void);
 
 /**
+ * Frees the spaceship.
+ *
+ * @param s The spaceship.
+ */
+extern void spaceship_free(Spaceship *s);
+
+/**
  * Draws the spaceship.
  *
  * @param s The spaceship.

@@ -2,23 +2,34 @@
 
 #include "spaceship.h"
 
-#define FPS           60
-#define SCREEN_WIDTH  1920
-#define SCREEN_HEIGHT 1080
+#define FPS 60
 
 int main(void) {
+  // [Initialise Screen]
   InitWindow(0, 0, "Asteroids");
   ToggleFullscreen();
-
+  int screen_width = GetScreenWidth();
+  int screen_height = GetScreenHeight();
   SetTargetFPS(FPS);
 
-  // initialise variables
+  // [Initialise variables]
   Spaceship *spaceship = spaceship_initialise();
 
-  while (!WindowShouldClose()) {
-    BeginDrawing();
+  // [Initialise Audio]
+  InitAudioDevice();
+  Music music = LoadMusicStream("resources/bgm.mp3");
+  Sound sound = LoadSound("resources/shoot.wav");
+  // to implement explosion when we combine other files
 
-    ClearBackground(RAYWHITE);
+  PlayMusicStream(music);
+
+  // [Drawing]
+  while (!WindowShouldClose()) {
+    UpdateMusicStream(music);
+
+    if (IsKeyPressed(KEY_SPACE)) {
+      PlaySound(sound); // combine this with other components
+    }
 
     if (IsKeyDown(KEY_UP)) {
       spaceship_accelerate(spaceship);
@@ -34,14 +45,24 @@ int main(void) {
       spaceship_rotate_right(spaceship);
     }
 
-    spaceship_draw(spaceship);
+    BeginDrawing();
+
+      ClearBackground(BLACK);
+      DrawText("Press F1 for Debugging Stats", 10, screen_height - 20, 20, WHITE);
+      if (IsKeyDown(KEY_F1)) {
+        DrawFPS(screen_width - 90, 10);
+        DrawText(TextFormat("Screen Resolution: %d x %d", screen_width, screen_height), 10, 10, 20, LIME);
+      }
+
+      spaceship_draw(spaceship);
 
     EndDrawing();
-    // update game state
   }
 
-  // free memory
-
+  // [Free]
+  spaceship_free(spaceship);
+  UnloadMusicStream(music);
+  CloseAudioDevice();
   CloseWindow();
 
   return 0;

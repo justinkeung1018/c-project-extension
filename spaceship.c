@@ -39,8 +39,8 @@ Spaceship *spaceship_initialise(void) {
   return s;
 }
 
-void spaceship_free(Spaceship *spaceship) {
-  free(spaceship);
+void spaceship_free(Spaceship *s) {
+  free(s);
 }
 
 static Vector2 rotate(Vector2 vector, double radians) {

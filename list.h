@@ -18,7 +18,7 @@ typedef struct List *List;
  * Creates a resizable list.
  * 
  * @param capacity The initial capacity of the list.
- * @param free_function The function that frees the list.
+ * @param free_function The function that frees the elements of list.
  *
  * @return The list.
  */

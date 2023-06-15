@@ -15,15 +15,14 @@ int main(void) {
   SetTargetFPS(FPS);
 
   // initialise variables
-  //asteroid *as = create_asteroids(NUM_ASTEROIDS);
   dynarr as = create_asteroids();
 
   while (!WindowShouldClose()) {
-    BeginDrawing();
-    ClearBackground(BLACK);
     // update game state
-    draw_asteroids(as);
-    move_asteroids(as);
+    BeginDrawing();
+      ClearBackground(BLACK);
+      draw_asteroids(as);
+      move_asteroids(as);
     EndDrawing();
   }
 

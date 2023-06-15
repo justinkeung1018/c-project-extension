@@ -69,7 +69,6 @@ void move_asteroids(dynarr as) {
     if (((asteroid)dynarr_get(as, i))->position.y < 0 || ((asteroid)dynarr_get(as, i))->position.y > GetScreenHeight()) {
       ((asteroid)dynarr_get(as, i))->position.y = GetScreenHeight() - ((asteroid)dynarr_get(as, i))->position.y;
     }
-
   }
 }
 

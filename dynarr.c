@@ -39,13 +39,6 @@ void *dynarr_get(dynarr da, int idx) {
   return da->arr[idx];
 }
 
-void dynarr_set(dynarr da, int idx, void *element) {
-  if (idx < 0 || idx >= da->len) {
-    return; 
-  }
-  da->arr[idx] = element;
-}
-
 void dynarr_push(dynarr da, void *element) {
   grow(da);
   da->arr[da->len++] = element;

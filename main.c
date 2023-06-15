@@ -8,7 +8,7 @@ static void display_controls(void) {
   DrawRectangle( 10, 10, 250, 113, Fade(SKYBLUE, 0.5f));
   DrawRectangleLines( 10, 10, 250, 113, BLUE);
 
-  DrawText("Spaceship Controls:", 20, 20, , BLACK);
+  DrawText("Spaceship Controls:", 20, 20, 10, BLACK);
   DrawText("- Up Arrow to Accelerate", 40, 40, 10, DARKGRAY);
   DrawText("- Right Arrow to Steer Right", 40, 60, 10, DARKGRAY);
   DrawText("- Left Arrow to Steer Left", 40, 80, 10, DARKGRAY);

@@ -29,9 +29,7 @@ void bullet_free(Bullet *b) {
 }
 
 void bullet_draw(Bullet *b) {
-  BeginDrawing();
-    DrawCircleV(b->pos, b->radius, b->color);
-  EndDrawing();
+  DrawCircleV(b->pos, b->radius, b->color);
 }
 
 static float deg_to_rad(degrees deg) {

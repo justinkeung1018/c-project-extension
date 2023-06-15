@@ -2,6 +2,7 @@
 #define ASTEROIDS_H
 
 #include "raylib.h"
+#include "dynarr.h"
 
 struct asteroid {
   double size;
@@ -11,13 +12,13 @@ struct asteroid {
 };
 typedef struct asteroid *asteroid;
 
-extern asteroid *create_asteroids(int n);
+extern dynarr create_asteroids(void);
 
-extern void free_asteroids(asteroid *as);
+extern void free_asteroids(dynarr as);
 
-extern void draw_asteroids(asteroid *as);
+extern void draw_asteroids(dynarr as);
 
-extern void move_asteroids(asteroid *as);
+extern void move_asteroids(dynarr as);
 
 #endif
 

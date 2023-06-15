@@ -1,12 +1,11 @@
 #include "raylib.h"
 #include "asteroids.h"
+#include "dynarr.h"
 #include <stdlib.h>
 
 #define FPS           60
 #define SCREEN_WIDTH  1920
 #define SCREEN_HEIGHT 1080
-
-#define NUM_ASTEROIDS 10
 
 int main(void) {
 
@@ -16,7 +15,8 @@ int main(void) {
   SetTargetFPS(FPS);
 
   // initialise variables
-  asteroid *as = create_asteroids(NUM_ASTEROIDS);
+  //asteroid *as = create_asteroids(NUM_ASTEROIDS);
+  dynarr as = create_asteroids();
 
   while (!WindowShouldClose()) {
     BeginDrawing();

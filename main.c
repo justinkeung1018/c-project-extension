@@ -3,13 +3,14 @@
 #define FPS 60
 
 int main(void) {
-  // [Initialise]
+  // [Initialise Screen]
   InitWindow(0, 0, "Asteroids");  
   ToggleFullscreen();
   int screen_width = GetScreenWidth();
   int screen_height = GetScreenHeight();
   SetTargetFPS(FPS);
 
+  // [Initialise ]
   InitAudioDevice();
 
   Music music = LoadMusicStream("resources/bgm.mp3");

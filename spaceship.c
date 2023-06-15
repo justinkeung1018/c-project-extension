@@ -15,7 +15,7 @@
 
 #define MIN_SPEED          0
 #define MAX_SPEED          10
-#define MIN_ACCELERATION   (-10)
+#define MIN_ACCELERATION   0
 #define MAX_ACCELERATION   0.3
 
 // Macros
@@ -32,7 +32,7 @@ Spaceship *spaceship_initialise(void) {
 
   s->position = (Vector2){ GetScreenWidth() / 2, GetScreenHeight() / 2 };
   s->velocity = (Vector2){ 0, 0 };
-  s->acceleration = 0.2;
+  s->acceleration = 0.0;
   s->rotation = 0.0;
   s->color = RED;
 

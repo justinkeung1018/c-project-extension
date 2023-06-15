@@ -10,7 +10,7 @@
 #define NORMAL_RADIUS 5
 #define NORMAL_SPEED 25
 #define NORMAL_COLOUR RED
-#define RADIANS(x) (x * M_PI / 180) 
+#define RADIANS(x) (x * M_PI / 180)
 
 // Caller must free using bullet_free()
 static Bullet *bullet_init(float pos_x, float pos_y, float radius, float speed, degrees direction, Color color) {
@@ -63,3 +63,10 @@ void bullet_move_all(dynarr bs) {
 dynarr bullet_init_all() {
   return dynarr_create(MAX_BULLETS, &bullet_free);
 }
+
+bool bullet_in_screen(Bullet *b, int screen_width, int screen_height) {
+  return b->pos.x >= 0 && b->pos.x <= screen_width && b->pos.y >= 0 && b->pos.y <= screen_height;
+}
+
+
+

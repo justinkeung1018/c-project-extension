@@ -7,8 +7,7 @@
 struct Asteroid {
   double size;
   Vector2 position;
-  double speed;
-  double rotation;
+  Vector2 velocity;
 };
 
 typedef struct Asteroid *Asteroid;
@@ -16,28 +15,28 @@ typedef struct Asteroid *Asteroid;
 /**
  * Initialises the asteroids.
  *
- * @return Dynamic Array of asteroids.
+ * @return Dynamic array of asteroids.
  */
 extern List asteroids_create(void);
 
 /**
  * Frees the asteroids.
  *
- * @param as Dynamic Array of asteroids to free.
+ * @param as Dynamic array of asteroids to free.
  */
 extern void asteroids_free(List as);
 
 /**
  * Draws the asteroids.
  *
- * @param as Dynamic Array of asteroids to draw.
+ * @param as Dynamic array of asteroids to draw.
  */
 extern void asteroids_draw(List as);
 
 /**
  * Moves the asteroids. To be called each action frame.
  *
- * @param as Dynamic Array of asteroids to move.
+ * @param as Dynamic array of asteroids to move.
  */
 extern void asteroids_move(List as);
 

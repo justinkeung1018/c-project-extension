@@ -15,6 +15,7 @@
 // Caller must free using bullet_free()
 static Bullet *bullet_init(float pos_x, float pos_y, float radius, float speed, degrees direction, Color color) {
   Bullet *b = malloc(sizeof(Bullet));
+  assert(b != NULL);
 
   if (b == NULL) {
     fprintf(stderr, "Failed to malloc bullet");
@@ -48,16 +49,18 @@ void bullet_move(Bullet *b) {
   b->pos.y += sin(RADIANS(b->direction)) * b->speed * 100 * GetFrameTime();
 }
 
-void bullet_draw_all(dynarr bs) {
+static void bullet_for_each_void(dynarr bs, void (*function) (Bullet*)) {
   for (int i = 0; i < bs->len; i++) {
-    bullet_draw((Bullet*) dynarr_get(bs, i));
+    function((Bullet*) dynarr_get(bs, i));
   }
 }
 
+void bullet_draw_all(dynarr bs) {
+  bullet_for_each_void(bs, &bullet_draw);
+}
+
 void bullet_move_all(dynarr bs) {
-  for (int i = 0; i < bs->len; i++) {
-    bullet_move((Bullet*) dynarr_get(bs, i));
-  }
+  bullet_for_each_void(bs, bullet_move);
 }
 
 dynarr bullet_init_all() {
@@ -67,6 +70,4 @@ dynarr bullet_init_all() {
 bool bullet_in_screen(Bullet *b, int screen_width, int screen_height) {
   return b->pos.x >= 0 && b->pos.x <= screen_width && b->pos.y >= 0 && b->pos.y <= screen_height;
 }
-
-
 

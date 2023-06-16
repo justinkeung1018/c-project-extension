@@ -4,18 +4,18 @@
 #include "raylib.h"
 
 typedef struct {
-  int state;
+  int *state;
   int *framesCounter;
-  int topSideRecWidth;
-  int leftSideRecHeight;
-  int bottomSideRecWidth;
-  int rightSideRecHeight;
-  int lettersCount;
-  float alpha;
+  int *topSideRecWidth;
+  int *leftSideRecHeight;
+  int *bottomSideRecWidth;
+  int *rightSideRecHeight;
+  int *lettersCount;
+  float *alpha;
 } Loading;
 
-extern void update_variables(int state, int framesCounter, int topSideRecWidth, int leftSideRecHeight, int bottomSideRecWidth, int rightSideRecHeight, int lettersCount, float alpha);
+extern void update_variables(Loading *test);
 
-extern void display_loading_animation(int state, int framesCounter, int logoPositionX, int logoPositionY, int topSideRecWidth, int leftSideRecHeight, int rightSideRecHeight, int bottomSideRecWidth, float alpha, int lettersCount);
+extern void display_loading_animation(Loading *test);
 
 #endif

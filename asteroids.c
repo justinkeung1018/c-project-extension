@@ -10,7 +10,7 @@
 #include "raylib.h"
 
 #define SEED               42
-#define ASTEROID_NUM       15
+#define NUM_ASTEROIDS      15
 
 #define ASTEROID_SIZE      256
 #define ASTEROID_SIZE_MUL  0.5f

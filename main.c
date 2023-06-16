@@ -38,7 +38,7 @@ int main(void) {
   SetTargetFPS(FPS);
 
   // [Initialise variables]
-  Spaceship *spaceship = spaceship_initialise();
+  Spaceship spaceship = spaceship_initialise();
   List as = asteroids_create();
   bool breakable;
 
@@ -104,8 +104,11 @@ int main(void) {
       breakable = false;
     }
 
-    asteroids_draw(as);
     asteroids_move(as);
+    asteroids_draw(as);
+
+    spaceship_move(spaceship);
+
     DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
     if (IsKeyDown(KEY_F1)) {
       display_debugging_stats();

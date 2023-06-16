@@ -53,9 +53,9 @@ static Asteroid asteroid_create(void) {
 List asteroids_create(void) {
   srand(SEED);
   load_asteroid_texture();
-  List as = list_create(ASTEROID_NUM, asteroid_free);
+  List as = list_create(NUM_ASTEROIDS, asteroid_free);
 
-  for (int i = 0; i < ASTEROID_NUM; i++) {
+  for (int i = 0; i < NUM_ASTEROIDS; i++) {
     Asteroid a = asteroid_create();
 
     double angle = 2 * M_PI * random_double();

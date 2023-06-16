@@ -79,4 +79,13 @@ extern dynarr bullet_init_all();
  */
 extern bool bullet_in_screen(Bullet *b, int screen_width, int screen_height);
 
+/**
+ * Removes any bullet not on screen from the array and frees it.
+ *
+ * @param bs The dynarr of bullets.
+ * @param screen_width in pixels.
+ * @param screen_height in pixels.
+ */
+extern void bullet_despawn_all_off_screen(dynarr bs, int screen_width, int screen_height);
+
 #endif

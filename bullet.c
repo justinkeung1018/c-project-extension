@@ -31,6 +31,8 @@ static Bullet *bullet_init(float pos_x, float pos_y, float radius, float speed, 
   return b;
 }
 
+typedef void (*ForEachFunc) (Bullet*);
+
 // Caller must free using bullet_free()
 Bullet *bullet_init_normal(float pos_x, float pos_y, degrees direction) {
   return bullet_init(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, direction, NORMAL_COLOUR);
@@ -49,7 +51,7 @@ void bullet_move(Bullet *b) {
   b->pos.y += sin(RADIANS(b->direction)) * b->speed * 100 * GetFrameTime();
 }
 
-static void bullet_for_each_void(dynarr bs, void (*function) (Bullet*)) {
+static void bullet_for_each_void(dynarr bs, ForEachFunc function) {
   for (int i = 0; i < bs->len; i++) {
     function((Bullet*) dynarr_get(bs, i));
   }
@@ -71,3 +73,12 @@ bool bullet_in_screen(Bullet *b, int screen_width, int screen_height) {
   return b->pos.x >= 0 && b->pos.x <= screen_width && b->pos.y >= 0 && b->pos.y <= screen_height;
 }
 
+void bullet_despawn_all_off_screen(dynarr bs, int screen_width, int screen_height) {
+  for (int i = bs->len - 1; i >= 0; i--) {
+    Bullet *b = (Bullet*) dynarr_get(bs, i);
+    if (!bullet_in_screen(b, screen_width, screen_height)) {
+      dynarr_remove(bs, i);
+      bullet_free(b);
+    }
+  }
+}

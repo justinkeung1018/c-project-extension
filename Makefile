@@ -11,9 +11,11 @@ LDLIBS  = -Lraylib/src -lraylib -lm
 
 all: main test
 
-main: main.o
+main: main.o loading.o 
 
 test: test.o
+
+loading: loading.o
 
 clean:
 	$(RM) *.o main

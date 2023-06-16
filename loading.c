@@ -1,8 +1,8 @@
 #include "raylib.h"
 
-void update_variables(int state) {
+void update_variables(int state, int *framesCounter, int topSideRecWidth, int leftSideRecHeight, int bottomSideRecWidth, int rightSideRecHeight, int lettersCount, float alpha) {
   if (state == 0) {                 // State 0: Small box blinking
-    framesCounter++;
+    (*framesCounter)++;
 
     if (framesCounter == 120) {
       state = 1;
@@ -43,7 +43,7 @@ void update_variables(int state) {
   }
 }
 
-void display_loading_animation(int state, int framesCounter, int logoPositionX, int logoPositionY, int topSideRecWidth, int leftSideRecHeight, int rightSideRecHeight, int bottomSideRecWidth, int lettersCount) {
+void display_loading_animation(int state, int framesCounter, int logoPositionX, int logoPositionY, int topSideRecWidth, int leftSideRecHeight, int rightSideRecHeight, int bottomSideRecWidth, float alpha, int lettersCount) {
   if (state == 0) {
     if ((framesCounter/15)%2) DrawRectangle(logoPositionX, logoPositionY, 16, 16, BLACK);
   }

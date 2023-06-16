@@ -102,6 +102,8 @@ int main(void) {
         display_debugging_stats();
       }
 
+      bullet_move_all(bullets);
+      bullet_draw_all(bullets);
       spaceship_draw(spaceship);
 
     EndDrawing();

@@ -22,7 +22,7 @@
 static Texture2D asteroid_texture;
 static Rectangle asteroid_texture_rec;
 
-static double random_num(void) {
+static double random_double(void) {
   return ((double)rand()) / RAND_MAX;
 }
 
@@ -58,9 +58,9 @@ List asteroids_create(void) {
   for (int i = 0; i < ASTEROID_NUM; i++) {
     Asteroid a = asteroid_create();
 
-    double angle = 2 * M_PI * random_num();
+    double angle = 2 * M_PI * random_double();
     Vector2 vel = { ASTEROID_SPEED * cos(angle), ASTEROID_SPEED * sin(angle) };
-    Vector2 pos = { GetScreenWidth() * random_num(), GetScreenHeight() * random_num() };
+    Vector2 pos = { GetScreenWidth() * random_double(), GetScreenHeight() * random_double() };
     a->size = ASTEROID_SIZE;
     a->position = pos;
     a->velocity = vel;

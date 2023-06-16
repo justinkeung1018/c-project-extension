@@ -5,7 +5,6 @@
 #include "list.h"
 #include "raylib.h"
 #include "spaceship.h"
-
 #define FPS                   60
 
 // Font sizes
@@ -41,7 +40,7 @@ int main(void) {
   // [Initialise variables]
   Spaceship *spaceship = spaceship_initialise();
   List as = asteroids_create();
-  int breakable;
+  bool breakable;
 
   // [Initialise audio]
   InitAudioDevice();
@@ -100,9 +99,8 @@ int main(void) {
       spaceship_rotate_right(spaceship);
     }
 
-    if (IsKeyPressed(KEY_ENTER) && breakable == 1 && !list_empty(as)) {
+    if (IsKeyPressed(KEY_ENTER) && breakable && !list_empty(as)) {
       asteroid_break(as, 0);
-      TraceLog(LOG_DEBUG, "Hi");
       breakable = false;
     }
 

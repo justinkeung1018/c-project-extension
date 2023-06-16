@@ -1,6 +1,7 @@
 #include "raylib.h"
 
 #include "spaceship.h"
+#include "bullet.h"
 
 #define FPS                   60
 
@@ -54,56 +55,58 @@ int main(void) {
   while (!exit_window) {
     BeginDrawing();
 
-    ClearBackground(BLACK);
+      ClearBackground(BLACK);
 
-    if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) {
-      // freeze all entities
-      exit_window_requested = true;
-    }
-
-    if (exit_window_requested) {
-      // save data here
-      if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-        exit_window = true;
-      } else if (IsKeyPressed(KEY_N)) {
-        exit_window_requested = false;
+      if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) {
+        // freeze all entities
+        exit_window_requested = true;
       }
-    }
 
-    if (exit_window_requested) {
-      display_exit_screen();
-    }
+      if (exit_window_requested) {
+        // save data here
+        if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
+          exit_window = true;
+        } else if (IsKeyPressed(KEY_N)) {
+          exit_window_requested = false;
+        }
+      }
+
+      if (exit_window_requested) {
+        display_exit_screen();
+      }
 
 
-    UpdateMusicStream(music);
+      UpdateMusicStream(music);
 
-    if (IsKeyPressed(KEY_SPACE)) {
-      spaceship_shoot(spaceship, bullets);
-      PlaySound(sound); // combine this with other components
-    }
+      if (IsKeyPressed(KEY_SPACE)) {
+        spaceship_shoot(spaceship, bullets);
+        PlaySound(sound); // combine this with other components
+      }
 
-    if (IsKeyDown(KEY_UP)) {
-      spaceship_accelerate(spaceship);
-    } else {
-      spaceship_reset_acceleration(spaceship);
-    }
+      if (IsKeyDown(KEY_UP)) {
+        spaceship_accelerate(spaceship);
+      } else {
+        spaceship_reset_acceleration(spaceship);
+      }
 
-    if (IsKeyDown(KEY_LEFT)) {
-      spaceship_rotate_left(spaceship);
-    }
+      if (IsKeyDown(KEY_LEFT)) {
+        spaceship_rotate_left(spaceship);
+      }
 
-    if (IsKeyDown(KEY_RIGHT)) {
-      spaceship_rotate_right(spaceship);
-    }
+      if (IsKeyDown(KEY_RIGHT)) {
+        spaceship_rotate_right(spaceship);
+      }
 
-    DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
-    if (IsKeyDown(KEY_F1)) {
-      display_debugging_stats();
-    }
+      DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
+      if (IsKeyDown(KEY_F1)) {
+        display_debugging_stats();
+      }
 
-    spaceship_draw(spaceship);
+      spaceship_draw(spaceship);
 
     EndDrawing();
+
+    bullet_despawn_all_off_screen(bullets, GetScreenWidth(), GetScreenHeight());
   }
 
   // [Free]

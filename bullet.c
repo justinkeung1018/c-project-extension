@@ -81,6 +81,7 @@ void bullet_despawn_all_off_screen(dynarr bs, int screen_width, int screen_heigh
       dynarr_remove(bs, i);
       bullet_free(b);
       printf("Bullet %d removed.", i);
+      i--;
     }
   }
 }

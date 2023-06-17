@@ -20,13 +20,13 @@ Loading loading_create(void) {
 }
 
 void update_variables(Loading test) {
+
   switch (test->state) {
     case 0: // State 0: Small box blinking
       (test->framesCounter)++;
 
       if (test->framesCounter == 120) {
         test->state = 1;
-        test->framesCounter = 0;      // Reset counter... will be used later...
       }
       break;
 
@@ -49,10 +49,10 @@ void update_variables(Loading test) {
       break;
 
     case 3: // State 3: Letters appearing (one by one)
-      (test->framesCounter)++;
+      test->framesCounter++;
 
       if (test->framesCounter/12) {       // Every 12 frames, one more letter!
-        (test->lettersCount)++;
+        test->lettersCount++;
         test->framesCounter = 0;
       }
 
@@ -67,35 +67,36 @@ void update_variables(Loading test) {
 }
 
 void display_loading_animation(Loading test) {
+  int half_width = GetScreenWidth()/2 - 128;
+  int half_height = GetScreenHeight()/2 - 128; 
+  int string_length = MeasureText("asteroids", 30);
+
   switch (test->state) {
     case 0:
-      if ((test->framesCounter/15)%2) DrawRectangle(GetScreenWidth()/2 - 128, GetScreenHeight()/2 - 128, 16, 16, BLACK);
-      break;
+       if ((test->framesCounter / 15) % 2) {
+         DrawRectangle(half_width, half_height, 16, 16, WHITE);
+       }
+       break;
 
     case 1:
-      DrawRectangle(GetScreenWidth()/2 - 128, GetScreenHeight()/2 - 128, test->topSideRecWidth, 16, BLACK);
-      DrawRectangle(GetScreenWidth()/2 - 128, GetScreenHeight()/2 - 128, 16, test->leftSideRecHeight, BLACK);
+      DrawRectangle(half_width, half_height, test->topSideRecWidth, 16, WHITE);
+      DrawRectangle(half_width, half_height, 16, test->leftSideRecHeight, WHITE);
       break;
 
     case 2:
-      DrawRectangle(GetScreenWidth()/2 - 128, GetScreenHeight()/2 - 128, test->topSideRecWidth, 16, BLACK);
-      DrawRectangle(GetScreenWidth()/2 - 128, GetScreenHeight()/2 - 128, 16, test->leftSideRecHeight, BLACK);
-      DrawRectangle(GetScreenWidth()/2 - 128 + 240, GetScreenHeight()/2 - 128, 16, test->rightSideRecHeight, BLACK);
-      DrawRectangle(GetScreenWidth()/2 - 128, GetScreenHeight()/2 - 128 + 240, test->bottomSideRecWidth, 16, BLACK);
+      DrawRectangle(half_width, half_height, test->topSideRecWidth, 16, WHITE);
+      DrawRectangle(half_width, half_height, 16, test->leftSideRecHeight, WHITE);
+      DrawRectangle(half_width + 240, half_height, 16, test->rightSideRecHeight, WHITE);
+      DrawRectangle(half_width, half_height + 240, test->bottomSideRecWidth, 16, WHITE);
       break;
 
     case 3:
-
-      DrawRectangle(GetScreenWidth()/2 - 128, GetScreenHeight()/2 - 128, test->topSideRecWidth, 16, Fade(BLACK, test->alpha));
-      DrawRectangle(GetScreenWidth()/2 - 128, GetScreenHeight()/2 - 128 + 16, 16, test->leftSideRecHeight - 32, Fade(BLACK, test->alpha));
-      DrawRectangle(GetScreenWidth()/2 - 128 + 240, GetScreenHeight()/2 - 128 + 16, 16, test->rightSideRecHeight - 32, Fade(BLACK, test->alpha));
-      DrawRectangle(GetScreenWidth()/2 - 128, GetScreenHeight()/2 - 128 + 240, test->bottomSideRecWidth, 16, Fade(BLACK, test->alpha));
-      DrawRectangle(GetScreenWidth()/2 - 112, GetScreenHeight()/2 - 112, 224, 224, Fade(RAYWHITE, test->alpha));
-      DrawText(TextSubtext("raylib", 0, test->lettersCount), GetScreenWidth()/2 - 44, GetScreenHeight()/2 + 48, 50, Fade(BLACK, test->alpha));
-      break;
-
-    case 4:
-      DrawText("[R] REPLAY", 340, 200, 20, GRAY);
+      DrawRectangle(half_width, half_height, test->topSideRecWidth, 16, Fade(WHITE, test->alpha));
+      DrawRectangle(half_width, half_height + 16, 16, test->leftSideRecHeight - 32, Fade(WHITE, test->alpha));
+      DrawRectangle(half_width + 240, half_height + 16, 16, test->rightSideRecHeight - 32, Fade(WHITE, test->alpha));
+      DrawRectangle(half_width, half_height + 240, test->bottomSideRecWidth, 16, Fade(WHITE, test->alpha));
+      // DrawText(TextSubtext("asteroids", 0, test->lettersCount), GetScreenWidth()/2 - 44, GetScreenHeight()/2 + 48, 30, Fade(WHITE, test->alpha));
+      DrawText(TextSubtext("asteroids", 0, test->lettersCount), GetScreenWidth()/2 - string_length/2, GetScreenHeight()/2 - 15, 30, Fade(WHITE, test->alpha));
   }
 }
 

@@ -12,20 +12,7 @@ int main(void) {
   SetTargetFPS(FPS);
 
   // [Setup Loading Screen]
-  // int logoPositionX = screen_width/2 - 128;
-  // int logoPositionY = screen_height/2 - 128;
-
-//  int framesCounter = 0;
-//  int lettersCount = 0;
-
- //  int topSideRecWidth = 16;
- //  int leftSideRecHeight = 16;
-
-  // int bottomSideRecWidth = 16;
-  // int rightSideRecHeight = 16;
-
-  // int state = 0;                  // Tracking animation states (State Machine)
-  // float alpha = 1.0f;             // Useful for fading
+  Loading a = loading_create();
 
   // [Initialise Audio]
   InitAudioDevice();
@@ -46,8 +33,8 @@ int main(void) {
     BeginDrawing();
 
       ClearBackground(BLACK);
-    //update_variables(state, framesCounter, topSideRecWidth, leftSideRecHeight, bottomSideRecWidth, rightSideRecHeight, lettersCount, alpha);
-    //display_loading_animation(state, framesCounter, logoPositionX, logoPositionY, topSideRecWidth, leftSideRecHeight, rightSideRecHeight, bottomSideRecWidth, alpha, lettersCount);
+      update_variables(a);
+      display_loading_animation(a);
 
       DrawText("Press F1 for Debugging Stats", 10, screen_height - 20, 20, WHITE);
       if (IsKeyDown(KEY_F1)) {

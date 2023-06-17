@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "raylib.h"
 #include "list.h"
+#include "raylib.h"
 
 #define INITIAL_SIZE 256
 #define NORMAL_RADIUS 5

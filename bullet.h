@@ -1,8 +1,8 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include "raylib.h"
 #include "list.h"
+#include "raylib.h"
 
 typedef double degrees;
 

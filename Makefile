@@ -11,12 +11,11 @@ LDLIBS  = -Lraylib/src -lraylib -lm
 
 all: main test
 
-main: main.o loading.o 
+main: main.o spaceship.o asteroids.o list.o loading.o
 
-test: test.o
+asteroids.o: list.h
 
-loading: loading.o
+spaceship.o: spaceship.h
 
 clean:
 	$(RM) *.o main
-

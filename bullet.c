@@ -8,7 +8,7 @@
 #include "raylib.h"
 #include "list.h"
 
-#define MAX_BULLETS 256
+#define INITIAL_SIZE 256
 #define NORMAL_RADIUS 5
 #define NORMAL_SPEED 25
 #define NORMAL_COLOUR RED
@@ -49,8 +49,8 @@ void bullet_draw(Bullet b) {
 }
 
 void bullet_move(Bullet b) {
-  b->pos.x += cos(RADIANS(b->direction)) * b->speed * 100 * GetFrameTime();
-  b->pos.y += sin(RADIANS(b->direction)) * b->speed * 100 * GetFrameTime();
+  b->pos.x += cos(RADIANS(b->direction)) * b->speed;
+  b->pos.y += sin(RADIANS(b->direction)) * b->speed;
 }
 
 static void bullet_for_each_void(List bs, ForEachFunc function) {
@@ -60,7 +60,7 @@ static void bullet_for_each_void(List bs, ForEachFunc function) {
 }
 
 void bullet_draw_all(List bs) {
-  bullet_for_each_void(bs, &bullet_draw);
+  bullet_for_each_void(bs, bullet_draw);
 }
 
 void bullet_move_all(List bs) {
@@ -68,7 +68,7 @@ void bullet_move_all(List bs) {
 }
 
 List bullet_init_all() {
-  return list_create(MAX_BULLETS, &bullet_free);
+  return list_create(INITIAL_SIZE, bullet_free);
 }
 
 bool bullet_in_screen(Bullet b, int screen_width, int screen_height) {
@@ -81,7 +81,6 @@ void bullet_despawn_all_off_screen(List bs, int screen_width, int screen_height)
     if (!bullet_in_screen(b, screen_width, screen_height)) {
       list_remove(bs, i);
       bullet_free(b);
-      printf("Bullet %d removed. \n", i);
       i--;
     }
   }

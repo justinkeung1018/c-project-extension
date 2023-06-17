@@ -23,6 +23,7 @@ typedef struct Bullet *Bullet;
  * @param pos_x A float representing the x position of the bullet.
  * @param pos_y A float representing the y position of the bullet.
  * @param direction Direction in degrees, clockwise from horizontal, left to right is 0.
+ *
  * @return The pointer to the initalised bullet.
  */
 extern Bullet bullet_init_normal(float pos_x, float pos_y, degrees direction);
@@ -52,21 +53,21 @@ extern void bullet_move(Bullet b);
 /**
  * Draws all bullets in bs.
  *
- * @param bs A dynarr containing all bullets.
+ * @param bs A list containing all bullets.
  */
 extern void bullet_draw_all(List bs);
 
 /**
  * Moves all bullets in bs, according to their position, speed, direction.
  *
- * @param bs A dynarr containing all bullets.
+ * @param bs A list containing all bullets.
  */
 extern void bullet_move_all(List bs);
 
 /**
- * Creates an array capable of containing bullets.
+ * Creates a list capable of containing bullets.
  *
- * @return dynarr
+ * @return The list.
  */
 extern List bullet_init_all();
 
@@ -76,13 +77,14 @@ extern List bullet_init_all();
  * @param b The pointer to the bullet.
  * @param screen_width in pixels.
  * @param screen_height in pixels.
+ *
  * @return true Bullet is on screen.
  * @return false Bullet is not on screen.
  */
 extern bool bullet_in_screen(Bullet b, int screen_width, int screen_height);
 
 /**
- * Removes any bullet not on screen from the array and frees it.
+ * Removes any bullet not on screen from the list and frees it.
  *
  * @param bs The dynarr of bullets.
  * @param screen_width in pixels.
@@ -92,7 +94,7 @@ extern void bullet_despawn_all_off_screen(List bs, int screen_width, int screen_
 
 /**
  * Frees all bullets in bs. Is a wrapper for list_free(bs);
- * 
+ *
  * @param bs The list with all bullets to be freed.
  */
 extern void bullet_free_all(List bs);

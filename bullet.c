@@ -1,6 +1,5 @@
 #include "bullet.h"
 
-#include <assert.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +16,6 @@
 // Caller must free using bullet_free()
 static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, degrees direction, Color color) {
   Bullet b = malloc(sizeof(struct Bullet));
-  assert(b != NULL);
 
   if (b == NULL) {
     fprintf(stderr, "Failed to malloc bullet");

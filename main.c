@@ -1,7 +1,10 @@
+#include <stdlib.h>
+#include <stdbool.h>
+
+#include "asteroids.h"
+#include "list.h"
 #include "raylib.h"
-
 #include "spaceship.h"
-
 #define FPS                   60
 
 // Font sizes
@@ -56,7 +59,9 @@ int main(void) {
   SetTargetFPS(FPS);
 
   // [Initialise variables]
-  Spaceship *spaceship = spaceship_initialise();
+  Spaceship spaceship = spaceship_initialise();
+  List as = asteroids_create();
+  bool breakable;
 
   // [Initialise audio]
   InitAudioDevice();
@@ -72,23 +77,25 @@ int main(void) {
 
   // [Drawing]
   while (!exit_window) {
+    breakable = true;
+
     BeginDrawing();
 
-    ClearBackground(BLACK);
-
-    if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) {
+    if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
       // freeze all entities
       exit_window_requested = true;
+      display_exit_screen();
     }
 
     if (exit_window_requested) {
-      // save data here
-      display_exit_screen();
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
+	// save data here
         exit_window = true;
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_requested = false;
       }
+      EndDrawing();
+      continue;
     }
 
     UpdateMusicStream(music);
@@ -111,7 +118,17 @@ int main(void) {
       spaceship_rotate_right(spaceship);
     }
 
-    DrawText("Press F1 for Debugging Stats", SMALL_PADDING, SCREEN_HEIGHT - MEDIUM_PADDING, SMALL_FONT_SIZE, WHITE);
+    if (IsKeyPressed(KEY_ENTER) && breakable && !list_empty(as)) {
+      asteroid_break(as, 0);
+      breakable = false;
+    }
+
+    asteroids_move(as);
+    asteroids_draw(as);
+
+    spaceship_move(spaceship);
+
+    DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
     if (IsKeyDown(KEY_F1)) {
       display_debugging_stats();
     }
@@ -123,6 +140,7 @@ int main(void) {
 
   // [Free]
   spaceship_free(spaceship);
+  asteroids_free(as);
   UnloadMusicStream(music);
   CloseAudioDevice();
   CloseWindow();

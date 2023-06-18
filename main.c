@@ -1,8 +1,35 @@
+#include <stdlib.h>
+#include <stdbool.h>
+
+#include "asteroids.h"
+#include "list.h"
 #include "raylib.h"
-
 #include "spaceship.h"
+#define FPS                   60
 
-#define FPS 60
+// Font sizes
+#define LARGE_FONT_SIZE       100
+#define MEDIUM_FONT_SIZE      80
+#define SMALL_FONT_SIZE       40
+#define EXTRA_SMALL_FONT_SIZE 20
+
+static void display_exit_screen(void) {
+  const char exit_message[] = "Are you sure you want to quit? [Y/N]";
+  const char save_message[] = "(your current progress will not be saved)";
+
+  int exit_string_width = MeasureText(exit_message, LARGE_FONT_SIZE);
+  int save_string_width = MeasureText(save_message, MEDIUM_FONT_SIZE);
+
+  DrawRectangle(0, GetScreenHeight() / 4 + 50, GetScreenWidth(), 1000, Fade(BLUE, 0.5f));
+  DrawRectangleLines(0, GetScreenHeight() / 4 + 50, GetScreenWidth(), 1000, RED);
+  DrawText(exit_message, GetScreenWidth() / 2 - exit_string_width / 2, GetScreenHeight() / 2 - 130, LARGE_FONT_SIZE, WHITE);
+  DrawText(save_message, GetScreenWidth() / 2 - save_string_width / 2, GetScreenHeight() / 2 + 10, MEDIUM_FONT_SIZE, WHITE);
+}
+
+static void display_debugging_stats(void) {
+  DrawFPS(GetScreenWidth() - 80, 10);
+  DrawText(TextFormat("Screen Resolution: %d x %d", GetScreenWidth(), GetScreenHeight()), 10, 10, EXTRA_SMALL_FONT_SIZE, LIME);
+}
 
 
 static void display_help_ui(void) {
@@ -21,26 +48,53 @@ static void display_controls(void) {
 }
 
 int main(void) {
-  // [Initialise Screen]
+  // [Initialise screen]
   InitWindow(0, 0, "Asteroids");
   ToggleFullscreen();
-  int screen_width = GetScreenWidth();
-  int screen_height = GetScreenHeight();
   SetTargetFPS(FPS);
 
   // [Initialise variables]
-  Spaceship *spaceship = spaceship_initialise();
+  Spaceship spaceship = spaceship_initialise();
+  List as = asteroids_create();
+  bool breakable;
 
-  // [Initialise Audio]
+  // [Initialise audio]
   InitAudioDevice();
   Music music = LoadMusicStream("resources/bgm.mp3");
   Sound sound = LoadSound("resources/shoot.wav");
   // to implement explosion when we combine other files
-
   PlayMusicStream(music);
 
+  // [Initialise exit variables]
+  SetExitKey(KEY_NULL);
+  bool exit_window_requested = false;
+  bool exit_window = false;
+
   // [Drawing]
-  while (!WindowShouldClose()) {
+  while (!exit_window) {
+    breakable = true;
+
+    BeginDrawing();
+
+    if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
+      // freeze all entities
+      exit_window_requested = true;
+      display_exit_screen();
+    }
+
+    if (exit_window_requested) {
+      if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
+	// save data here
+        exit_window = true;
+      } else if (IsKeyPressed(KEY_N)) {
+        exit_window_requested = false;
+      }
+      EndDrawing();
+      continue;
+    }
+
+    ClearBackground(BLACK);
+
     UpdateMusicStream(music);
 
     if (IsKeyPressed(KEY_SPACE)) {
@@ -67,13 +121,19 @@ int main(void) {
       spaceship_rotate_right(spaceship);
     }
 
-    BeginDrawing();
+    if (IsKeyPressed(KEY_ENTER) && breakable && !list_empty(as)) {
+      asteroid_break(as, 0);
+      breakable = false;
+    }
 
-    ClearBackground(BLACK);
-    DrawText("Press F1 for Debugging Stats", 10, screen_height - 20, 20, WHITE);
+    asteroids_move(as);
+    asteroids_draw(as);
+
+    spaceship_move(spaceship);
+
+    DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
     if (IsKeyDown(KEY_F1)) {
-      DrawFPS(screen_width - 90, 10);
-      DrawText(TextFormat("Screen Resolution: %d x %d", screen_width, screen_height), 10, 10, 20, LIME);
+      display_debugging_stats();
     }
 
     spaceship_draw(spaceship);
@@ -83,6 +143,7 @@ int main(void) {
 
   // [Free]
   spaceship_free(spaceship);
+  asteroids_free(as);
   UnloadMusicStream(music);
   CloseAudioDevice();
   CloseWindow();

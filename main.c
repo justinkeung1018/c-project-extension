@@ -1,10 +1,11 @@
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "asteroids.h"
 #include "list.h"
 #include "raylib.h"
 #include "spaceship.h"
+
 #define FPS                   60
 
 // Font sizes
@@ -89,7 +90,7 @@ int main(void) {
 
     if (exit_window_requested) {
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-	// save data here
+	      // save data here
         exit_window = true;
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_requested = false;
@@ -128,7 +129,7 @@ int main(void) {
 
     spaceship_move(spaceship);
 
-    DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
+    DrawText("Press F1 for Debugging Stats", SMALL_PADDING, GetScreenHeight() - MEDIUM_PADDING, SMALL_FONT_SIZE, WHITE);
     if (IsKeyDown(KEY_F1)) {
       display_debugging_stats();
     }

@@ -75,21 +75,17 @@ extern List bullet_init_all();
  * Checks if a bullet is on screen or not.
  *
  * @param b The pointer to the bullet.
- * @param screen_width in pixels.
- * @param screen_height in pixels.
  *
  * @return Whether the bullet is on screen.
  */
-extern bool bullet_in_screen(Bullet b, int screen_width, int screen_height);
+extern bool bullet_in_screen(Bullet b);
 
 /**
  * Removes any bullet not on screen from the list and frees it.
  *
  * @param bs The list of bullets.
- * @param screen_width in pixels.
- * @param screen_height in pixels.
  */
-extern void bullet_despawn_all_off_screen(List bs, int screen_width, int screen_height);
+extern void bullet_despawn_all_off_screen(List bs);
 
 /**
  * Frees the given list of bullets.

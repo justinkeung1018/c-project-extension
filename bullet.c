@@ -68,14 +68,14 @@ List bullet_init_all() {
   return list_create(INITIAL_SIZE, bullet_free);
 }
 
-bool bullet_in_screen(Bullet b, int screen_width, int screen_height) {
-  return 0 <= b->pos.x && b->pos.x <= screen_width && 0 <= b->pos.y && b->pos.y <= screen_height;
+bool bullet_in_screen(Bullet b) {
+  return 0 <= b->pos.x && b->pos.x <= GetScreenWidth() && 0 <= b->pos.y && b->pos.y <= GetScreenHeight();
 }
 
-void bullet_despawn_all_off_screen(List bs, int screen_width, int screen_height) {
+void bullet_despawn_all_off_screen(List bs) {
   for (int i = bs->len - 1; i >= 0; i--) {
     Bullet b = (Bullet) list_get(bs, i);
-    if (!bullet_in_screen(b, screen_width, screen_height)) {
+    if (!bullet_in_screen(b)) {
       list_remove(bs, i);
       bullet_free(b);
     }

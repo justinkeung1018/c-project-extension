@@ -13,8 +13,7 @@
 #define NORMAL_COLOUR RED
 #define RADIANS(x) (x * M_PI / 180)
 
-// Caller must free using bullet_free()
-static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, degrees direction, Color color) {
+static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, Radians rotation, Color color) {
   Bullet b = malloc(sizeof(struct Bullet));
 
   if (b == NULL) {
@@ -26,7 +25,7 @@ static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, d
   b->pos.y = pos_y;
   b->radius = radius;
   b->speed = speed;
-  b->direction = direction;
+  b->rotation = rotation;
   b->color = color;
   return b;
 }
@@ -34,8 +33,8 @@ static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, d
 typedef void (*ForEachFunc)(Bullet);
 
 // Caller must free using bullet_free()
-Bullet bullet_init_normal(float pos_x, float pos_y, degrees direction) {
-  return bullet_init(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, direction, NORMAL_COLOUR);
+Bullet bullet_init_normal(float pos_x, float pos_y, Radians rotation) {
+  return bullet_init(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, rotation, NORMAL_COLOUR);
 }
 
 void bullet_free(void *b) {
@@ -47,8 +46,8 @@ void bullet_draw(Bullet b) {
 }
 
 void bullet_move(Bullet b) {
-  b->pos.x += cos(RADIANS(b->direction)) * b->speed;
-  b->pos.y += sin(RADIANS(b->direction)) * b->speed;
+  b->pos.x += cos(b->rotation) * b->speed;
+  b->pos.y += sin(b->rotation) * b->speed;
 }
 
 static void bullet_for_each_void(List bs, ForEachFunc function) {
@@ -79,7 +78,6 @@ void bullet_despawn_all_off_screen(List bs, int screen_width, int screen_height)
     if (!bullet_in_screen(b, screen_width, screen_height)) {
       list_remove(bs, i);
       bullet_free(b);
-      i--;
     }
   }
 }

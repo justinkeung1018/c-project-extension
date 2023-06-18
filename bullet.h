@@ -4,13 +4,13 @@
 #include "list.h"
 #include "raylib.h"
 
-typedef double degrees;
+typedef double Radians;
 
 struct Bullet {
   Vector2 pos;       // float x, float y
   double radius;
   double speed;
-  degrees direction; // clockwise from horizontal, left to right is 0
+  Radians rotation; // clockwise from horizontal, left to right is 0
   Color color;       // char r, g, b, a
 };
 
@@ -22,11 +22,11 @@ typedef struct Bullet *Bullet;
  *
  * @param pos_x A float representing the x position of the bullet.
  * @param pos_y A float representing the y position of the bullet.
- * @param direction Direction in degrees, clockwise from horizontal, left to right is 0.
+ * @param rotation Rotation in radians, clockwise from horizontal, left to right is 0.
  *
  * @return A bullet.
  */
-extern Bullet bullet_init_normal(float pos_x, float pos_y, degrees direction);
+extern Bullet bullet_init_normal(float pos_x, float pos_y, Radians rotation);
 
 /**
  * Frees a bullet pointer.
@@ -44,7 +44,7 @@ extern void bullet_free(void *b);
 extern void bullet_draw(Bullet b);
 
 /**
- * Moves a bullet according to its position, speed, direction.
+ * Moves a bullet according to its position, speed, rotation.
  *
  * @param b The pointer to the bullet being moved.
  */
@@ -58,7 +58,7 @@ extern void bullet_move(Bullet b);
 extern void bullet_draw_all(List bs);
 
 /**
- * Moves all bullets in bs, according to their position, speed, direction.
+ * Moves all bullets in bs, according to their position, speed, rotation.
  *
  * @param bs A list containing all bullets.
  */

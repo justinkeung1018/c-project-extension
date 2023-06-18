@@ -14,20 +14,20 @@
 #define EXTRA_SMALL_FONT_SIZE 20
 
 // Text height
-#define SMALL_TEXT_HEIGHT 20
+#define SMALL_TEXT_HEIGHT     20
 
-// Padding 
-#define SMALL_PADDING 10
-#define MEDIUM_PADDING 50
-#define LARGE_PADDING 100
-#define EXTRA_LARGE_PADDING 1000
-#define FPS_PADDING   80
+// Padding
+#define SMALL_PADDING         10
+#define MEDIUM_PADDING        50
+#define LARGE_PADDING         100
+#define EXTRA_LARGE_PADDING   1000
+#define FPS_PADDING           80
 
 // Various screen sizes
-#define SCREEN_WIDTH GetScreenWidth()
-#define SCREEN_HEIGHT GetScreenHeight()
-#define HALF_SCREEN_WIDTH_SIZE GetScreenWidth() / 2
-#define HALF_SCREEN_HEIGHT_SIZE GetScreenHeight() / 2
+#define SCREEN_WIDTH               GetScreenWidth()
+#define SCREEN_HEIGHT              GetScreenHeight()
+#define HALF_SCREEN_WIDTH_SIZE     GetScreenWidth() / 2
+#define HALF_SCREEN_HEIGHT_SIZE    GetScreenHeight() / 2
 #define QUARTER_SCREEN_HEIGHT_SIZE GetScreenHeight() / 4
 
 static void display_exit_screen(void) {

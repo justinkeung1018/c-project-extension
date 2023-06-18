@@ -7,11 +7,10 @@
 #include "list.h"
 #include "raylib.h"
 
-#define INITIAL_SIZE 256
+#define INITIAL_SIZE  256
 #define NORMAL_RADIUS 5
-#define NORMAL_SPEED 25
+#define NORMAL_SPEED  25
 #define NORMAL_COLOUR RED
-#define RADIANS(x) (x * M_PI / 180)
 
 static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, Radians rotation, Color color) {
   Bullet b = malloc(sizeof(struct Bullet));

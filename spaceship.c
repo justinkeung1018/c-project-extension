@@ -6,6 +6,7 @@
 
 #include "raylib.h"
 #include "raymath.h"
+#include "utils.h"
 
 #define SPACESHIP_HEIGHT   200
 #define SPACESHIP_WIDTH    100
@@ -21,8 +22,26 @@
 #define MIN_ROTATION       0
 #define MAX_ROTATION       (2 * M_PI)
 
-// Macros
-#define RADIANS(x) (x * M_PI / 180)
+static Vector2 get_top(Spaceship s) {
+  Vector2 top_offset = Vector2Rotate((Vector2){ 0, -SPACESHIP_HEIGHT * 2 / 3 }, s->rotation);
+  return Vector2Add(s->position, top_offset);
+}
+
+static Vector2 get_left(Spaceship s) {
+  Vector2 left_offset = Vector2Rotate((Vector2){ -SPACESHIP_WIDTH / 2, 0 }, s->rotation);
+  return Vector2Add(s->position, left_offset);
+}
+
+static Vector2 get_right(Spaceship s) {
+  Vector2 right_offset = Vector2Rotate((Vector2){ SPACESHIP_WIDTH / 2, 0 }, s->rotation);
+  return Vector2Add(s->position, right_offset);
+}
+
+static void update_collider(Spaceship s) {
+  s->collider.vectors[0] = get_top(s);
+  s->collider.vectors[1] = get_left(s);
+  s->collider.vectors[2] = get_right(s);
+}
 
 Spaceship spaceship_initialise(void) {
   Spaceship s = malloc(sizeof(struct Spaceship));
@@ -33,9 +52,15 @@ Spaceship spaceship_initialise(void) {
 
   s->position = (Vector2){ GetScreenWidth() / 2, GetScreenHeight() / 2 };
   s->velocity = (Vector2){ 0, 0 };
+
+  Vector2 *vectors = malloc(sizeof(Vector2) * 3);
+  s->collider = (Collider){ vectors, 3 };
+  update_collider(s);
+
   s->acceleration = 0.0;
   s->rotation = 0.0;
   s->color = RED;
+  update_collider(s);
 
   return s;
 }
@@ -54,17 +79,15 @@ void spaceship_move(Spaceship s) {
 
   s->position.x = Clamp(s->position.x + s->velocity.x, 0, GetScreenWidth());
   s->position.y = Clamp(s->position.y + s->velocity.y, 0, GetScreenHeight());
+
+  update_collider(s);
 }
 
 void spaceship_draw(Spaceship s) {
-  Vector2 top = Vector2Rotate((Vector2){ 0, -SPACESHIP_HEIGHT * 2 / 3 }, s->rotation);
-  Vector2 left = Vector2Rotate((Vector2){ -SPACESHIP_WIDTH / 2, 0 }, s->rotation);
-  Vector2 right = Vector2Rotate((Vector2){ SPACESHIP_WIDTH / 2, 0 }, s->rotation);
-
   DrawTriangle(
-      Vector2Add(s->position, top),
-      Vector2Add(s->position, left),
-      Vector2Add(s->position, right),
+      s->collider.vectors[0], // Top
+      s->collider.vectors[1], // Left
+      s->collider.vectors[2], // Right
       s->color
     );
 }

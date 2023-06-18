@@ -85,3 +85,4 @@ void bullet_despawn_all_off_screen(List bs) {
 void bullet_free_all(List bs) {
   list_free(bs);
 }
+

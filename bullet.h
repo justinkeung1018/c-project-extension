@@ -95,3 +95,4 @@ extern void bullet_despawn_all_off_screen(List bs);
 extern void bullet_free_all(List bs);
 
 #endif
+

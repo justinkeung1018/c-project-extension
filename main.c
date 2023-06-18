@@ -1,10 +1,11 @@
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "asteroids.h"
 #include "list.h"
 #include "raylib.h"
 #include "spaceship.h"
+
 #define FPS                   60
 
 // Font sizes

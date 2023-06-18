@@ -4,9 +4,9 @@
 #include <stdbool.h>
 
 #include "asteroids.h"
+#include "bullet.h"
 #include "list.h"
 #include "spaceship.h"
-#include "bullet.h"
 
 #define FPS                   60
 
@@ -72,7 +72,7 @@ int main(void) {
 
     if (exit_window_requested) {
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-	// save data here
+	      // save data here
         exit_window = true;
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_requested = false;
@@ -83,49 +83,49 @@ int main(void) {
 
     ClearBackground(BLACK);
 
-      UpdateMusicStream(music);
+    UpdateMusicStream(music);
 
-      if (IsKeyPressed(KEY_SPACE)) {
-        spaceship_shoot(spaceship, bullets);
-        PlaySound(sound); // combine this with other components
-      }
+    if (IsKeyPressed(KEY_SPACE)) {
+      spaceship_shoot(spaceship, bullets);
+      PlaySound(sound); // combine this with other components
+    }
 
-      if (IsKeyDown(KEY_UP)) {
-        spaceship_accelerate(spaceship);
-      } else {
-        spaceship_reset_acceleration(spaceship);
-      }
+    if (IsKeyDown(KEY_UP)) {
+      spaceship_accelerate(spaceship);
+    } else {
+      spaceship_reset_acceleration(spaceship);
+    }
 
-      if (IsKeyDown(KEY_LEFT)) {
-        spaceship_rotate_left(spaceship);
-      }
+    if (IsKeyDown(KEY_LEFT)) {
+      spaceship_rotate_left(spaceship);
+    }
 
-      if (IsKeyDown(KEY_RIGHT)) {
-        spaceship_rotate_right(spaceship);
-      }
+    if (IsKeyDown(KEY_RIGHT)) {
+      spaceship_rotate_right(spaceship);
+    }
 
-      if (IsKeyPressed(KEY_ENTER) && breakable && !list_empty(as)) {
-        asteroid_break(as, 0);
-        breakable = false;
-      }
+    if (IsKeyPressed(KEY_ENTER) && breakable && !list_empty(as)) {
+      asteroid_break(as, 0);
+      breakable = false;
+    }
 
-      DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
-      if (IsKeyDown(KEY_F1)) {
-        display_debugging_stats();
-      }
+    DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
+    if (IsKeyDown(KEY_F1)) {
+      display_debugging_stats();
+    }
 
-      asteroids_move(as);
-      asteroids_draw(as);
+    asteroids_move(as);
+    asteroids_draw(as);
 
-      bullet_move_all(bullets);
-      bullet_draw_all(bullets);
+    bullet_move_all(bullets);
+    bullet_draw_all(bullets);
 
-      spaceship_move(spaceship);
-      spaceship_draw(spaceship);
+    spaceship_move(spaceship);
+    spaceship_draw(spaceship);
 
     EndDrawing();
 
-    bullet_despawn_all_off_screen(bullets, GetScreenWidth(), GetScreenHeight());
+    bullet_despawn_all_off_screen(bullets);
   }
 
   // [Free]

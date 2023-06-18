@@ -1,8 +1,8 @@
 #ifndef SPACESHIP_H
 #define SPACESHIP_H
 
-#include "raylib.h"
 #include "list.h"
+#include "raylib.h"
 
 struct Spaceship {
   Vector2 position;

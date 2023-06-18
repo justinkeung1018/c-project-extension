@@ -18,7 +18,7 @@ static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, d
   Bullet b = malloc(sizeof(struct Bullet));
 
   if (b == NULL) {
-    fprintf(stderr, "Failed to malloc bullet");
+    fprintf(stderr, "Failed to malloc bullet\n");
     exit(EXIT_FAILURE);
   }
 
@@ -70,7 +70,7 @@ List bullet_init_all() {
 }
 
 bool bullet_in_screen(Bullet b, int screen_width, int screen_height) {
-  return b->pos.x >= 0 && b->pos.x <= screen_width && b->pos.y >= 0 && b->pos.y <= screen_height;
+  return 0 <= b->pos.x && b->pos.x <= screen_width && 0 <= b->pos.y && b->pos.y <= screen_height;
 }
 
 void bullet_despawn_all_off_screen(List bs, int screen_width, int screen_height) {

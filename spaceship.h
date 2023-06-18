@@ -71,10 +71,9 @@ extern void spaceship_rotate_left(Spaceship s);
 extern void spaceship_rotate_right(Spaceship s);
 
 /**
- * Shoots a bullet from the space ship. A bullet is added to the dynarr,
- * if it isn't full.
- * 
- * @param bullets The dynarr of bullets.
+ * Shoots a bullet from the spaceship. Adds the bullet to the list.
+ * @param s The spaceship.
+ * @param bullets The list of bullets.
  */
 extern void spaceship_shoot(Spaceship s, List bullets);
 

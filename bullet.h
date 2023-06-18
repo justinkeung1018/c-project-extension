@@ -24,7 +24,7 @@ typedef struct Bullet *Bullet;
  * @param pos_y A float representing the y position of the bullet.
  * @param direction Direction in degrees, clockwise from horizontal, left to right is 0.
  *
- * @return The pointer to the initalised bullet.
+ * @return A bullet.
  */
 extern Bullet bullet_init_normal(float pos_x, float pos_y, degrees direction);
 
@@ -78,22 +78,21 @@ extern List bullet_init_all();
  * @param screen_width in pixels.
  * @param screen_height in pixels.
  *
- * @return true Bullet is on screen.
- * @return false Bullet is not on screen.
+ * @return Whether the bullet is on screen.
  */
 extern bool bullet_in_screen(Bullet b, int screen_width, int screen_height);
 
 /**
  * Removes any bullet not on screen from the list and frees it.
  *
- * @param bs The dynarr of bullets.
+ * @param bs The list of bullets.
  * @param screen_width in pixels.
  * @param screen_height in pixels.
  */
 extern void bullet_despawn_all_off_screen(List bs, int screen_width, int screen_height);
 
 /**
- * Frees all bullets in bs. Is a wrapper for list_free(bs);
+ * Frees the given list of bullets.
  *
  * @param bs The list with all bullets to be freed.
  */

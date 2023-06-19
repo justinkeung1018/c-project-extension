@@ -1,7 +1,9 @@
 #include "raylib.h"
-#include "loading.h"
-#include <stdlib.h>
+
 #include <assert.h>
+#include <stdlib.h>
+
+#include "loading.h"
 
 Loader loading_initialise(void) {
   Loader loader = malloc(sizeof(struct Loader));
@@ -19,17 +21,18 @@ Loader loading_initialise(void) {
 
   return loader;
 }
+
 void update_variables(Loader loader) {
   switch (loader->state) {
-    case BLINKING: // State 0: Small box blinking
-      (loader->frames_counter)++;
+    case BLINKING:
+      loader->frames_counter++;
 
       if (loader->frames_counter == 120) {
         loader->state = 1;
       }
       break;
 
-    case TOP_AND_LEFT_BARS: // State 1: Top and left bars growing
+    case TOP_AND_LEFT_BARS:
       loader->top_line_width += 4;
       loader->left_line_height += 4;
 
@@ -38,7 +41,7 @@ void update_variables(Loader loader) {
       }
       break;
 
-    case BOTTOM_AND_RIGHT_BARS: // State 2: Bottom and right bars growing
+    case BOTTOM_AND_RIGHT_BARS:
       loader->bottom_line_width += 4;
       loader->right_line_height += 4;
 
@@ -47,15 +50,15 @@ void update_variables(Loader loader) {
       }
       break;
 
-    case LETTERS_APPEARING: // State 3: Letters appearing (one by one)
+    case LETTERS_APPEARING:
       loader->frames_counter++;
 
-      if (loader->frames_counter/12) {       // Every 12 frames, one more letter!
+      if (loader->frames_counter/12) {
         loader->letters_count++;
         loader->frames_counter = 0;
       }
 
-      if (loader->letters_count > 9) {     // When all letters have appeared, just fade out everything
+      if (loader->letters_count > 9) {
         loader->alpha -= 0.02f;
 
         if (loader->alpha <= 0.0f) {
@@ -70,7 +73,7 @@ void update_variables(Loader loader) {
 void display_loading_animation(Loader loader) {
   int half_width = GetScreenWidth()/2 - 128;
   int half_height = GetScreenHeight()/2 - 128;
-  int string_length = MeasureText("asteroids", 30);
+  int title_string_length = MeasureText("asteroids", 30);
 
   switch (loader->state){
     case BLINKING:
@@ -96,7 +99,7 @@ void display_loading_animation(Loader loader) {
       DrawRectangle(half_width, half_height + 16, 16, loader->left_line_height - 32, Fade(WHITE, loader->alpha));
       DrawRectangle(half_width + 240, half_height + 16, 16, loader->right_line_height - 32, Fade(WHITE, loader->alpha));
       DrawRectangle(half_width, half_height + 240, loader->bottom_line_width, 16, Fade(WHITE, loader->alpha));
-      DrawText(TextSubtext("asteroids", 0, loader->letters_count), GetScreenWidth()/2 - string_length/2, GetScreenHeight()/2 - 15, 30, Fade(WHITE, loader->alpha));
+      DrawText(TextSubtext("asteroids", 0, loader->letters_count), GetScreenWidth()/2 - title_string_length/2, GetScreenHeight()/2 - 15, 30, Fade(WHITE, loader->alpha));
   }
 }
 

@@ -26,17 +26,13 @@ bool assert_eq_Vector2(Vector2 expected, Vector2 result, int number) {
   return true;
 }
 
-void test_bullet_init_normal() {
-
-}
-
 void test_bullet_move() {
   printf("bullet_move() tests.\n");
   int count_failed = 0;
   for (int i = 0; i < 360; i++) {
     Radians rotation = ((float) i) / 180 * M_PI;
     Bullet b = bullet_init_normal(GetScreenWidth(), GetScreenHeight(), rotation);
-    
+
     Vector2 before = {GetScreenWidth(), GetScreenHeight()};
     Vector2 expected = (Vector2) {before.x + 25 * cos(rotation), before.y + 25 * sin(rotation)};
 
@@ -53,7 +49,7 @@ void test_bullet_move() {
   } else {
     printf("All tests passed.\n");
   }
-  printf("\n"); 
+  printf("\n");
 }
 
 void test_bullet_move_all() {
@@ -65,7 +61,7 @@ void test_bullet_move_all() {
     Bullet b = bullet_init_normal(GetScreenWidth(), GetScreenHeight(), ((float) i) / 180 * M_PI);
     Bullet expected_b = bullet_init_normal(GetScreenWidth(), GetScreenHeight(), ((float) i) / 180 * M_PI);
     list_push(bs, b);
-    list_push(expected_bs, expected_b);  
+    list_push(expected_bs, expected_b);
   }
 
   bullet_move_all(bs);
@@ -75,7 +71,7 @@ void test_bullet_move_all() {
     Vector2 expected = (Vector2) {expected_b->pos.x + 25 * cos(expected_b->rotation), expected_b->pos.y + 25 * sin(expected_b->rotation)};
     if(!assert_eq_Vector2(expected, ((Bullet) list_get(bs, i))->pos, i)) {
       count_failed++;
-    } 
+    }
   }
 
   if (count_failed != 0) {
@@ -89,7 +85,7 @@ void test_bullet_move_all() {
 
 void test_spaceship_rotate_right() {
   Spaceship s = spaceship_initialise();
-  
+
   printf("spaceship_rotate_right() tests.\n");
   int count_failed = 0;
   for (int i = 0; i < 36; i++) {
@@ -134,14 +130,50 @@ void test_spaceship_rotate_left() {
   printf("\n");
 }
 
+void test_spaceship_accelerate() {
+  int count_failed = 0;
+  /*
+  code here
+  */
+  if (count_failed != 0) {
+    printf("%d tests failed.\n", count_failed);
+  } else {
+    printf("All tests passed \n");
+  }
+}
+
+void test_spaceship_move() {
+  int count_failed = 0;
+  /*
+  code here
+  */
+  if (count_failed != 0) {
+    printf("%d tests failed.\n", count_failed);
+  } else {
+    printf("All tests passed \n");
+  }
+}
+
+void test_spaceship_shoot() {
+  int count_failed = 0;
+  /*
+  code here
+  */
+  if (count_failed != 0) {
+    printf("%d tests failed.\n", count_failed);
+  } else {
+    printf("All tests passed \n");
+  }
+}
+
 int main (void) {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(1920, 1080, "Asteroids 1080p");
-  
+
   test_bullet_move();
   test_bullet_move_all();
   test_spaceship_rotate_left();
   test_spaceship_rotate_right();
 
-  CloseWindow();  
+  CloseWindow();
 }

@@ -73,7 +73,7 @@ bool bullet_in_screen(Bullet b) {
 
 void bullet_despawn_all_off_screen(List bs) {
   for (int i = bs->len - 1; i >= 0; i--) {
-    Bullet b = (Bullet) list_get(bs, i);
+    Bullet b = (Bullet)list_get(bs, i);
     if (!bullet_in_screen(b)) {
       list_remove(bs, i);
       bullet_free(b);

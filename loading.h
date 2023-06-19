@@ -12,23 +12,25 @@ typedef enum {
 
 struct Loader {
   LoadingState state;
-  int framesCounter;
-  int topSideRecWidth;
-  int leftSideRecHeight;
-  int bottomSideRecWidth;
-  int rightSideRecHeight;
-  int lettersCount;
+  int frames_counter;
+  int top_line_width;
+  int left_line_height;
+  int bottom_line_width;
+  int right_line_height;
+  int letters_count;
   float alpha;
-  bool loaded;
+  bool fully_loaded;
 };
 
 typedef struct Loader *Loader;
 
 extern Loader loading_initialise(void);
 
-extern void update_variables(Loader test);
+extern void update_variables(Loader loader);
 
-extern void display_loading_animation(Loader test);
+extern void display_loading_animation(Loader loader);
+
+extern void loader_free(Loader loader);
 
 #endif
 

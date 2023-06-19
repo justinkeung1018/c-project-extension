@@ -64,30 +64,32 @@ int main(void) {
     breakable = true;
 
     BeginDrawing();
+
+    if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
+      exit_window_requested = true;
+      display_exit_screen();
+    }
+
+    if (exit_window_requested) {
+      if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
+        // save data here
+        exit_window = true;
+      } else if (IsKeyPressed(KEY_N)) {
+        exit_window_requested = false;
+      }
+      EndDrawing();
+      continue;
+    }
+
+    UpdateMusicStream(music);
+
+
     ClearBackground(BLACK);
 
     update_variables(loader);
     display_loading_animation(loader);
 
-    if (loader->loaded) {
-      if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
-        exit_window_requested = true;
-        display_exit_screen();
-      }
-
-      if (exit_window_requested) {
-        if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-        	// save data here
-          exit_window = true;
-        } else if (IsKeyPressed(KEY_N)) {
-          exit_window_requested = false;
-        }
-        EndDrawing();
-        continue;
-      }
-
-      UpdateMusicStream(music);
-
+    if (loader->fully_loaded) {
       if (IsKeyPressed(KEY_SPACE)) {
         PlaySound(sound); // combine this with other components
       }
@@ -123,11 +125,12 @@ int main(void) {
 
       spaceship_draw(spaceship);
     }
+
     EndDrawing();
   }
 
   // [Free]
-  free(loader); // fix this
+  loader_free(loader);
   spaceship_free(spaceship);
   asteroids_free(as);
   UnloadMusicStream(music);

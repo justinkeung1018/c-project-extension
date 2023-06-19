@@ -10,7 +10,7 @@ typedef enum {
   LETTERS_APPEARING,
 } LoadingState;
 
-struct Loading {
+struct Loader {
   LoadingState state;
   int framesCounter;
   int topSideRecWidth;
@@ -22,13 +22,13 @@ struct Loading {
   bool loaded;
 };
 
-typedef struct Loading *Loading;
+typedef struct Loader *Loader;
 
-extern Loading loading_create(void);
+extern Loader loading_initialise(void);
 
-extern void update_variables(Loading test);
+extern void update_variables(Loader test);
 
-extern void display_loading_animation(Loading test);
+extern void display_loading_animation(Loader test);
 
 #endif
 

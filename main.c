@@ -40,7 +40,7 @@ int main(void) {
   SetTargetFPS(FPS);
 
   // [Setup loading screen]
-  Loading a = loading_create();
+  Loader loader = loading_initialise();
 
   // [Initialise variables]
   Spaceship spaceship = spaceship_initialise();
@@ -66,10 +66,10 @@ int main(void) {
     BeginDrawing();
     ClearBackground(BLACK);
 
-    update_variables(a);
-    display_loading_animation(a);
+    update_variables(loader);
+    display_loading_animation(loader);
 
-    if (a->loaded) {
+    if (loader->loaded) {
       if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
         // freeze all entities
         exit_window_requested = true;
@@ -128,7 +128,7 @@ int main(void) {
   }
 
   // [Free]
-  free(a); // fix this
+  free(loader); // fix this
   spaceship_free(spaceship);
   asteroids_free(as);
   UnloadMusicStream(music);

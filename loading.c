@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
-Loading loading_create(void) {
-  Loading a = malloc(sizeof(struct Loading));
+Loader loading_initialise(void) {
+  Loader a = malloc(sizeof(struct Loader));
   assert(a != NULL);
 
   a->state = 0;
@@ -20,7 +20,7 @@ Loading loading_create(void) {
   return a;
 }
 
-void update_variables(Loading test) {
+void update_variables(Loader test) {
 
   switch (test->state) {
     case BLINKING: // State 0: Small box blinking
@@ -57,7 +57,7 @@ void update_variables(Loading test) {
         test->framesCounter = 0;
       }
 
-      if (test->lettersCount >= 10) {     // When all letters have appeared, just fade out everything
+      if (test->lettersCount > 9) {     // When all letters have appeared, just fade out everything
         test->alpha -= 0.03f;
 
         if (test->alpha <= 0.4f) {
@@ -71,7 +71,7 @@ void update_variables(Loading test) {
   }
 }
 
-void display_loading_animation(Loading test) {
+void display_loading_animation(Loader test) {
   int half_width = GetScreenWidth()/2 - 128;
   int half_height = GetScreenHeight()/2 - 128;
   int string_length = MeasureText("asteroids", 30);
@@ -100,7 +100,6 @@ void display_loading_animation(Loading test) {
       DrawRectangle(half_width, half_height + 16, 16, test->leftSideRecHeight - 32, Fade(WHITE, test->alpha));
       DrawRectangle(half_width + 240, half_height + 16, 16, test->rightSideRecHeight - 32, Fade(WHITE, test->alpha));
       DrawRectangle(half_width, half_height + 240, test->bottomSideRecWidth, 16, Fade(WHITE, test->alpha));
-      // DrawText(TextSubtext("asteroids", 0, test->lettersCount), GetScreenWidth()/2 - 44, GetScreenHeight()/2 + 48, 30, Fade(WHITE, test->alpha));
       DrawText(TextSubtext("asteroids", 0, test->lettersCount), GetScreenWidth()/2 - string_length/2, GetScreenHeight()/2 - 15, 30, Fade(WHITE, test->alpha));
   }
 }

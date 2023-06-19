@@ -5,18 +5,22 @@
 
 #include "loading.h"
 
-#define STARTING_POSITION    16
-#define MAXIMUM_WIDTH        256
-#define WIDTH_INCREMENT_STEP 4
-#define HEIGHT_INCREMENT_STEP 4
-#define BLINKING_FRAMES_LIMIT 120
+// Positional constants
+#define STARTING_POSITION      16
+#define MAXIMUM_WIDTH          256
+#define WIDTH_INCREMENT_STEP   4
+#define HEIGHT_INCREMENT_STEP  4
 
+// Title constant
 #define TITLE_CHARACTER_LENGTH 9
 
-#define FRAMES_PER_BLINK 15
-#define FRAMES_PER_LETTER 12
+// Frames constant
+#define FRAMES_PER_BLINK       15
+#define FRAMES_PER_LETTER      12
+#define BLINKING_FRAMES_LIMIT  120
 
-#define ALPHA_DECREMENT_STEP 0.2f
+// Alpha constant
+#define ALPHA_DECREMENT_STEP 0.025f
 
 Loader loading_initialise(void) {
   Loader loader = malloc(sizeof(struct Loader));
@@ -66,18 +70,13 @@ void update_variables(Loader loader) {
     case LETTERS_APPEARING:
       loader->frames_counter++;
 
-      // if (loader->frames_counter / FRAMES_PER_LETTER) {
-
-      if (loader->frames_counter / 12) {
+      if (loader->frames_counter / FRAMES_PER_LETTER) {
         loader->letters_count++;
         loader->frames_counter = 0;
       }
 
-      // if (loader->letters_count > TITLE_CHARACTER_LENGTH) {
-
-      if (loader->letters_count > 9) {
-        loader->alpha -= 0.025f;
-        // loader->alpha -= ALPHA_DECREMENT_STEP;
+      if (loader->letters_count > TITLE_CHARACTER_LENGTH) {
+        loader->alpha -= ALPHA_DECREMENT_STEP;
         if (loader->alpha <= 0.0f) {
           loader->alpha = 0.0f;
           loader->fully_loaded = true;
@@ -95,7 +94,7 @@ void display_loading_animation(Loader loader) {
 
   switch (loader->state){
     case BLINKING:
-      if ((loader->frames_counter / 15) % 2) {
+      if ((loader->frames_counter / FRAMES_PER_BLINK) % 2) {
         DrawRectangle(half_width, half_height, 16, 16, WHITE);
       }
       break;

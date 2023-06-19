@@ -7,10 +7,14 @@
 
 #define STARTING_POSITION    16
 #define MAXIMUM_WIDTH        256
-
-#define BLINKING_FRAME_LIMIT 120
+#define WIDTH_INCREMENT_STEP 4
+#define HEIGHT_INCREMENT_STEP 4
+#define BLINKING_FRAMES_LIMIT 120
 
 #define TITLE_CHARACTER_LENGTH 9
+
+#define FRAMES_PER_BLINK 15
+#define FRAMES_PER_LETTER 12
 
 Loader loading_initialise(void) {
   Loader loader = malloc(sizeof(struct Loader));
@@ -34,14 +38,14 @@ void update_variables(Loader loader) {
     case BLINKING:
       loader->frames_counter++;
 
-      if (loader->frames_counter == BLINKING_FRAME_LIMIT) {
+      if (loader->frames_counter == BLINKING_FRAMES_LIMIT) {
         loader->state = TOP_AND_LEFT_BARS;
       }
       break;
 
     case TOP_AND_LEFT_BARS:
-      loader->top_line_width += 4;
-      loader->left_line_height += 4;
+      loader->top_line_width += WIDTH_INCREMENT_STEP;
+      loader->left_line_height += HEIGHT_INCREMENT_STEP;
 
       if (loader->top_line_width == MAXIMUM_WIDTH) {
         loader->state = BOTTOM_AND_RIGHT_BARS;
@@ -49,8 +53,8 @@ void update_variables(Loader loader) {
       break;
 
     case BOTTOM_AND_RIGHT_BARS:
-      loader->bottom_line_width += 4;
-      loader->right_line_height += 4;
+      loader->bottom_line_width += WIDTH_INCREMENT_STEP;
+      loader->right_line_height += HEIGHT_INCREMENT_STEP;
 
       if (loader->bottom_line_width == MAXIMUM_WIDTH) {
         loader->state = LETTERS_APPEARING;
@@ -60,7 +64,7 @@ void update_variables(Loader loader) {
     case LETTERS_APPEARING:
       loader->frames_counter++;
 
-      if (loader->frames_counter / 12) {
+      if (loader->frames_counter / FRAMES_PER_LETTER) {
         loader->letters_count++;
         loader->frames_counter = 0;
       }

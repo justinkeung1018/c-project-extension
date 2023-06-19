@@ -64,6 +64,11 @@ int main(void) {
 
     BeginDrawing();
 
+    update_variables(a);
+    display_loading_animation(a);
+
+    if (a->loaded) { 
+
     if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
       // freeze all entities
       exit_window_requested = true;
@@ -122,7 +127,7 @@ int main(void) {
     }
 
     spaceship_draw(spaceship);
-
+    }
     EndDrawing();
   }
 

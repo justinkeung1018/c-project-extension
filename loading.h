@@ -12,6 +12,7 @@ struct Loading {
   int rightSideRecHeight;
   int lettersCount;
   float alpha;
+  bool loaded;
 };
 
 typedef struct Loading *Loading;

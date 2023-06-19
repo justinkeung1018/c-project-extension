@@ -68,8 +68,8 @@ int main(void) {
 
     update_variables(a);
     display_loading_animation(a);
-    if (a->loaded) {
 
+    if (a->loaded) {
       if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
         // freeze all entities
         exit_window_requested = true;
@@ -128,6 +128,7 @@ int main(void) {
   }
 
   // [Free]
+  free(a); // fix this
   spaceship_free(spaceship);
   asteroids_free(as);
   UnloadMusicStream(music);

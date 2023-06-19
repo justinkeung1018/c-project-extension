@@ -23,7 +23,7 @@ Loading loading_create(void) {
 void update_variables(Loading test) {
 
   switch (test->state) {
-    case 0: // State 0: Small box blinking
+    case BLINKING: // State 0: Small box blinking
       (test->framesCounter)++;
 
       if (test->framesCounter == 120) {
@@ -31,7 +31,7 @@ void update_variables(Loading test) {
       }
       break;
 
-    case 1: // State 1: Top and left bars growing
+    case TOP_AND_LEFT_BARS: // State 1: Top and left bars growing
       test->topSideRecWidth += 4;
       test->leftSideRecHeight += 4;
 
@@ -40,7 +40,7 @@ void update_variables(Loading test) {
       }
       break;
 
-    case 2: // State 2: Bottom and right bars growing
+    case BOTTOM_AND_RIGHT_BARS: // State 2: Bottom and right bars growing
       test->bottomSideRecWidth += 4;
       test->rightSideRecHeight += 4;
 
@@ -49,7 +49,7 @@ void update_variables(Loading test) {
       }
       break;
 
-    case 3: // State 3: Letters appearing (one by one)
+    case LETTERS_APPEARING: // State 3: Letters appearing (one by one)
       test->framesCounter++;
 
       if (test->framesCounter/12) {       // Every 12 frames, one more letter!
@@ -77,25 +77,25 @@ void display_loading_animation(Loading test) {
   int string_length = MeasureText("asteroids", 30);
 
   switch (test->state){
-    case 0:
+    case BLINKING:
       if ((test->framesCounter / 15) % 2) {
         DrawRectangle(half_width, half_height, 16, 16, WHITE);
       }
       break;
 
-    case 1:
+    case TOP_AND_LEFT_BARS:
       DrawRectangle(half_width, half_height, test->topSideRecWidth, 16, WHITE);
       DrawRectangle(half_width, half_height, 16, test->leftSideRecHeight, WHITE);
       break;
 
-    case 2:
+    case BOTTOM_AND_RIGHT_BARS:
       DrawRectangle(half_width, half_height, test->topSideRecWidth, 16, WHITE);
       DrawRectangle(half_width, half_height, 16, test->leftSideRecHeight, WHITE);
       DrawRectangle(half_width + 240, half_height, 16, test->rightSideRecHeight, WHITE);
       DrawRectangle(half_width, half_height + 240, test->bottomSideRecWidth, 16, WHITE);
       break;
 
-    case 3:
+    case LETTERS_APPEARING:
       DrawRectangle(half_width, half_height, test->topSideRecWidth, 16, Fade(WHITE, test->alpha));
       DrawRectangle(half_width, half_height + 16, 16, test->leftSideRecHeight - 32, Fade(WHITE, test->alpha));
       DrawRectangle(half_width + 240, half_height + 16, 16, test->rightSideRecHeight - 32, Fade(WHITE, test->alpha));

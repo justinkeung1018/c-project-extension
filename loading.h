@@ -3,8 +3,15 @@
 
 #include "raylib.h"
 
+typedef enum {
+  BLINKING,
+  TOP_AND_LEFT_BARS,
+  BOTTOM_AND_RIGHT_BARS,
+  LETTERS_APPEARING,
+} LoadingState;
+
 struct Loading {
-  int state;
+  LoadingState state;
   int framesCounter;
   int topSideRecWidth;
   int leftSideRecHeight;
@@ -16,13 +23,6 @@ struct Loading {
 };
 
 typedef struct Loading *Loading;
-
-typedef enum {
-  BLINKNG,
-  TOP_AND_LEFT_BARS,
-  BOTTOM_AND_RIGHT_BARS,
-  LETTERS_APPEARING,
-} LoadingState;
 
 extern Loading loading_create(void);
 

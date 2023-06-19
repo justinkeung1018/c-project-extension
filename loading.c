@@ -5,16 +5,20 @@
 
 #include "loading.h"
 
+#define STARTING_POSITION    16
+
+#define BLINKING_FRAME_LIMIT 120
+
 Loader loading_initialise(void) {
   Loader loader = malloc(sizeof(struct Loader));
   assert(loader != NULL);
 
   loader->state = 0;
   loader->frames_counter = 0;
-  loader->top_line_width = 16;
-  loader->left_line_height = 16;
-  loader->bottom_line_width = 16;
-  loader->right_line_height = 16;
+  loader->top_line_width = STARTING_POSITION;
+  loader->left_line_height = STARTING_POSITION;
+  loader->bottom_line_width = STARTING_POSITION;
+  loader->right_line_height = STARTING_POSITION;
   loader->letters_count = 0;
   loader->alpha = 1.0f;
   loader->fully_loaded = false;
@@ -27,8 +31,8 @@ void update_variables(Loader loader) {
     case BLINKING:
       loader->frames_counter++;
 
-      if (loader->frames_counter == 120) {
-        loader->state = 1;
+      if (loader->frames_counter == BLINKING_FRAME_LIMIT) {
+        loader->state = TOP_AND_LET_BARS;
       }
       break;
 
@@ -37,7 +41,7 @@ void update_variables(Loader loader) {
       loader->left_line_height += 4;
 
       if (loader->top_line_width == 256) {
-        loader->state = 2;
+        loader->state = BOTTOM_AND_RIGHT_BARS;
       }
       break;
 
@@ -46,7 +50,7 @@ void update_variables(Loader loader) {
       loader->right_line_height += 4;
 
       if (loader->bottom_line_width == 256) {
-        loader->state = 3;
+        loader->state = LETTERS_APPEARING;
       }
       break;
 
@@ -71,8 +75,8 @@ void update_variables(Loader loader) {
 }
 
 void display_loading_animation(Loader loader) {
-  int half_width = GetScreenWidth()/2 - 128;
-  int half_height = GetScreenHeight()/2 - 128;
+  int half_width = GetScreenWidth() / 2 - 128;
+  int half_height = GetScreenHeight() / 2 - 128;
   int title_string_length = MeasureText("asteroids", 30);
 
   switch (loader->state){

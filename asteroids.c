@@ -8,6 +8,7 @@
 
 #include "list.h"
 #include "raylib.h"
+#include "utils.h"
 
 #define SEED               42
 #define NUM_ASTEROIDS      15
@@ -47,6 +48,12 @@ void asteroids_free(List as) {
 static Asteroid asteroid_create(void) {
   Asteroid a = malloc(sizeof(struct Asteroid));
   assert(a != NULL);
+
+  a->size = ASTEROID_SIZE;
+  double angle = 2 * M_PI * random_double();
+  a->position = (Vector2){ GetScreenWidth() * random_double(), GetScreenHeight() * random_double() };
+  a->velocity = (Vector2){ ASTEROID_SPEED * cos(angle), ASTEROID_SPEED * sin(angle) };
+
   return a;
 }
 
@@ -57,16 +64,9 @@ List asteroids_create(void) {
 
   for (int i = 0; i < NUM_ASTEROIDS; i++) {
     Asteroid a = asteroid_create();
-
-    double angle = 2 * M_PI * random_double();
-    Vector2 vel = { ASTEROID_SPEED * cos(angle), ASTEROID_SPEED * sin(angle) };
-    Vector2 pos = { GetScreenWidth() * random_double(), GetScreenHeight() * random_double() };
-    a->size = ASTEROID_SIZE;
-    a->position = pos;
-    a->velocity = vel;
-
     list_push(as, a);
   }
+
   return as;
 }
 
@@ -77,11 +77,11 @@ void asteroids_draw(List as) {
 
     DrawTexturePro(
         asteroid_texture,
-	asteroid_texture_rec,
-	a_rec,
-	(Vector2){ 0.0f, 0.0f },
-	0.0f,
-	RAYWHITE
+	      asteroid_texture_rec,
+	      a_rec,
+	      (Vector2){ 0.0f, 0.0f },
+      	0.0f,
+      	RAYWHITE
       );
   }
 }

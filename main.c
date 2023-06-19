@@ -2,9 +2,11 @@
 #include <stdbool.h>
 
 #include "asteroids.h"
+#include "collision.h"
 #include "list.h"
 #include "raylib.h"
 #include "spaceship.h"
+
 #define FPS                   60
 
 // Font sizes
@@ -68,7 +70,7 @@ int main(void) {
 
     if (exit_window_requested) {
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-	// save data here
+	      // save data here
         exit_window = true;
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_requested = false;
@@ -104,16 +106,22 @@ int main(void) {
       breakable = false;
     }
 
-    asteroids_move(as);
-    asteroids_draw(as);
-
-    spaceship_move(spaceship);
-
     DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
     if (IsKeyDown(KEY_F1)) {
       display_debugging_stats();
     }
 
+    asteroids_move(as);
+    spaceship_move(spaceship);
+
+    for (int i = 0; i < list_length(as); i++) {
+      Asteroid a = list_get(as, i);
+      if (collides_asteroid_spaceship(a, spaceship)) {
+        exit_window_requested = true;
+      }
+    }
+
+    asteroids_draw(as);
     spaceship_draw(spaceship);
 
     EndDrawing();

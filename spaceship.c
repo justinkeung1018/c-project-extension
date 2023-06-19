@@ -66,6 +66,7 @@ Spaceship spaceship_initialise(void) {
 }
 
 void spaceship_free(Spaceship s) {
+  free(s->collider.vectors);
   free(s);
 }
 

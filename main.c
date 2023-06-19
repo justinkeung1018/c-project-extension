@@ -71,7 +71,6 @@ int main(void) {
 
     if (loader->loaded) {
       if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
-        // freeze all entities
         exit_window_requested = true;
         display_exit_screen();
       }

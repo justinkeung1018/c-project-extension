@@ -17,6 +17,13 @@ struct Loading {
 
 typedef struct Loading *Loading;
 
+typedef enum {
+  BLINKNG,
+  TOP_AND_LEFT_BARS,
+  BOTTOM_AND_RIGHT_BARS,
+  LETTERS_APPEARING,
+} LoadingState;
+
 extern Loading loading_create(void);
 
 extern void update_variables(Loading test);

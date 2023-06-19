@@ -6,6 +6,7 @@
 #include "loading.h"
 #include "raylib.h"
 #include "spaceship.h"
+
 #define FPS                   60
 
 // Font sizes
@@ -63,70 +64,65 @@ int main(void) {
     breakable = true;
 
     BeginDrawing();
-
-    update_variables(a);
-    display_loading_animation(a);
-
-    if (a->loaded) { 
-
-    if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
-      // freeze all entities
-      exit_window_requested = true;
-      display_exit_screen();
-    }
-
-    if (exit_window_requested) {
-      if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-	// save data here
-        exit_window = true;
-      } else if (IsKeyPressed(KEY_N)) {
-        exit_window_requested = false;
-      }
-      EndDrawing();
-      continue;
-    }
-
     ClearBackground(BLACK);
 
-    UpdateMusicStream(music);
-
-    if (IsKeyPressed(KEY_SPACE)) {
-      PlaySound(sound); // combine this with other components
-    }
-
-    if (IsKeyDown(KEY_UP)) {
-      spaceship_accelerate(spaceship);
-    } else {
-      spaceship_reset_acceleration(spaceship);
-    }
-
     update_variables(a);
     display_loading_animation(a);
+    if (a->loaded) {
 
-    if (IsKeyDown(KEY_LEFT)) {
-      spaceship_rotate_left(spaceship);
-    }
+      if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
+        // freeze all entities
+        exit_window_requested = true;
+        display_exit_screen();
+      }
 
-    if (IsKeyDown(KEY_RIGHT)) {
-      spaceship_rotate_right(spaceship);
-    }
+      if (exit_window_requested) {
+        if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
+        	// save data here
+          exit_window = true;
+        } else if (IsKeyPressed(KEY_N)) {
+          exit_window_requested = false;
+        }
+        EndDrawing();
+        continue;
+      }
 
-    if (IsKeyPressed(KEY_ENTER) && breakable && !list_empty(as)) {
-      asteroid_break(as, 0);
-      breakable = false;
-    }
+      UpdateMusicStream(music);
 
-    asteroids_move(as);
-    asteroids_draw(as);
+      if (IsKeyPressed(KEY_SPACE)) {
+        PlaySound(sound); // combine this with other components
+      }
 
-    spaceship_move(spaceship);
+      if (IsKeyDown(KEY_UP)) {
+        spaceship_accelerate(spaceship);
+      } else {
+        spaceship_reset_acceleration(spaceship);
+      }
 
-    DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
-    if (IsKeyDown(KEY_F1)) {
-      display_debugging_stats();
-    }
+      if (IsKeyDown(KEY_LEFT)) {
+        spaceship_rotate_left(spaceship);
+      }
 
-    spaceship_draw(spaceship);
+      if (IsKeyDown(KEY_RIGHT)) {
+        spaceship_rotate_right(spaceship);
+      }
+
+      if (IsKeyPressed(KEY_ENTER) && breakable && !list_empty(as)) {
+        asteroid_break(as, 0);
+        breakable = false;
+      }
+
+      asteroids_move(as);
+      asteroids_draw(as);
+
+      spaceship_move(spaceship);
+
+      DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
+      if (IsKeyDown(KEY_F1)) {
+        display_debugging_stats();
+      }
+
+      spaceship_draw(spaceship);
     }
     EndDrawing();
   }

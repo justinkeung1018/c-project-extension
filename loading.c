@@ -15,6 +15,7 @@ Loading loading_create(void) {
   a->rightSideRecHeight = 16;
   a->lettersCount = 0;
   a->alpha = 1.0f;
+  a->loaded = false;
 
   return a;
 }
@@ -57,26 +58,30 @@ void update_variables(Loading test) {
       }
 
       if (test->lettersCount >= 10) {     // When all letters have appeared, just fade out everything
-        test->alpha -= 0.02f;
+        test->alpha -= 0.03f;
 
+        if (test->alpha <= 0.4f) {
+          test->loaded = true;
+        }
         if (test->alpha <= 0.0f) {
           test->alpha = 0.0f;
         }
       }
+
   }
 }
 
 void display_loading_animation(Loading test) {
   int half_width = GetScreenWidth()/2 - 128;
-  int half_height = GetScreenHeight()/2 - 128; 
+  int half_height = GetScreenHeight()/2 - 128;
   int string_length = MeasureText("asteroids", 30);
 
-  switch (test->state) {
+  switch (test->state){
     case 0:
-       if ((test->framesCounter / 15) % 2) {
-         DrawRectangle(half_width, half_height, 16, 16, WHITE);
-       }
-       break;
+      if ((test->framesCounter / 15) % 2) {
+        DrawRectangle(half_width, half_height, 16, 16, WHITE);
+      }
+      break;
 
     case 1:
       DrawRectangle(half_width, half_height, test->topSideRecWidth, 16, WHITE);

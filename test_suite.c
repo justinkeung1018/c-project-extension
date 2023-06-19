@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "raylib.h"
 #include "asteroids.h"
 #include "bullet.h"
+#include "raylib.h"
 #include "spaceship.h"
 
-void assert_eq_float(float expected, float result, int case) {
-  printf("Case %d: ", case);
+void assert_eq_float(float expected, float result, int number) {
+  printf("Case %d: ", number);
   if (expected == result) {
     printf("Passed.\n");
     return;
@@ -16,8 +16,8 @@ void assert_eq_float(float expected, float result, int case) {
   printf("Expected %lf, got %lf.\n", expected, result);
 }
 
-void assert_eq_Vector2(Vector2 expected, Vector2 result, int case) {
-  printf("Case %d: ", case);
+void assert_eq_Vector2(Vector2 expected, Vector2 result, int number) {
+  printf("Case %d: ", number);
   if (expected.x == result.x && expected.y == result.y) {
     printf("Passed.\n");
     return;

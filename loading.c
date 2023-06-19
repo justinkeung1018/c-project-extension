@@ -6,8 +6,11 @@
 #include "loading.h"
 
 #define STARTING_POSITION    16
+#define MAXIMUM_WIDTH        256
 
 #define BLINKING_FRAME_LIMIT 120
+
+#define TITLE_CHARACTER_LENGTH 9
 
 Loader loading_initialise(void) {
   Loader loader = malloc(sizeof(struct Loader));
@@ -32,7 +35,7 @@ void update_variables(Loader loader) {
       loader->frames_counter++;
 
       if (loader->frames_counter == BLINKING_FRAME_LIMIT) {
-        loader->state = TOP_AND_LET_BARS;
+        loader->state = TOP_AND_LEFT_BARS;
       }
       break;
 
@@ -40,7 +43,7 @@ void update_variables(Loader loader) {
       loader->top_line_width += 4;
       loader->left_line_height += 4;
 
-      if (loader->top_line_width == 256) {
+      if (loader->top_line_width == MAXIMUM_WIDTH) {
         loader->state = BOTTOM_AND_RIGHT_BARS;
       }
       break;
@@ -49,7 +52,7 @@ void update_variables(Loader loader) {
       loader->bottom_line_width += 4;
       loader->right_line_height += 4;
 
-      if (loader->bottom_line_width == 256) {
+      if (loader->bottom_line_width == MAXIMUM_WIDTH) {
         loader->state = LETTERS_APPEARING;
       }
       break;
@@ -57,12 +60,12 @@ void update_variables(Loader loader) {
     case LETTERS_APPEARING:
       loader->frames_counter++;
 
-      if (loader->frames_counter/12) {
+      if (loader->frames_counter / 12) {
         loader->letters_count++;
         loader->frames_counter = 0;
       }
 
-      if (loader->letters_count > 9) {
+      if (loader->letters_count > TITLE_CHARACTER_LENGTH) {
         loader->alpha -= 0.02f;
 
         if (loader->alpha <= 0.0f) {
@@ -77,7 +80,7 @@ void update_variables(Loader loader) {
 void display_loading_animation(Loader loader) {
   int half_width = GetScreenWidth() / 2 - 128;
   int half_height = GetScreenHeight() / 2 - 128;
-  int title_string_length = MeasureText("asteroids", 30);
+  int title_string_width = MeasureText("asteroids", 30);
 
   switch (loader->state){
     case BLINKING:
@@ -103,7 +106,7 @@ void display_loading_animation(Loader loader) {
       DrawRectangle(half_width, half_height + 16, 16, loader->left_line_height - 32, Fade(WHITE, loader->alpha));
       DrawRectangle(half_width + 240, half_height + 16, 16, loader->right_line_height - 32, Fade(WHITE, loader->alpha));
       DrawRectangle(half_width, half_height + 240, loader->bottom_line_width, 16, Fade(WHITE, loader->alpha));
-      DrawText(TextSubtext("asteroids", 0, loader->letters_count), GetScreenWidth()/2 - title_string_length/2, GetScreenHeight()/2 - 15, 30, Fade(WHITE, loader->alpha));
+      DrawText(TextSubtext("asteroids", 0, loader->letters_count), GetScreenWidth() / 2 - title_string_width / 2, GetScreenHeight() / 2 - 15, 30, Fade(WHITE, loader->alpha));
   }
 }
 

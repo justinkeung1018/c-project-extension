@@ -6,23 +6,23 @@
 #include "raylib.h"
 #include "spaceship.h"
 
-#define FPS                   60
+#define FPS                        60
 
 // Font sizes
-#define LARGE_FONT_SIZE       100
-#define MEDIUM_FONT_SIZE      80
-#define SMALL_FONT_SIZE       40
-#define EXTRA_SMALL_FONT_SIZE 20
+#define LARGE_FONT_SIZE            100
+#define MEDIUM_FONT_SIZE           80
+#define SMALL_FONT_SIZE            40
+#define EXTRA_SMALL_FONT_SIZE      20
 
 // Text height
-#define SMALL_TEXT_HEIGHT     20
+#define SMALL_TEXT_HEIGHT          20
 
 // Padding
-#define SMALL_PADDING         10
-#define MEDIUM_PADDING        50
-#define LARGE_PADDING         100
-#define EXTRA_LARGE_PADDING   1000
-#define FPS_PADDING           80
+#define SMALL_PADDING              10
+#define MEDIUM_PADDING             50
+#define LARGE_PADDING              100
+#define EXTRA_LARGE_PADDING        1000
+#define FPS_PADDING                80
 
 // Various screen sizes
 #define SCREEN_WIDTH               GetScreenWidth()

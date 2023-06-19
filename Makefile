@@ -13,7 +13,7 @@ all: main test_suite
 
 main: main.o spaceship.o asteroids.o bullet.o list.o
 
-test_suite: test_suite.o spaceship.o asteroids.o bullet.o
+test_suite: test_suite.o spaceship.o asteroids.o bullet.o list.o
 
 asteroids.o: asteroids.h list.h
 bullet.o: bullet.h list.h

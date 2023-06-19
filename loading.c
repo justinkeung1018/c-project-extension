@@ -16,6 +16,8 @@
 #define FRAMES_PER_BLINK 15
 #define FRAMES_PER_LETTER 12
 
+#define ALPHA_DECREMENT_STEP 0.2f
+
 Loader loading_initialise(void) {
   Loader loader = malloc(sizeof(struct Loader));
   assert(loader != NULL);
@@ -64,18 +66,23 @@ void update_variables(Loader loader) {
     case LETTERS_APPEARING:
       loader->frames_counter++;
 
-      if (loader->frames_counter / FRAMES_PER_LETTER) {
+      // if (loader->frames_counter / FRAMES_PER_LETTER) {
+
+      if (loader->frames_counter / 12) {
         loader->letters_count++;
         loader->frames_counter = 0;
       }
 
-      if (loader->letters_count > TITLE_CHARACTER_LENGTH) {
-        loader->alpha -= 0.02f;
+      // if (loader->letters_count > TITLE_CHARACTER_LENGTH) {
 
+      if (loader->letters_count > 9) {
+        loader->alpha -= 0.025f;
+        // loader->alpha -= ALPHA_DECREMENT_STEP;
         if (loader->alpha <= 0.0f) {
           loader->alpha = 0.0f;
           loader->fully_loaded = true;
         }
+
       }
 
   }

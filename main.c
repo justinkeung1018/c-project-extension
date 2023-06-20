@@ -168,18 +168,11 @@ int main(void) {
       continue;
     }
 
-    if (!game_over_requested && IsKeyPressed(KEY_P)) {
-      game_over_requested = true;
-      display_game_over();
-    }
-
-
     if (game_over_requested) {
       EndDrawing();
       continue;
     }
 
-    // ===[TEST]===
     ClearBackground(BLACK);
     UpdateMusicStream(music);
     can_shoot = (can_shoot + 1) % (int)ceil(1.0 * FPS / NUM_BULLETS_PER_SECOND);
@@ -187,7 +180,6 @@ int main(void) {
     if (IsKeyDown(KEY_SPACE) && can_shoot == 0) {
       spaceship_shoot(spaceship, bullets);
       PlaySound(sound); // combine this with other components
-      display_game_over();
     }
 
     if (IsKeyDown(KEY_UP)) {
@@ -223,7 +215,8 @@ int main(void) {
     for (int i = 0; i < list_length(as); i++) {
       Asteroid a = list_get(as, i);
       if (collides_asteroid_spaceship(a, spaceship)) {
-        exit_window_requested = true;
+        game_over_requested = true;
+        display_game_over();
       }
       bool asteroid_broken = false;
       for (int j = 0; j < list_length(bullets); j++) {

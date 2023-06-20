@@ -29,7 +29,6 @@ bool collides_asteroid_spaceship(Asteroid a, Spaceship s) {
     Vector2 v2 = s->collider.vectors[(i + 1) % length];
     Vector2 edge = Vector2Subtract(v2, v1);
     Vector2 normal = Vector2Rotate(edge, M_PI / 2);
-
     Vector2 v1_to_centre = Vector2Subtract(centre, v1);
 
     float dot_product = Vector2DotProduct(normal, v1_to_centre);

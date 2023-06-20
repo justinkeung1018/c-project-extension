@@ -116,7 +116,13 @@ void display_loading_animation(Loader loader) {
       DrawRectangle(half_width, half_height + 16, 16, loader->left_line_height - 32, Fade(WHITE, loader->alpha));
       DrawRectangle(half_width + 240, half_height + 16, 16, loader->right_line_height - 32, Fade(WHITE, loader->alpha));
       DrawRectangle(half_width, half_height + 240, loader->bottom_line_width, 16, Fade(WHITE, loader->alpha));
-      DrawText(TextSubtext("asteroids", 0, loader->letters_count), GetScreenWidth() / 2 - title_string_width / 2, GetScreenHeight() / 2 - 15, 30, Fade(WHITE, loader->alpha));
+      DrawText(
+          TextSubtext("asteroids", 0, loader->letters_count),
+          GetScreenWidth() / 2 - title_string_width / 2,
+          GetScreenHeight() / 2 - 15,
+          30,
+          Fade(WHITE, loader->alpha)
+        );
   }
 }
 

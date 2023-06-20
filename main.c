@@ -165,12 +165,6 @@ int main(void) {
       PlaySound(sound); // combine this with other components
     }
 
-    if (IsKeyDown(KEY_TAB)) {
-      display_controls();
-    } else {
-      display_help_ui();
-    }
-
     if (IsKeyDown(KEY_UP)) {
       spaceship_accelerate(spaceship);
     } else {
@@ -225,6 +219,12 @@ int main(void) {
     asteroids_draw(as);
     bullet_draw_all(bullets);
     spaceship_draw(spaceship);
+
+    if (IsKeyDown(KEY_TAB)) {
+      display_controls();
+    } else {
+      display_help_ui();
+    }
 
     EndDrawing();
 

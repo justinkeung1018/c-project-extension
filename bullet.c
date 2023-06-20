@@ -12,7 +12,9 @@
 #define NORMAL_SPEED  25
 #define NORMAL_COLOUR RED
 
-static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, Radians rotation, Color color) {
+typedef void (*ForEachFunc)(Bullet);
+
+static Bullet bullet_init_helper(float pos_x, float pos_y, float radius, float speed, Radians rotation, Color color) {
   Bullet b = malloc(sizeof(struct Bullet));
 
   if (b == NULL) {
@@ -29,15 +31,13 @@ static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, R
   return b;
 }
 
-typedef void (*ForEachFunc)(Bullet);
-
 // Caller must free using bullet_free()
-Bullet bullet_init_normal(float pos_x, float pos_y, Radians rotation) {
-  return bullet_init(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, rotation, NORMAL_COLOUR);
+Bullet bullet_init(float pos_x, float pos_y, Radians rotation) {
+  return bullet_init_helper(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, rotation, NORMAL_COLOUR);
 }
 
 void bullet_free(void *b) {
-  free((Bullet) b);
+  free((Bullet)b);
 }
 
 void bullet_draw(Bullet b) {
@@ -51,7 +51,7 @@ void bullet_move(Bullet b) {
 
 static void bullet_for_each_void(List bs, ForEachFunc function) {
   for (int i = 0; i < bs->len; i++) {
-    function((Bullet) list_get(bs, i));
+    function((Bullet)list_get(bs, i));
   }
 }
 
@@ -73,7 +73,7 @@ bool bullet_in_screen(Bullet b) {
 
 void bullet_despawn_all_off_screen(List bs) {
   for (int i = bs->len - 1; i >= 0; i--) {
-    Bullet b = (Bullet) list_get(bs, i);
+    Bullet b = (Bullet)list_get(bs, i);
     if (!bullet_in_screen(b)) {
       list_remove(bs, i);
       bullet_free(b);

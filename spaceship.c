@@ -90,8 +90,8 @@ void spaceship_rotate_right(Spaceship s) {
   s->rotation = Wrap(s->rotation, MIN_ROTATION, MAX_ROTATION);
 }
 
-void spaceship_shoot(Spaceship s, List bullets) {
+void spaceship_shoot(Spaceship s, List bs) {
   Vector2 tip = Vector2Add(s->position, Vector2Rotate((Vector2){ 0, -SPACESHIP_HEIGHT * 2 / 3 }, s->rotation));
-  list_push(bullets, bullet_init_normal(tip.x, tip.y, s->rotation - M_PI_2));
+  list_push(bs, bullet_init(tip.x, tip.y, s->rotation - M_PI_2));
 }
 

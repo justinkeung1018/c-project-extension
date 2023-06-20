@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -7,8 +8,6 @@
 #include "list.h"
 #include "raylib.h"
 #include "spaceship.h"
-
-#include <math.h>
 
 #define FPS                        60
 #define NUM_BULLETS_PER_SECOND     20

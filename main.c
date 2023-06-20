@@ -101,6 +101,8 @@ int main(void) {
       continue;
     }
 
+    ClearBackground(BLACK);
+
     UpdateMusicStream(music);
 
     if (IsKeyPressed(KEY_SPACE)) {

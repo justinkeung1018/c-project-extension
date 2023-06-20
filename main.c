@@ -40,10 +40,37 @@ static void display_exit_screen(void) {
   int exit_string_width = MeasureText(exit_message, LARGE_FONT_SIZE);
   int save_string_width = MeasureText(save_message, MEDIUM_FONT_SIZE);
 
-  DrawRectangle(0, QUARTER_SCREEN_HEIGHT_SIZE + MEDIUM_PADDING, SCREEN_WIDTH, EXTRA_LARGE_PADDING, Fade(BLUE, 0.5f));
-  DrawRectangleLines(0, QUARTER_SCREEN_HEIGHT_SIZE + MEDIUM_PADDING, SCREEN_WIDTH, EXTRA_LARGE_PADDING, RED);
-  DrawText(exit_message, HALF_SCREEN_WIDTH_SIZE - exit_string_width / 2, HALF_SCREEN_HEIGHT_SIZE - LARGE_PADDING, LARGE_FONT_SIZE, WHITE);
-  DrawText(save_message, HALF_SCREEN_WIDTH_SIZE - save_string_width / 2, HALF_SCREEN_HEIGHT_SIZE + SMALL_PADDING, MEDIUM_FONT_SIZE, WHITE);
+  DrawRectangle(
+      0,
+      QUARTER_SCREEN_HEIGHT_SIZE + MEDIUM_PADDING,
+      SCREEN_WIDTH,
+      EXTRA_LARGE_PADDING,
+      Fade(BLUE, 0.5f)
+    );
+
+  DrawRectangleLines(
+      0,
+      QUARTER_SCREEN_HEIGHT_SIZE + MEDIUM_PADDING,
+      SCREEN_WIDTH,
+      EXTRA_LARGE_PADDING,
+      RED
+    );
+
+  DrawText(
+      exit_message,
+      HALF_SCREEN_WIDTH_SIZE - exit_string_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE - LARGE_PADDING,
+      LARGE_FONT_SIZE,
+      WHITE
+    );
+
+  DrawText(
+      save_message,
+      HALF_SCREEN_WIDTH_SIZE - save_string_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE + SMALL_PADDING,
+      MEDIUM_FONT_SIZE,
+      WHITE
+    );
 }
 
 static void display_debugging_stats(void) {
@@ -51,7 +78,14 @@ static void display_debugging_stats(void) {
 
   int screen_res_string_width = MeasureText(resolution_text, EXTRA_SMALL_FONT_SIZE);
 
-  DrawText(resolution_text, GetScreenWidth() - SMALL_PADDING - screen_res_string_width, SMALL_PADDING, EXTRA_SMALL_FONT_SIZE, LIME);
+  DrawText(
+      resolution_text,
+      GetScreenWidth() - SMALL_PADDING - screen_res_string_width,
+      SMALL_PADDING,
+      EXTRA_SMALL_FONT_SIZE,
+      LIME
+    );
+
   DrawFPS(GetScreenWidth() - FPS_PADDING, SMALL_PADDING + SMALL_TEXT_HEIGHT);
 }
 
@@ -126,10 +160,12 @@ int main(void) {
       spaceship_rotate_right(spaceship);
     }
 
-    DrawText("Press F1 for Debugging Stats",
+    DrawText(
+        "Press F1 for Debugging Stats",
         SMALL_PADDING,
         GetScreenHeight() - MEDIUM_PADDING,
-        SMALL_FONT_SIZE, WHITE
+        SMALL_FONT_SIZE,
+        WHITE
       );
 
     if (IsKeyDown(KEY_F1)) {

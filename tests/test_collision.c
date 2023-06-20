@@ -46,7 +46,7 @@ static void test_collides_asteroid_spaceship_centre(Asteroid a, Spaceship s) {
   assert_true(collides_asteroid_spaceship(a, s), __func__);
 }
 
-static void test_collides_asteroid_spaceship_intersect(Asteroid a, Spaceship s) {
+static void test_collides_asteroid_spaceship_intersect_1(Asteroid a, Spaceship s) {
   a->position = (Vector2){ 100, 100 };
   a->size = 50;
 
@@ -54,6 +54,20 @@ static void test_collides_asteroid_spaceship_intersect(Asteroid a, Spaceship s) 
     (Vector2){ 50, 25 },
     (Vector2){ 25, 100 },
     (Vector2){ 125, 100 },
+  };
+  s->collider = (Collider){ vectors, NUM_ELEMENTS(vectors) };
+
+  assert_true(collides_asteroid_spaceship(a, s), __func__);
+}
+
+static void test_collides_asteroid_spaceship_intersect_2(Asteroid a, Spaceship s) {
+  a->position = (Vector2){ 100, 100 };
+  a->size = 50;
+
+  Vector2 vectors[] = {
+    (Vector2){ 80, 45 },
+    (Vector2){ 45, 100 },
+    (Vector2){ 0, 0 },
   };
   s->collider = (Collider){ vectors, NUM_ELEMENTS(vectors) };
 
@@ -163,7 +177,8 @@ static void test_collides_asteroid_spaceship_surrounds_asteroid(Asteroid a, Spac
 void test_collides_asteroid_spaceship(void) {
   static TestFunc tests[] = {
     test_collides_asteroid_spaceship_centre,
-    test_collides_asteroid_spaceship_intersect,
+    test_collides_asteroid_spaceship_intersect_1,
+    test_collides_asteroid_spaceship_intersect_2,
     test_collides_asteroid_spaceship_no_intersect,
     test_collides_asteroid_spaceship_coincide_tip,
     test_collides_asteroid_spaceship_coincide_left,

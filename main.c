@@ -65,7 +65,6 @@ int main(void) {
   Spaceship spaceship = spaceship_initialise();
   List as = asteroids_create();
   List bullets = bullet_init_all();
-  bool breakable;
 
   // [Initialise audio]
   InitAudioDevice();
@@ -82,8 +81,6 @@ int main(void) {
 
   // [Drawing]
   while (!exit_window) {
-    breakable = true;
-
     BeginDrawing();
 
     if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE) || list_length(as) == 0) {
@@ -129,12 +126,12 @@ int main(void) {
       spaceship_rotate_right(spaceship);
     }
 
-    if (IsKeyPressed(KEY_ENTER) && breakable && !list_empty(as)) {
-      asteroid_break(as, 0);
-      breakable = false;
-    }
+    DrawText("Press F1 for Debugging Stats",
+        SMALL_PADDING,
+        GetScreenHeight() - MEDIUM_PADDING,
+        SMALL_FONT_SIZE, WHITE
+      );
 
-    DrawText("Press F1 for Debugging Stats", SMALL_PADDING, GetScreenHeight() - MEDIUM_PADDING, SMALL_FONT_SIZE, WHITE);
     if (IsKeyDown(KEY_F1)) {
       display_debugging_stats();
     }
@@ -153,9 +150,11 @@ int main(void) {
         Bullet b = list_get(bullets, j);
         if (collides_asteroid_bullet(a, b)) {
           if (!asteroid_broken) {
+            // Handle edge case where multiple bullets collide with the same asteroid
+            // to avoid breaking the same asteroid more than once
             asteroid_break(as, i);
+            asteroid_broken = true;
           }
-          asteroid_broken = true;
           list_remove(bullets, j);
           bullet_free(b);
         }

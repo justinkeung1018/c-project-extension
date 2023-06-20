@@ -56,13 +56,13 @@ static void display_debugging_stats(void) {
 
 
 static void display_help_ui(void) {
-  DrawText("Press Tab for Controls", 10, 10, 40, WHITE);
+  DrawText("Press Tab for Controls", SMALL_PADDING, SMALL_PADDING, SMALL_FONT_SIZE, WHITE);
 }
 
 static void display_controls(void) {
   //remove magic numbers once merged with main
-  DrawRectangle(10, 10, 800, 260, Fade(SKYBLUE, 0.5f));
-  DrawRectangleLines(10, 10, 800, 260, BLUE);
+  DrawRectangle(SMALL_PADDING, SMALL_PADDING, 800, 260, Fade(SKYBLUE, 0.5f));
+  DrawRectangleLines(SMALL_PADDING, SMALL_PADDING, 800, 260, BLUE);
 
   DrawText("Spaceship Controls:", 20, 20, 50, BLACK);
   DrawText("- Up Arrow to Accelerate", 40, 80, 50, BLACK);

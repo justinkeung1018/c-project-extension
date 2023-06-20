@@ -1,9 +1,23 @@
 #ifndef COLLISION_H
 #define COLLISION_H
 
-#include "asteroids.h"
-#include "bullet.h"
-#include "spaceship.h"
+#include <stdbool.h>
+
+#include "raylib.h"
+
+typedef struct {
+  Vector2 *vectors;
+  int length;
+} Collider;
+
+struct Asteroid;
+typedef struct Asteroid *Asteroid;
+
+struct Bullet;
+typedef struct Bullet *Bullet;
+
+struct Spaceship;
+typedef struct Spaceship *Spaceship;
 
 /**
  * Determines if the asteroid collides with the spaceship.

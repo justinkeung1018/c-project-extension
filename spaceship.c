@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "bullet.h"
+#include "collision.h"
 #include "list.h"
 #include "raylib.h"
 #include "raymath.h"

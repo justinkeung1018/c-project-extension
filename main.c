@@ -97,7 +97,6 @@ static void display_help_ui(void) {
 }
 
 static void display_controls(void) {
-  //remove magic numbers once merged with main
   DrawRectangle(SMALL_PADDING, SMALL_PADDING, 800, 260, Fade(SKYBLUE, 0.5f));
   DrawRectangleLines(SMALL_PADDING, SMALL_PADDING, 800, 260, BLUE);
 

@@ -62,7 +62,6 @@ Spaceship spaceship_initialise(void) {
   s->acceleration = 0.0;
   s->rotation = 0.0;
   s->color = RED;
-  update_collider(s);
 
   return s;
 }

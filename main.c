@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "asteroids.h"
+#include "asteroid.h"
 #include "bullet.h"
 #include "collision.h"
 #include "list.h"
@@ -99,7 +99,7 @@ int main(void) {
 
   // [Initialise variables]
   Spaceship spaceship = spaceship_initialise();
-  List as = asteroids_create();
+  List as = asteroid_create_all();
   List bullets = bullet_init_all();
   int can_shoot = 0;
 
@@ -176,7 +176,7 @@ int main(void) {
       display_debugging_stats();
     }
 
-    asteroids_move(as);
+    asteroid_move_all(as);
     bullet_move_all(bullets);
     spaceship_move(spaceship);
 
@@ -201,7 +201,7 @@ int main(void) {
       }
     }
 
-    asteroids_draw(as);
+    asteroid_draw_all(as);
     bullet_draw_all(bullets);
     spaceship_draw(spaceship);
 
@@ -213,7 +213,7 @@ int main(void) {
   // [Free]
   spaceship_free(spaceship);
   bullet_free_all(bullets);
-  asteroids_free(as);
+  asteroid_free_all(as);
   UnloadMusicStream(music);
   CloseAudioDevice();
   CloseWindow();

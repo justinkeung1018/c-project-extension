@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "bullet.h"
+#include "list.h"
 #include "raylib.h"
 #include "raymath.h"
 
@@ -86,5 +88,10 @@ void spaceship_rotate_left(Spaceship s) {
 void spaceship_rotate_right(Spaceship s) {
   s->rotation += RADIANS(ROTATION_STEP);
   s->rotation = Wrap(s->rotation, MIN_ROTATION, MAX_ROTATION);
+}
+
+void spaceship_shoot(Spaceship s, List bs) {
+  Vector2 tip = Vector2Add(s->position, Vector2Rotate((Vector2){ 0, -SPACESHIP_HEIGHT * 2 / 3 }, s->rotation));
+  list_push(bs, bullet_init(tip.x, tip.y, s->rotation - M_PI_2));
 }
 

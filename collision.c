@@ -2,8 +2,8 @@
 
 #include "asteroids.h"
 #include "bullet.h"
-#include "spaceship.h"
 #include "raymath.h"
+#include "spaceship.h"
 
 static Vector2 project(Vector2 vector, Vector2 onto) {
   float scale = Vector2DotProduct(vector, onto) / Vector2LengthSqr(onto);

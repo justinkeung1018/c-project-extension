@@ -91,7 +91,6 @@ static void display_debugging_stats(void) {
   DrawFPS(GetScreenWidth() - FPS_PADDING, SMALL_PADDING + SMALL_TEXT_HEIGHT);
 }
 
-
 static void display_help_ui(void) {
   DrawText("Press Tab for Controls", SMALL_PADDING, SMALL_PADDING, SMALL_FONT_SIZE, WHITE);
 }

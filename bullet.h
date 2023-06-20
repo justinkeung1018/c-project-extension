@@ -22,7 +22,7 @@ typedef struct Bullet *Bullet;
  *
  * @param pos_x A float representing the x position of the bullet.
  * @param pos_y A float representing the y position of the bullet.
- * @param rotation Rotation in radians, clockwise from horizontal, left to right is 0.
+ * @param rotation Rotation in radians, clockwise from horizontal, positive x-axis is 0.
  *
  * @return A bullet.
  */

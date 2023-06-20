@@ -12,7 +12,9 @@
 #define NORMAL_SPEED  25
 #define NORMAL_COLOUR RED
 
-static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, Radians rotation, Color color) {
+typedef void (*ForEachFunc)(Bullet);
+
+static Bullet bullet_init_helper(float pos_x, float pos_y, float radius, float speed, Radians rotation, Color color) {
   Bullet b = malloc(sizeof(struct Bullet));
 
   if (b == NULL) {
@@ -29,11 +31,9 @@ static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, R
   return b;
 }
 
-typedef void (*ForEachFunc)(Bullet);
-
 // Caller must free using bullet_free()
 Bullet bullet_init(float pos_x, float pos_y, Radians rotation) {
-  return bullet_init(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, rotation, NORMAL_COLOUR);
+  return bullet_init_helper(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, rotation, NORMAL_COLOUR);
 }
 
 void bullet_free(void *b) {

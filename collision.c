@@ -12,9 +12,7 @@ bool collides_asteroid_spaceship(Asteroid a, Spaceship s) {
 
   // Check if any vertex of the spaceship is inside the asteroid
   for (int i = 0; i < length; i++) {
-    Vector2 vector = s->collider.vectors[i];
-    float distance_sqr = Vector2DistanceSqr(vector, a->position);
-    if (distance_sqr <= a->size * a->size) {
+    if (CheckCollisionPointCircle(s->collider.vectors[i], a->position, a->size)) {
       return true;
     }
   }

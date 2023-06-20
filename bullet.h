@@ -7,11 +7,11 @@
 typedef double Radians;
 
 struct Bullet {
-  Vector2 position;       // float x, float y
+  Vector2 position;
   double radius;
   double speed;
-  Radians rotation;  // clockwise from horizontal, positive x-axis is 0
-  Color color;       // char r, g, b, a
+  Radians rotation; // clockwise from horizontal, positive x-axis is 0
+  Color color;      // char r, g, b, a
 };
 
 typedef struct Bullet *Bullet;

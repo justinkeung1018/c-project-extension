@@ -70,6 +70,6 @@ bool collides_asteroid_spaceship(Asteroid a, Spaceship s) {
 bool collides_asteroid_bullet(Asteroid a, Bullet b) {
   Vector2 centre = Vector2AddValue(a->position, a->size / 2);
   float radius = a->size / 2;
-  return CheckCollisionPointCircle(b->position, centre, radius);
+  return CheckCollisionCircles(b->position, b->radius, centre, radius);
 }
 

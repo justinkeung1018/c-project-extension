@@ -17,8 +17,7 @@ typedef void (*TestAsteroidSpaceshipFunc)(Asteroid, Spaceship);
 typedef void (*TestAsteroidBulletFunc)(Asteroid, Bullet);
 
 static char *boolstr(bool expr) {
-  return expr ? "true" : "false";
-}
+  return expr ? "true" : "false"; }
 
 static void assert_true(bool expr, const char *testname) {
   if (expr) {
@@ -29,14 +28,18 @@ static void assert_true(bool expr, const char *testname) {
 }
 
 static void assert_false(bool expr, const char *testname) {
-  assert_true(!expr, testname);
+  if (expr) {
+    printf("%-*s: expected %s, actual %s\n", WIDTH, testname, boolstr(!expr), boolstr(expr));
+  } else {
+    printf("%-*s: OK\n", WIDTH, testname);
+  }
 }
 
 // Tip of spaceship coincides with the centre of the asteroid
 // and the other two corners of the spaceship lie outside the asteroid
 static void test_collides_asteroid_spaceship_centre(Asteroid a, Spaceship s) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   Vector2 vectors[] = {
     (Vector2){ 100, 100 },
@@ -49,8 +52,8 @@ static void test_collides_asteroid_spaceship_centre(Asteroid a, Spaceship s) {
 }
 
 static void test_collides_asteroid_spaceship_intersect_1(Asteroid a, Spaceship s) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   Vector2 vectors[] = {
     (Vector2){ 50, 25 },
@@ -63,8 +66,8 @@ static void test_collides_asteroid_spaceship_intersect_1(Asteroid a, Spaceship s
 }
 
 static void test_collides_asteroid_spaceship_intersect_2(Asteroid a, Spaceship s) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   Vector2 vectors[] = {
     (Vector2){ 80, 45 },
@@ -76,9 +79,9 @@ static void test_collides_asteroid_spaceship_intersect_2(Asteroid a, Spaceship s
   assert_true(collides_asteroid_spaceship(a, s), __func__);
 }
 
-static void test_collides_asteroid_spaceship_no_intersect(Asteroid a, Spaceship s) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+static void test_collides_asteroid_spaceship_no_intersect_1(Asteroid a, Spaceship s) {
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   Vector2 vectors[] = {
     (Vector2){ 1, 1 },
@@ -90,9 +93,28 @@ static void test_collides_asteroid_spaceship_no_intersect(Asteroid a, Spaceship 
   assert_false(collides_asteroid_spaceship(a, s), __func__);
 }
 
+static void test_collides_asteroid_spaceship_no_intersect_2(Asteroid a, Spaceship s) {
+  a->position = (Vector2){ 3055, 1259 };
+  a->size = 256;
+
+  s = spaceship_initialise();
+
+  assert_false(collides_asteroid_spaceship(a, s), __func__);
+}
+
+static void test_collides_asteroid_spaceship_no_intersect_3(Asteroid a, Spaceship s) {
+  a->position = (Vector2){ 3558.712891, 824.832153 };
+  a->size = 256;
+
+  s = spaceship_initialise();
+  s->position = (Vector2){ 1920, 1080 };
+
+  assert_false(collides_asteroid_spaceship(a, s), __func__);
+}
+
 static void test_collides_asteroid_spaceship_coincide_tip(Asteroid a, Spaceship s) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   Vector2 vectors[] = {
     (Vector2){ 100, 50 },
@@ -105,8 +127,8 @@ static void test_collides_asteroid_spaceship_coincide_tip(Asteroid a, Spaceship 
 }
 
 static void test_collides_asteroid_spaceship_coincide_left(Asteroid a, Spaceship s) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   Vector2 vectors[] = {
     (Vector2){ 75, 25 },
@@ -119,8 +141,8 @@ static void test_collides_asteroid_spaceship_coincide_left(Asteroid a, Spaceship
 }
 
 static void test_collides_asteroid_spaceship_coincide_right(Asteroid a, Spaceship s) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   Vector2 vectors[] = {
     (Vector2){ 25, 25 },
@@ -133,8 +155,8 @@ static void test_collides_asteroid_spaceship_coincide_right(Asteroid a, Spaceshi
 }
 
 static void test_collides_asteroid_spaceship_touch(Asteroid a, Spaceship s) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   Vector2 vectors[] = {
     (Vector2){ 75, 50 },
@@ -148,8 +170,8 @@ static void test_collides_asteroid_spaceship_touch(Asteroid a, Spaceship s) {
 
 // Spaceship entirely within asteroid
 static void test_collides_asteroid_spaceship_within_asteroid(Asteroid a, Spaceship s) {
-  a->position = (Vector2){ 200, 200 };
-  a->size = 100;
+  a->position = (Vector2){ 100, 100 };
+  a->size = 200;
 
   Vector2 vectors[] = {
     (Vector2){ 200, 250 },
@@ -181,7 +203,9 @@ void test_collides_asteroid_spaceship(void) {
     test_collides_asteroid_spaceship_centre,
     test_collides_asteroid_spaceship_intersect_1,
     test_collides_asteroid_spaceship_intersect_2,
-    test_collides_asteroid_spaceship_no_intersect,
+    test_collides_asteroid_spaceship_no_intersect_1,
+    test_collides_asteroid_spaceship_no_intersect_2,
+    test_collides_asteroid_spaceship_no_intersect_3,
     test_collides_asteroid_spaceship_coincide_tip,
     test_collides_asteroid_spaceship_coincide_left,
     test_collides_asteroid_spaceship_coincide_right,
@@ -189,6 +213,9 @@ void test_collides_asteroid_spaceship(void) {
     test_collides_asteroid_spaceship_within_asteroid,
     test_collides_asteroid_spaceship_surrounds_asteroid,
   };
+
+  SetTraceLogLevel(LOG_ERROR);
+  InitWindow(3840, 2160, __func__);
 
   for (int i = 0; i < NUM_ELEMENTS(tests); i++) {
     Asteroid a = malloc(sizeof(struct Asteroid));
@@ -199,6 +226,8 @@ void test_collides_asteroid_spaceship(void) {
     free(a);
     free(s);
   }
+
+  CloseWindow();
 }
 
 static void test_collides_asteroid_bullet_inside(Asteroid a, Bullet b) {

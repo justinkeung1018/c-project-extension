@@ -77,6 +77,7 @@ int main(void) {
   // [Initialise exit variables]
   SetExitKey(KEY_NULL);
   bool exit_window_requested = false;
+  bool exit_window_drawn = false;
   bool exit_window = false;
 
   // [Drawing]
@@ -85,16 +86,20 @@ int main(void) {
 
     BeginDrawing();
 
-    if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
+    if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE) || list_length(as) == 0) {
       // freeze all entities
       exit_window_requested = true;
-      display_exit_screen();
     }
 
     if (exit_window_requested) {
+      if (!exit_window_drawn) {
+        display_exit_screen();
+        exit_window_drawn = true;
+      }
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-      	// save data here
+        // save data here
         exit_window = true;
+        exit_window_drawn = false;
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_requested = false;
       }
@@ -102,9 +107,10 @@ int main(void) {
       continue;
     }
 
+    ClearBackground(BLACK);
     UpdateMusicStream(music);
 
-    if (IsKeyPressed(KEY_SPACE)) {
+    if (IsKeyDown(KEY_SPACE)) {
       spaceship_shoot(spaceship, bullets);
       PlaySound(sound); // combine this with other components
     }
@@ -141,6 +147,18 @@ int main(void) {
       Asteroid a = list_get(as, i);
       if (collides_asteroid_spaceship(a, spaceship)) {
         exit_window_requested = true;
+      }
+      bool asteroid_broken = false;
+      for (int j = 0; j < list_length(bullets); j++) {
+        Bullet b = list_get(bullets, j);
+        if (collides_asteroid_bullet(a, b)) {
+          if (!asteroid_broken) {
+            asteroid_break(as, i);
+          }
+          asteroid_broken = true;
+          list_remove(bullets, j);
+          bullet_free(b);
+        }
       }
     }
 

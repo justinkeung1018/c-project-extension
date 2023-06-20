@@ -2,6 +2,7 @@
 #define COLLISION_H
 
 #include "asteroids.h"
+#include "bullet.h"
 #include "spaceship.h"
 
 /**

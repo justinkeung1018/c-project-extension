@@ -51,7 +51,15 @@ static Asteroid asteroid_create(void) {
 
   a->size = ASTEROID_SIZE;
   double angle = 2 * M_PI * random_double();
-  a->position = (Vector2){ GetScreenWidth() * random_double(), GetScreenHeight() * random_double() };
+
+  bool on_vertical_edge = random_double() < 0.5;
+
+  if (on_vertical_edge) {
+    a->position = (Vector2){ 0, GetScreenHeight() * random_double() };
+  } else {
+    a->position = (Vector2){ GetScreenWidth() * random_double(), 0 };
+  }
+
   a->velocity = (Vector2){ ASTEROID_SPEED * cos(angle), ASTEROID_SPEED * sin(angle) };
 
   return a;

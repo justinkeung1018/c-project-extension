@@ -20,7 +20,7 @@
 #define BLINKING_FRAMES_LIMIT  120
 
 // Alpha constant
-#define ALPHA_DECREMENT_STEP 0.025f
+#define ALPHA_DECREMENT_STEP   0.025f
 
 Loader loading_initialise(void) {
   Loader loader = malloc(sizeof(struct Loader));

@@ -37,7 +37,7 @@ Bullet bullet_init_normal(float pos_x, float pos_y, Radians rotation) {
 }
 
 void bullet_free(void *b) {
-  free((Bullet) b);
+  free((Bullet)b);
 }
 
 void bullet_draw(Bullet b) {
@@ -51,7 +51,7 @@ void bullet_move(Bullet b) {
 
 static void bullet_for_each_void(List bs, ForEachFunc function) {
   for (int i = 0; i < bs->len; i++) {
-    function((Bullet) list_get(bs, i));
+    function((Bullet)list_get(bs, i));
   }
 }
 

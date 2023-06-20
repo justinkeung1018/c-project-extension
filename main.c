@@ -152,7 +152,7 @@ int main(void) {
       exit_window_requested = true;
     }
 
-    if (exit_window_requested) {
+    if (exit_window_requested && !game_over_requested) {
       if (!exit_window_drawn) {
         display_exit_screen();
         exit_window_drawn = true;
@@ -169,6 +169,9 @@ int main(void) {
     }
 
     if (game_over_requested) {
+      if (IsKeyDown(KEY_ENTER)) {
+        exit_window = true;
+      }
       EndDrawing();
       continue;
     }
@@ -223,6 +226,7 @@ int main(void) {
         Bullet b = list_get(bullets, j);
         if (collides_asteroid_bullet(a, b)) {
           if (!asteroid_broken) {
+            // TODO: increment score here
             // Handle edge case where multiple bullets collide with the same asteroid
             // to avoid breaking the same asteroid more than once
             asteroid_break(as, i);

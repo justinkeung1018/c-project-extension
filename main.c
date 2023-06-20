@@ -91,6 +91,21 @@ static void display_debugging_stats(void) {
   DrawFPS(GetScreenWidth() - FPS_PADDING, SMALL_PADDING + SMALL_TEXT_HEIGHT);
 }
 
+static void display_help_ui(void) {
+  DrawText("Press Tab for Controls", SMALL_PADDING, SMALL_PADDING, SMALL_FONT_SIZE, WHITE);
+}
+
+static void display_controls(void) {
+  DrawRectangle(SMALL_PADDING, SMALL_PADDING, 875, 310, Fade(SKYBLUE, 0.5f));
+  DrawRectangleLines(SMALL_PADDING, SMALL_PADDING, 875, 310, BLUE);
+
+  DrawText("Spaceship Controls:", 20, 20, 50, BLACK);
+  DrawText("- [UP ARROW] to Accelerate", 40, 80, 50, BLACK);
+  DrawText("- [LEFT ARROW] to Steer Left", 40, 140, 50, BLACK);
+  DrawText("- [RIGHT ARROW] to Steer Right", 40, 200, 50, BLACK);
+  DrawText("- [SPACE] to Shoot", 40, 260, 50, BLACK);
+}
+
 int main(void) {
   // [Initialise screen]
   InitWindow(0, 0, "Asteroids");
@@ -204,6 +219,12 @@ int main(void) {
     asteroids_draw(as);
     bullet_draw_all(bullets);
     spaceship_draw(spaceship);
+
+    if (IsKeyDown(KEY_TAB)) {
+      display_controls();
+    } else {
+      display_help_ui();
+    }
 
     EndDrawing();
 

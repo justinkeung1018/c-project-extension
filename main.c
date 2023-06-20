@@ -1,14 +1,17 @@
+#include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
 #include "asteroids.h"
 #include "bullet.h"
+#include "collision.h"
 #include "highscore.h"
 #include "list.h"
 #include "raylib.h"
 #include "spaceship.h"
 
 #define FPS                        60
+#define NUM_BULLETS_PER_SECOND     20
 
 // Font sizes
 #define LARGE_FONT_SIZE            100
@@ -40,10 +43,37 @@ static void display_exit_screen(void) {
   int exit_string_width = MeasureText(exit_message, LARGE_FONT_SIZE);
   int save_string_width = MeasureText(save_message, MEDIUM_FONT_SIZE);
 
-  DrawRectangle(0, QUARTER_SCREEN_HEIGHT_SIZE + MEDIUM_PADDING, SCREEN_WIDTH, EXTRA_LARGE_PADDING, Fade(BLUE, 0.5f));
-  DrawRectangleLines(0, QUARTER_SCREEN_HEIGHT_SIZE + MEDIUM_PADDING, SCREEN_WIDTH, EXTRA_LARGE_PADDING, RED);
-  DrawText(exit_message, HALF_SCREEN_WIDTH_SIZE - exit_string_width / 2, HALF_SCREEN_HEIGHT_SIZE - LARGE_PADDING, LARGE_FONT_SIZE, WHITE);
-  DrawText(save_message, HALF_SCREEN_WIDTH_SIZE - save_string_width / 2, HALF_SCREEN_HEIGHT_SIZE + SMALL_PADDING, MEDIUM_FONT_SIZE, WHITE);
+  DrawRectangle(
+      0,
+      QUARTER_SCREEN_HEIGHT_SIZE + MEDIUM_PADDING,
+      SCREEN_WIDTH,
+      EXTRA_LARGE_PADDING,
+      Fade(BLUE, 0.5f)
+    );
+
+  DrawRectangleLines(
+      0,
+      QUARTER_SCREEN_HEIGHT_SIZE + MEDIUM_PADDING,
+      SCREEN_WIDTH,
+      EXTRA_LARGE_PADDING,
+      RED
+    );
+
+  DrawText(
+      exit_message,
+      HALF_SCREEN_WIDTH_SIZE - exit_string_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE - LARGE_PADDING,
+      LARGE_FONT_SIZE,
+      WHITE
+    );
+
+  DrawText(
+      save_message,
+      HALF_SCREEN_WIDTH_SIZE - save_string_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE + SMALL_PADDING,
+      MEDIUM_FONT_SIZE,
+      WHITE
+    );
 }
 
 static void display_debugging_stats(void) {
@@ -51,7 +81,14 @@ static void display_debugging_stats(void) {
 
   int screen_res_string_width = MeasureText(resolution_text, EXTRA_SMALL_FONT_SIZE);
 
-  DrawText(resolution_text, GetScreenWidth() - SMALL_PADDING - screen_res_string_width, SMALL_PADDING, EXTRA_SMALL_FONT_SIZE, LIME);
+  DrawText(
+      resolution_text,
+      GetScreenWidth() - SMALL_PADDING - screen_res_string_width,
+      SMALL_PADDING,
+      EXTRA_SMALL_FONT_SIZE,
+      LIME
+    );
+
   DrawFPS(GetScreenWidth() - FPS_PADDING, SMALL_PADDING + SMALL_TEXT_HEIGHT);
 }
 
@@ -59,6 +96,21 @@ static void display_game_over(void) {
   int game_over_text_width = MeasureText("Game Over!", LARGE_FONT_SIZE);
 
   DrawText("Game Over!", HALF_SCREEN_WIDTH_SIZE - game_over_text_width/2, HALF_SCREEN_HEIGHT_SIZE, LARGE_FONT_SIZE, RED);
+}
+
+static void display_help_ui(void) {
+  DrawText("Press Tab for Controls", SMALL_PADDING, SMALL_PADDING, SMALL_FONT_SIZE, WHITE);
+}
+
+static void display_controls(void) {
+  DrawRectangle(SMALL_PADDING, SMALL_PADDING, 875, 310, Fade(SKYBLUE, 0.5f));
+  DrawRectangleLines(SMALL_PADDING, SMALL_PADDING, 875, 310, BLUE);
+
+  DrawText("Spaceship Controls:", 20, 20, 50, BLACK);
+  DrawText("- [UP ARROW] to Accelerate", 40, 80, 50, BLACK);
+  DrawText("- [LEFT ARROW] to Steer Left", 40, 140, 50, BLACK);
+  DrawText("- [RIGHT ARROW] to Steer Right", 40, 200, 50, BLACK);
+  DrawText("- [SPACE] to Shoot", 40, 260, 50, BLACK);
 }
 
 int main(void) {
@@ -71,7 +123,7 @@ int main(void) {
   Spaceship spaceship = spaceship_initialise();
   List as = asteroids_create();
   List bullets = bullet_init_all();
-  bool breakable;
+  int can_shoot = 0;
 
   bool game_over_requested = false;
 
@@ -85,6 +137,7 @@ int main(void) {
   // [Initialise exit variables]
   SetExitKey(KEY_NULL);
   bool exit_window_requested = false;
+  bool exit_window_drawn = false;
   bool exit_window = false;
 
   // [Highscore test]
@@ -92,22 +145,22 @@ int main(void) {
 
   // [Drawing]
   while (!exit_window) {
-    breakable = true;
-
     BeginDrawing();
 
-    if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
+    if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE) || list_length(as) == 0) {
       // freeze all entities
       exit_window_requested = true;
-      display_exit_screen();
     }
 
     if (exit_window_requested) {
+      if (!exit_window_drawn) {
+        display_exit_screen();
+        exit_window_drawn = true;
+      }
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-        // ====[Change]====
         write_highscore(score);
-        // ================
         exit_window = true;
+        exit_window_drawn = false;
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_requested = false;
       }
@@ -128,10 +181,10 @@ int main(void) {
 
     // ===[TEST]===
     ClearBackground(BLACK);
-
     UpdateMusicStream(music);
+    can_shoot = (can_shoot + 1) % (int)ceil(1.0 * FPS / NUM_BULLETS_PER_SECOND);
 
-    if (IsKeyPressed(KEY_SPACE)) {
+    if (IsKeyDown(KEY_SPACE) && can_shoot == 0) {
       spaceship_shoot(spaceship, bullets);
       PlaySound(sound); // combine this with other components
       display_game_over();
@@ -151,24 +204,52 @@ int main(void) {
       spaceship_rotate_right(spaceship);
     }
 
-    if (IsKeyPressed(KEY_ENTER) && breakable && !list_empty(as)) {
-      asteroid_break(as, 0);
-      breakable = false;
-    }
+    DrawText(
+        "Press F1 for Debugging Stats",
+        SMALL_PADDING,
+        GetScreenHeight() - MEDIUM_PADDING,
+        SMALL_FONT_SIZE,
+        WHITE
+      );
 
-    DrawText("Press F1 for Debugging Stats", SMALL_PADDING, GetScreenHeight() - MEDIUM_PADDING, SMALL_FONT_SIZE, WHITE);
     if (IsKeyDown(KEY_F1)) {
       display_debugging_stats();
     }
 
     asteroids_move(as);
-    asteroids_draw(as);
-
     bullet_move_all(bullets);
-    bullet_draw_all(bullets);
-
     spaceship_move(spaceship);
+
+    for (int i = 0; i < list_length(as); i++) {
+      Asteroid a = list_get(as, i);
+      if (collides_asteroid_spaceship(a, spaceship)) {
+        exit_window_requested = true;
+      }
+      bool asteroid_broken = false;
+      for (int j = 0; j < list_length(bullets); j++) {
+        Bullet b = list_get(bullets, j);
+        if (collides_asteroid_bullet(a, b)) {
+          if (!asteroid_broken) {
+            // Handle edge case where multiple bullets collide with the same asteroid
+            // to avoid breaking the same asteroid more than once
+            asteroid_break(as, i);
+            asteroid_broken = true;
+          }
+          list_remove(bullets, j);
+          bullet_free(b);
+        }
+      }
+    }
+
+    asteroids_draw(as);
+    bullet_draw_all(bullets);
     spaceship_draw(spaceship);
+
+    if (IsKeyDown(KEY_TAB)) {
+      display_controls();
+    } else {
+      display_help_ui();
+    }
 
     EndDrawing();
 

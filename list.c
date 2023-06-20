@@ -60,6 +60,10 @@ void *list_remove(List l, int idx) {
   return element;
 }
 
+int list_length(List l) {
+  return l->len;
+}
+
 bool list_empty(List l) {
   return l->len == 0;
 }

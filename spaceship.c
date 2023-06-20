@@ -15,7 +15,7 @@
 #define COEFF_FRICTION     0.01
 
 #define ACCELERATION_STEP  0.1
-#define ROTATION_STEP      10
+#define ROTATION_STEP      5
 
 #define MIN_SPEED          0
 #define MAX_SPEED          10

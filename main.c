@@ -8,7 +8,10 @@
 #include "raylib.h"
 #include "spaceship.h"
 
+#include <math.h>
+
 #define FPS                        60
+#define NUM_BULLETS_PER_SECOND     20
 
 // Font sizes
 #define LARGE_FONT_SIZE            100
@@ -99,6 +102,7 @@ int main(void) {
   Spaceship spaceship = spaceship_initialise();
   List as = asteroids_create();
   List bullets = bullet_init_all();
+  int can_shoot = 0;
 
   // [Initialise audio]
   InitAudioDevice();
@@ -140,8 +144,9 @@ int main(void) {
 
     ClearBackground(BLACK);
     UpdateMusicStream(music);
+    can_shoot = (can_shoot + 1) % (int)ceil(1.0 * FPS / NUM_BULLETS_PER_SECOND);
 
-    if (IsKeyDown(KEY_SPACE)) {
+    if (IsKeyDown(KEY_SPACE) && can_shoot == 0) {
       spaceship_shoot(spaceship, bullets);
       PlaySound(sound); // combine this with other components
     }

@@ -22,7 +22,7 @@ extern bool collides_asteroid_spaceship(Asteroid a, Spaceship s);
  *
  * @return Whether the bullet hits the asteroid.
  */
-// extern bool collides_asteroid_bullet(Asteroid a, Bullet b);
+extern bool collides_asteroid_bullet(Asteroid a, Bullet b);
 
 #endif
 

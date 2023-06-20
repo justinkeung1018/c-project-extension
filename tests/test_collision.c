@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "asteroids.h"
+#include "bullet.h"
 #include "collision.h"
 #include "spaceship.h"
 #include "raylib.h"
@@ -12,7 +13,8 @@
 
 #define WIDTH 60
 
-typedef void (*TestFunc)(Asteroid, Spaceship);
+typedef void (*TestAsteroidSpaceshipFunc)(Asteroid, Spaceship);
+typedef void (*TestAsteroidBulletFunc)(Asteroid, Bullet);
 
 static char *boolstr(bool expr) {
   return expr ? "true" : "false";
@@ -175,7 +177,7 @@ static void test_collides_asteroid_spaceship_surrounds_asteroid(Asteroid a, Spac
 }
 
 void test_collides_asteroid_spaceship(void) {
-  static TestFunc tests[] = {
+  static TestAsteroidSpaceshipFunc tests[] = {
     test_collides_asteroid_spaceship_centre,
     test_collides_asteroid_spaceship_intersect_1,
     test_collides_asteroid_spaceship_intersect_2,
@@ -199,7 +201,48 @@ void test_collides_asteroid_spaceship(void) {
   }
 }
 
-void test_collides_asteroid_bullet(void) {
+static void test_collides_asteroid_bullet_inside(Asteroid a, Bullet b) {
+  a->position = (Vector2){ 100, 100 };
+  a->size = 50;
 
+  b->position = (Vector2){ 100, 100 };
+
+  assert_true(collides_asteroid_bullet(a, b), __func__);
+}
+
+static void test_collides_asteroid_bullet_outside(Asteroid a, Bullet b) {
+  a->position = (Vector2){ 100, 100 };
+  a->size = 50;
+
+  b->position = (Vector2){ 200, 200 };
+
+  assert_false(collides_asteroid_bullet(a, b), __func__);
+}
+
+static void test_collides_asteroid_bullet_on(Asteroid a, Bullet b) {
+  a->position = (Vector2){ 100, 100 };
+  a->size = 50;
+
+  b->position = (Vector2){ 50, 100 };
+
+  assert_true(collides_asteroid_bullet(a, b), __func__);
+}
+
+void test_collides_asteroid_bullet() {
+  static TestAsteroidBulletFunc tests[] = {
+    test_collides_asteroid_bullet_inside,
+    test_collides_asteroid_bullet_outside,
+    test_collides_asteroid_bullet_on,
+  };
+
+  for (int i = 0; i < NUM_ELEMENTS(tests); i++) {
+    Asteroid a = malloc(sizeof(struct Asteroid));
+    Bullet b = malloc(sizeof(struct Bullet));
+
+    tests[i](a, b);
+
+    free(a);
+    free(b);
+  }
 }
 

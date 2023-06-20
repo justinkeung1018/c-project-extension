@@ -1,5 +1,8 @@
 #include "collision.h"
 
+#include "asteroids.h"
+#include "bullet.h"
+#include "spaceship.h"
 #include "raymath.h"
 
 static Vector2 project(Vector2 vector, Vector2 onto) {
@@ -57,9 +60,7 @@ bool collides_asteroid_spaceship(Asteroid a, Spaceship s) {
   return false;
 }
 
-/*
 bool collides_asteroid_bullet(Asteroid a, Bullet b) {
-
+  return CheckCollisionPointCircle(b->position, a->position, a->size);
 }
-*/
 

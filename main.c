@@ -3,6 +3,7 @@
 
 #include "asteroids.h"
 #include "bullet.h"
+#include "highscore.h"
 #include "list.h"
 #include "raylib.h"
 #include "spaceship.h"
@@ -54,6 +55,12 @@ static void display_debugging_stats(void) {
   DrawFPS(GetScreenWidth() - FPS_PADDING, SMALL_PADDING + SMALL_TEXT_HEIGHT);
 }
 
+static void display_game_over(void) {
+  int game_over_text_width = MeasureText("Game Over!", LARGE_FONT_SIZE);
+
+  DrawText("Game Over!", HALF_SCREEN_WIDTH_SIZE - game_over_text_width/2, HALF_SCREEN_HEIGHT_SIZE, LARGE_FONT_SIZE, RED);
+}
+
 int main(void) {
   // [Initialise screen]
   InitWindow(0, 0, "Asteroids");
@@ -78,6 +85,9 @@ int main(void) {
   bool exit_window_requested = false;
   bool exit_window = false;
 
+  // [Highscore test]
+  int score = 1658235;
+
   // [Drawing]
   while (!exit_window) {
     breakable = true;
@@ -93,6 +103,8 @@ int main(void) {
     if (exit_window_requested) {
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
       	// save data here
+        write_highscore(score);
+        // =============
         exit_window = true;
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_requested = false;
@@ -108,6 +120,7 @@ int main(void) {
     if (IsKeyPressed(KEY_SPACE)) {
       spaceship_shoot(spaceship, bullets);
       PlaySound(sound); // combine this with other components
+      display_game_over();
     }
 
     if (IsKeyDown(KEY_UP)) {

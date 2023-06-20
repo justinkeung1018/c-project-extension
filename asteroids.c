@@ -85,11 +85,11 @@ void asteroids_draw(List as) {
 
     DrawTexturePro(
         asteroid_texture,
-	      asteroid_texture_rec,
-	      a_rec,
-	      (Vector2){ 0.0f, 0.0f },
-      	0.0f,
-      	RAYWHITE
+        asteroid_texture_rec,
+        a_rec,
+        (Vector2){ 0.0f, 0.0f },
+        0.0f,
+        RAYWHITE
       );
   }
 }

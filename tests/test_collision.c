@@ -79,7 +79,7 @@ static void test_collides_asteroid_spaceship_coincide_tip(Asteroid a, Spaceship 
   a->size = 50;
 
   Vector2 vectors[] = {
-    (Vector2){ 50, 50 },
+    (Vector2){ 100, 50 },
     (Vector2){ 25, 25 },
     (Vector2){ 75, 25 },
   };
@@ -94,7 +94,7 @@ static void test_collides_asteroid_spaceship_coincide_left(Asteroid a, Spaceship
 
   Vector2 vectors[] = {
     (Vector2){ 75, 25 },
-    (Vector2){ 50, 50 },
+    (Vector2){ 100, 50 },
     (Vector2){ 25, 25 },
   };
   s->collider = (Collider){ vectors, NUM_ELEMENTS(vectors) };
@@ -109,7 +109,7 @@ static void test_collides_asteroid_spaceship_coincide_right(Asteroid a, Spaceshi
   Vector2 vectors[] = {
     (Vector2){ 25, 25 },
     (Vector2){ 75, 25 },
-    (Vector2){ 50, 50 },
+    (Vector2){ 100, 50 },
   };
   s->collider = (Collider){ vectors, NUM_ELEMENTS(vectors) };
 
@@ -121,9 +121,9 @@ static void test_collides_asteroid_spaceship_touch(Asteroid a, Spaceship s) {
   a->size = 50;
 
   Vector2 vectors[] = {
-    (Vector2){ 25, 50 },
     (Vector2){ 75, 50 },
-    (Vector2){ 50, 50 },
+    (Vector2){ 125, 50 },
+    (Vector2){ 100, 25 },
   };
   s->collider = (Collider){ vectors, NUM_ELEMENTS(vectors) };
 

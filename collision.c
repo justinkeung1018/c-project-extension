@@ -13,7 +13,8 @@ bool collides_asteroid_spaceship(Asteroid a, Spaceship s) {
   // Check if any vertex of the spaceship is inside the asteroid
   for (int i = 0; i < length; i++) {
     Vector2 vector = s->collider.vectors[i];
-    if (Vector2DistanceSqr(vector, a->position) <= a->size * a->size) {
+    float distance_sqr = Vector2DistanceSqr(vector, a->position);
+    if (distance_sqr <= a->size * a->size) {
       return true;
     }
   }
@@ -23,8 +24,8 @@ bool collides_asteroid_spaceship(Asteroid a, Spaceship s) {
   for (int i = 0; i < length; i++) {
     Vector2 v1 = s->collider.vectors[i];
     Vector2 v2 = s->collider.vectors[(i + 1) % length];
-    Vector2 edge = Vector2Subtract(v1, v2);
-    Vector2 normal = Vector2Rotate(edge, -M_PI / 2);
+    Vector2 edge = Vector2Subtract(v2, v1);
+    Vector2 normal = Vector2Rotate(edge, M_PI / 2);
 
     Vector2 v1_to_centre = Vector2Subtract(a->position, v1);
 
@@ -36,20 +37,21 @@ bool collides_asteroid_spaceship(Asteroid a, Spaceship s) {
     return true;
   }
 
+  // Check if any edge of the spaceship intersects the asteroid
   for (int i = 0; i < length; i++) {
     Vector2 v1 = s->collider.vectors[i];
     Vector2 v2 = s->collider.vectors[(i + 1) % length];
-    Vector2 line = Vector2Subtract(v1, v2);
-    Vector2 projection = project(a->position, line);
+    Vector2 edge = Vector2Subtract(v2, v1);
+    Vector2 v1_to_centre = Vector2Subtract(a->position, v1);
 
-    if (projection.x < MIN(v1.x, v2.x)
-        || projection.x > MAX(v1.x, v2.x)
-        || projection.y < MIN(v1.y, v2.y)
-        || projection.y > MAX(v1.y, v2.y)) {
+    if (Vector2DotProduct(v1_to_centre, edge) < 0) {
+      // The circle is beyond the line
       continue;
     }
 
-    if (Vector2DistanceSqr(projection, a->position) <= a->size * a->size) {
+    Vector2 projection = project(v1_to_centre, edge);
+    Vector2 normal = Vector2Subtract(v1_to_centre, projection);
+    if (Vector2LengthSqr(normal) <= a->size * a->size) {
       return true;
     }
   }

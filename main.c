@@ -10,12 +10,8 @@
 #include "raylib.h"
 #include "spaceship.h"
 
-<<<<<<< HEAD
-#define FPS                   60
-=======
 #define FPS                        60
 #define NUM_BULLETS_PER_SECOND     20
->>>>>>> master
 
 // Font sizes
 #define LARGE_FONT_SIZE            100
@@ -143,12 +139,8 @@ int main(void) {
   while (!exit_window) {
     BeginDrawing();
 
-<<<<<<< HEAD
-    if (!exit_window_requested && (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE))) {
-=======
     if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE) || list_length(as) == 0) {
       // freeze all entities
->>>>>>> master
       exit_window_requested = true;
     }
 
@@ -168,14 +160,7 @@ int main(void) {
       continue;
     }
 
-<<<<<<< HEAD
-=======
-    ClearBackground(BLACK);
->>>>>>> master
     UpdateMusicStream(music);
-    can_shoot = (can_shoot + 1) % (int)ceil(1.0 * FPS / NUM_BULLETS_PER_SECOND);
-
-<<<<<<< HEAD
 
     ClearBackground(BLACK);
 
@@ -183,7 +168,14 @@ int main(void) {
     display_loading_animation(loader);
 
     if (loader->fully_loaded) {
-      if (IsKeyPressed(KEY_SPACE)) {
+      can_shoot = (can_shoot + 1) % (int)ceil(1.0 * FPS / NUM_BULLETS_PER_SECOND);
+      asteroids_move(as);
+      asteroids_draw(as);
+
+      spaceship_move(spaceship);
+      spaceship_draw(spaceship);
+      if (IsKeyDown(KEY_SPACE) && can_shoot == 0) {
+        spaceship_shoot(spaceship, bullets);
         PlaySound(sound); // combine this with other components
       }
 
@@ -201,95 +193,58 @@ int main(void) {
         spaceship_rotate_right(spaceship);
       }
 
-      if (IsKeyPressed(KEY_ENTER) && breakable && !list_empty(as)) {
-        asteroid_break(as, 0);
-        breakable = false;
-      }
+      DrawText(
+          "Press F1 for Debugging Stats",
+          SMALL_PADDING,
+          GetScreenHeight() - MEDIUM_PADDING,
+          SMALL_FONT_SIZE,
+          WHITE
+        );
 
-      asteroids_move(as);
-      asteroids_draw(as);
-
-      spaceship_move(spaceship);
-
-      DrawText("Press F1 for Debugging Stats", 10, GetScreenHeight() - 40, SMALL_FONT_SIZE, WHITE);
       if (IsKeyDown(KEY_F1)) {
         display_debugging_stats();
       }
 
-      spaceship_draw(spaceship);
-    }
+      asteroids_move(as);
+      bullet_move_all(bullets);
+      spaceship_move(spaceship);
 
-=======
-    if (IsKeyDown(KEY_SPACE) && can_shoot == 0) {
-      spaceship_shoot(spaceship, bullets);
-      PlaySound(sound); // combine this with other components
-    }
-
-    if (IsKeyDown(KEY_UP)) {
-      spaceship_accelerate(spaceship);
-    } else {
-      spaceship_reset_acceleration(spaceship);
-    }
-
-    if (IsKeyDown(KEY_LEFT)) {
-      spaceship_rotate_left(spaceship);
-    }
-
-    if (IsKeyDown(KEY_RIGHT)) {
-      spaceship_rotate_right(spaceship);
-    }
-
-    DrawText(
-        "Press F1 for Debugging Stats",
-        SMALL_PADDING,
-        GetScreenHeight() - MEDIUM_PADDING,
-        SMALL_FONT_SIZE,
-        WHITE
-      );
-
-    if (IsKeyDown(KEY_F1)) {
-      display_debugging_stats();
-    }
-
-    asteroids_move(as);
-    bullet_move_all(bullets);
-    spaceship_move(spaceship);
-
-    for (int i = 0; i < list_length(as); i++) {
-      Asteroid a = list_get(as, i);
-      if (collides_asteroid_spaceship(a, spaceship)) {
-        exit_window_requested = true;
-      }
-      bool asteroid_broken = false;
-      for (int j = 0; j < list_length(bullets); j++) {
-        Bullet b = list_get(bullets, j);
-        if (collides_asteroid_bullet(a, b)) {
-          if (!asteroid_broken) {
-            // Handle edge case where multiple bullets collide with the same asteroid
-            // to avoid breaking the same asteroid more than once
-            asteroid_break(as, i);
-            asteroid_broken = true;
+      for (int i = 0; i < list_length(as); i++) {
+        Asteroid a = list_get(as, i);
+        if (collides_asteroid_spaceship(a, spaceship)) {
+          exit_window_requested = true;
+        }
+        bool asteroid_broken = false;
+        for (int j = 0; j < list_length(bullets); j++) {
+          Bullet b = list_get(bullets, j);
+          if (collides_asteroid_bullet(a, b)) {
+            if (!asteroid_broken) {
+              // Handle edge case where multiple bullets collide with the same asteroid
+              // to avoid breaking the same asteroid more than once
+              asteroid_break(as, i);
+              asteroid_broken = true;
+            }
+            list_remove(bullets, j);
+            bullet_free(b);
           }
-          list_remove(bullets, j);
-          bullet_free(b);
         }
       }
+
+      asteroids_draw(as);
+      bullet_draw_all(bullets);
+      spaceship_draw(spaceship);
+
+      if (IsKeyDown(KEY_TAB)) {
+        display_controls();
+      } else {
+        display_help_ui();
+      }
+
+      bullet_despawn_all_off_screen(bullets);
     }
 
-    asteroids_draw(as);
-    bullet_draw_all(bullets);
-    spaceship_draw(spaceship);
-
-    if (IsKeyDown(KEY_TAB)) {
-      display_controls();
-    } else {
-      display_help_ui();
-    }
-
->>>>>>> master
     EndDrawing();
 
-    bullet_despawn_all_off_screen(bullets);
   }
 
   // [Free]

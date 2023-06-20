@@ -96,13 +96,14 @@ static void display_help_ui(void) {
 }
 
 static void display_controls(void) {
-  DrawRectangle(SMALL_PADDING, SMALL_PADDING, 800, 260, Fade(SKYBLUE, 0.5f));
-  DrawRectangleLines(SMALL_PADDING, SMALL_PADDING, 800, 260, BLUE);
+  DrawRectangle(SMALL_PADDING, SMALL_PADDING, 875, 310, Fade(SKYBLUE, 0.5f));
+  DrawRectangleLines(SMALL_PADDING, SMALL_PADDING, 875, 310, BLUE);
 
   DrawText("Spaceship Controls:", 20, 20, 50, BLACK);
-  DrawText("- Up Arrow to Accelerate", 40, 80, 50, BLACK);
-  DrawText("- Right Arrow to Steer Right", 40, 140, 50, BLACK);
-  DrawText("- Left Arrow to Steer Left", 40, 200, 50, BLACK);
+  DrawText("- [UP ARROW] to Accelerate", 40, 80, 50, BLACK);
+  DrawText("- [LEFT ARROW] to Steer Left", 40, 140, 50, BLACK);
+  DrawText("- [RIGHT ARROW] to Steer Right", 40, 200, 50, BLACK);
+  DrawText("- [SPACE] to Shoot", 40, 260, 50, BLACK);
 }
 
 int main(void) {

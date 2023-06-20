@@ -73,6 +73,8 @@ int main(void) {
   List bullets = bullet_init_all();
   bool breakable;
 
+  bool game_over_requested = false;
+
   // [Initialise audio]
   InitAudioDevice();
   Music music = LoadMusicStream("resources/bgm.mp3");
@@ -86,7 +88,7 @@ int main(void) {
   bool exit_window = false;
 
   // [Highscore test]
-  int score = 1658235;
+  int score = 1658235; // TODO()
 
   // [Drawing]
   while (!exit_window) {
@@ -102,9 +104,9 @@ int main(void) {
 
     if (exit_window_requested) {
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-      	// save data here
+        // ====[Change]====
         write_highscore(score);
-        // =============
+        // ================
         exit_window = true;
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_requested = false;
@@ -113,6 +115,18 @@ int main(void) {
       continue;
     }
 
+    if (!game_over_requested && IsKeyPressed(KEY_P)) {
+      game_over_requested = true;
+      display_game_over();
+    }
+
+
+    if (game_over_requested) {
+      EndDrawing();
+      continue;
+    }
+
+    // ===[TEST]===
     ClearBackground(BLACK);
 
     UpdateMusicStream(music);

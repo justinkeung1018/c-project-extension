@@ -7,33 +7,13 @@
 #include "asteroids.h"
 #include "bullet.h"
 #include "collision.h"
-#include "spaceship.h"
 #include "raylib.h"
+#include "spaceship.h"
+#include "test_utils.h"
 #include "utils.h"
-
-#define WIDTH 60
 
 typedef void (*TestAsteroidSpaceshipFunc)(Asteroid, Spaceship);
 typedef void (*TestAsteroidBulletFunc)(Asteroid, Bullet);
-
-static char *boolstr(bool expr) {
-  return expr ? "true" : "false"; }
-
-static void assert_true(bool expr, const char *testname) {
-  if (expr) {
-    printf("%-*s: OK\n", WIDTH, testname);
-  } else {
-    printf("%-*s: expected %s, actual %s\n", WIDTH, testname, boolstr(!expr), boolstr(expr));
-  }
-}
-
-static void assert_false(bool expr, const char *testname) {
-  if (expr) {
-    printf("%-*s: expected %s, actual %s\n", WIDTH, testname, boolstr(!expr), boolstr(expr));
-  } else {
-    printf("%-*s: OK\n", WIDTH, testname);
-  }
-}
 
 // Tip of spaceship coincides with the centre of the asteroid
 // and the other two corners of the spaceship lie outside the asteroid
@@ -231,8 +211,8 @@ void test_collides_asteroid_spaceship(void) {
 }
 
 static void test_collides_asteroid_bullet_inside(Asteroid a, Bullet b) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   b->position = (Vector2){ 100, 100 };
 
@@ -240,8 +220,8 @@ static void test_collides_asteroid_bullet_inside(Asteroid a, Bullet b) {
 }
 
 static void test_collides_asteroid_bullet_outside(Asteroid a, Bullet b) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   b->position = (Vector2){ 200, 200 };
 
@@ -249,8 +229,8 @@ static void test_collides_asteroid_bullet_outside(Asteroid a, Bullet b) {
 }
 
 static void test_collides_asteroid_bullet_on(Asteroid a, Bullet b) {
-  a->position = (Vector2){ 100, 100 };
-  a->size = 50;
+  a->position = (Vector2){ 50, 50 };
+  a->size = 100;
 
   b->position = (Vector2){ 50, 100 };
 

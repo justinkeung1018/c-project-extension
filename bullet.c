@@ -32,7 +32,7 @@ static Bullet bullet_init(float pos_x, float pos_y, float radius, float speed, R
 typedef void (*ForEachFunc)(Bullet);
 
 // Caller must free using bullet_free()
-Bullet bullet_init_normal(float pos_x, float pos_y, Radians rotation) {
+Bullet bullet_init(float pos_x, float pos_y, Radians rotation) {
   return bullet_init(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, rotation, NORMAL_COLOUR);
 }
 

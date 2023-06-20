@@ -76,7 +76,7 @@ extern void spaceship_rotate_right(Spaceship s);
  * @param s The spaceship.
  * @param bullets The list of bullets.
  */
-extern void spaceship_shoot(Spaceship s, List bullets);
+extern void spaceship_shoot(Spaceship s, List bs);
 
 #endif
 

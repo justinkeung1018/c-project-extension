@@ -1,11 +1,14 @@
 #ifndef SPACESHIP_H
 #define SPACESHIP_H
 
+#include "collision.h"
+#include "list.h"
 #include "raylib.h"
 
 struct Spaceship {
   Vector2 position;
   Vector2 velocity;
+  Collider collider;
   double acceleration;
   double rotation;
   Color color;
@@ -68,6 +71,14 @@ extern void spaceship_rotate_left(Spaceship s);
  * @param s The spaceship.
  */
 extern void spaceship_rotate_right(Spaceship s);
+
+/**
+ * Shoots a bullet from the spaceship. Adds the bullet to the list.
+ *
+ * @param s The spaceship.
+ * @param bullets The list of bullets.
+ */
+extern void spaceship_shoot(Spaceship s, List bs);
 
 #endif
 

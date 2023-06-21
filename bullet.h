@@ -23,10 +23,11 @@ typedef struct Bullet *Bullet;
  * @param pos_x A float representing the x position of the bullet.
  * @param pos_y A float representing the y position of the bullet.
  * @param rotation Rotation in radians, clockwise from horizontal, positive x-axis is 0.
+ * @param color Color of the bullet.
  *
  * @return A bullet.
  */
-extern Bullet bullet_init(float pos_x, float pos_y, Radians rotation);
+extern Bullet bullet_init(float pos_x, float pos_y, Radians rotation, Color color);
 
 /**
  * Frees a bullet pointer.

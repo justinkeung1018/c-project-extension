@@ -10,7 +10,6 @@
 #define INITIAL_SIZE  256
 #define NORMAL_RADIUS 5
 #define NORMAL_SPEED  25
-#define NORMAL_COLOUR RED
 
 typedef void (*ForEachFunc)(Bullet);
 
@@ -32,8 +31,8 @@ static Bullet bullet_init_helper(float pos_x, float pos_y, float radius, float s
 }
 
 // Caller must free using bullet_free()
-Bullet bullet_init(float pos_x, float pos_y, Radians rotation) {
-  return bullet_init_helper(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, rotation, NORMAL_COLOUR);
+Bullet bullet_init(float pos_x, float pos_y, Radians rotation, Color color) {
+  return bullet_init_helper(pos_x, pos_y, NORMAL_RADIUS, NORMAL_SPEED, rotation, color);
 }
 
 void bullet_free(void *b) {

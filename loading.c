@@ -81,9 +81,7 @@ void update_variables(Loader loader) {
           loader->alpha = 0.0f;
           loader->fully_loaded = true;
         }
-
       }
-
   }
 }
 

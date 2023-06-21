@@ -14,10 +14,10 @@
 #define NUM_BULLETS_PER_SECOND     20
 
 // Font sizes
-#define LARGE_FONT_SIZE            100
-#define MEDIUM_FONT_SIZE           80
-#define SMALL_FONT_SIZE            40
 #define EXTRA_SMALL_FONT_SIZE      20
+#define SMALL_FONT_SIZE            40
+#define MEDIUM_FONT_SIZE           80
+#define LARGE_FONT_SIZE            100
 
 // Text height
 #define SMALL_TEXT_HEIGHT          20

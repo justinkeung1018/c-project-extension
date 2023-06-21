@@ -13,14 +13,25 @@
 
 // Title constant
 #define TITLE_CHARACTER_LENGTH 9
+#define LOADING_FONT_SIZE      30
 
-// Frames constant
+// Frames constants
 #define FRAMES_PER_BLINK       15
 #define FRAMES_PER_LETTER      12
 #define BLINKING_FRAMES_LIMIT  120
 
 // Alpha constant
 #define ALPHA_DECREMENT_STEP   0.025f
+
+// Loading animation offset constants
+#define EXTRA_SMALL_OFFSET     16
+#define SMALL_OFFSET           32
+#define MEDIUM_OFFSET          128
+#define LARGE_OFFSET           240
+
+// Rectangle size constants
+#define SMALL_REC_WIDTH        16
+#define SMALL_REC_HEIGHT       16
 
 Loader loading_initialise(void) {
   Loader loader = malloc(sizeof(struct Loader));
@@ -86,39 +97,39 @@ void update_variables(Loader loader) {
 }
 
 void display_loading_animation(Loader loader) {
-  int half_width = GetScreenWidth() / 2 - 128;
-  int half_height = GetScreenHeight() / 2 - 128;
-  int title_string_width = MeasureText("asteroids", 30);
+  int half_width = GetScreenWidth() / 2 - MEDIUM_OFFSET;
+  int half_height = GetScreenHeight() / 2 - MEDIUM_OFFSET;
+  int title_string_width = MeasureText("asteroids", LOADING_FONT_SIZE);
 
-  switch (loader->state){
+  switch (loader->state) {
     case BLINKING:
       if ((loader->frames_counter / FRAMES_PER_BLINK) % 2) {
-        DrawRectangle(half_width, half_height, 16, 16, WHITE);
+        DrawRectangle(half_width, half_height, SMALL_REC_WIDTH, SMALL_REC_HEIGHT, WHITE);
       }
       break;
 
     case TOP_AND_LEFT_BARS:
-      DrawRectangle(half_width, half_height, loader->top_line_width, 16, WHITE);
-      DrawRectangle(half_width, half_height, 16, loader->left_line_height, WHITE);
+      DrawRectangle(half_width, half_height, loader->top_line_width, SMALL_REC_HEIGHT, WHITE);
+      DrawRectangle(half_width, half_height, SMALL_REC_WIDTH, loader->left_line_height, WHITE);
       break;
 
     case BOTTOM_AND_RIGHT_BARS:
-      DrawRectangle(half_width, half_height, loader->top_line_width, 16, WHITE);
-      DrawRectangle(half_width, half_height, 16, loader->left_line_height, WHITE);
-      DrawRectangle(half_width + 240, half_height, 16, loader->right_line_height, WHITE);
-      DrawRectangle(half_width, half_height + 240, loader->bottom_line_width, 16, WHITE);
+      DrawRectangle(half_width, half_height, loader->top_line_width, SMALL_REC_HEIGHT, WHITE);
+      DrawRectangle(half_width, half_height, SMALL_REC_WIDTH, loader->left_line_height, WHITE);
+      DrawRectangle(half_width + LARGE_OFFSET, half_height, SMALL_REC_WIDTH, loader->right_line_height, WHITE);
+      DrawRectangle(half_width, half_height + LARGE_OFFSET, loader->bottom_line_width, SMALL_REC_HEIGHT, WHITE);
       break;
 
     case LETTERS_APPEARING:
-      DrawRectangle(half_width, half_height, loader->top_line_width, 16, Fade(WHITE, loader->alpha));
-      DrawRectangle(half_width, half_height + 16, 16, loader->left_line_height - 32, Fade(WHITE, loader->alpha));
-      DrawRectangle(half_width + 240, half_height + 16, 16, loader->right_line_height - 32, Fade(WHITE, loader->alpha));
-      DrawRectangle(half_width, half_height + 240, loader->bottom_line_width, 16, Fade(WHITE, loader->alpha));
+      DrawRectangle(half_width, half_height, loader->top_line_width, SMALL_REC_HEIGHT, Fade(WHITE, loader->alpha));
+      DrawRectangle(half_width, half_height + EXTRA_SMALL_OFFSET, SMALL_REC_WIDTH, loader->left_line_height - SMALL_OFFSET, Fade(WHITE, loader->alpha));
+      DrawRectangle(half_width + LARGE_OFFSET, half_height + EXTRA_SMALL_OFFSET, SMALL_REC_WIDTH, loader->right_line_height - SMALL_OFFSET, Fade(WHITE, loader->alpha));
+      DrawRectangle(half_width, half_height + LARGE_OFFSET, loader->bottom_line_width, SMALL_REC_HEIGHT, Fade(WHITE, loader->alpha));
       DrawText(
           TextSubtext("asteroids", 0, loader->letters_count),
           GetScreenWidth() / 2 - title_string_width / 2,
-          GetScreenHeight() / 2 - 15,
-          30,
+          GetScreenHeight() / 2 - LOADING_FONT_SIZE / 2,
+          LOADING_FONT_SIZE,
           Fade(WHITE, loader->alpha)
         );
   }

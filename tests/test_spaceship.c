@@ -7,33 +7,41 @@
 #include "list.h"
 #include "raylib.h"
 #include "raymath.h"
-#include "test_utils.h"
 #include "spaceship.h"
+#include "test_utils.h"
 
 
 void test_spaceship_rotate_right() {
   Spaceship s = spaceship_initialise();
 
+  double expected_vals[36];
+  double result_vals[36];
   for (int i = 0; i < 36; i++) {
     Radians before = s->rotation;
     Radians expected = Wrap(before + 5.0/180.0 * M_PI, 0, M_PI * 2);
     spaceship_rotate_right(s);
-    assert_eq_double(expected, s->rotation, __func__);
+    expected_vals[i] = expected;
+    result_vals[i] = s->rotation;
   }
 
+  assert_eq_double_arr(expected_vals, result_vals, 36, __func__);
   spaceship_free(s);
 }
 
 void test_spaceship_rotate_left() {
   Spaceship s = spaceship_initialise();
 
+  double expected_vals[36];
+  double result_vals[36];
   for (int i = 0; i < 36; i++) {
     Radians before = s->rotation;
     Radians expected = Wrap(before - 5.0/180.0 * M_PI, 0, M_PI * 2);
     spaceship_rotate_left(s);
-    assert_eq_double(expected, s->rotation, __func__);
+    expected_vals[i] = expected;
+    result_vals[i] = s->rotation;
   }
 
+  assert_eq_double_arr(expected_vals, result_vals, 36, __func__);
   spaceship_free(s);
 }
 
@@ -66,23 +74,28 @@ void test_spaceship_accelerate() {
 
 static void test_spaceship_move_no_accel() {
   Spaceship s = spaceship_initialise();
-  s->position = (Vector2){0.0, 0.0};
   spaceship_move(s);
 
-  assert_eq_Vector2((Vector2){0.0, 0.0}, s->position, __func__);
+  assert_eq_Vector2((Vector2){960.0, 540.0}, s->position, __func__);
   
   spaceship_free(s);
 }
 
 static void test_spaceship_move_accel() {
   Spaceship s = spaceship_initialise();
-  s->position = (Vector2){0.0, 0.0};
   spaceship_accelerate(s);
   spaceship_move(s); 
+
+  assert_eq_Vector2((Vector2){960.0, 539.901001}, s->position, __func__);
+
+  spaceship_free(s);
 }
 
 void test_spaceship_move() {
+  InitWindow(1920, 1080, "test");
   test_spaceship_move_no_accel();
+  test_spaceship_move_accel();
+  CloseWindow();
 }
 
 static void test_spaceship_shoot_1_bullet() {

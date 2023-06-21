@@ -1,3 +1,4 @@
+#include "test_asteroid.h"
 #include "test_bullet.h"
 #include "test_collision.h"
 #include "test_spaceship.h"
@@ -14,6 +15,8 @@ int main(void) {
   test_bullet_move_all();
   test_bullet_in_screen();
   test_bullet_despawn_all_off_screen();
+  test_asteroid_move_all();
+  test_asteroid_break();
   return 0;
 }
 

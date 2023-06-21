@@ -8,6 +8,8 @@
 #include "test_utils.h"
 
 void test_bullet_move() {
+  Vector2 expected_vals[360];
+  Vector2 result_vals[360];
   for (int i = 0; i < 360; i++) {
     Radians rotation = ((double) i) / 180 * M_PI;
     Bullet b = bullet_init(1920, 1080, rotation);
@@ -17,10 +19,13 @@ void test_bullet_move() {
 
     bullet_move(b);
 
-    assert_eq_Vector2(expected, b->position, __func__); 
+    expected_vals[i] = expected;
+    result_vals[i] = b->position;
 
     bullet_free(b);
   }
+
+  assert_eq_Vector2_arr(expected_vals, result_vals, 360, __func__);
 }
 
 void test_bullet_move_all() {
@@ -35,11 +40,16 @@ void test_bullet_move_all() {
 
   bullet_move_all(bs);
 
+  Vector2 expected_vals[360];
+  Vector2 result_vals[360];
   for (int i = 0; i < 360; i++) {
     Bullet expected_b = (Bullet) list_get(expected_bs, i);
-    Vector2 expected = (Vector2) {expected_b->position.x + 25 * cos(expected_b->rotation), expected_b->position.y + 25 * sin(expected_b->rotation)};
-    assert_eq_Vector2(expected, ((Bullet) list_get(bs, i))->position, __func__);
+    Vector2 expected = (Vector2) {expected_b->position.x + expected_b->speed * cos(expected_b->rotation), expected_b->position.y + expected_b->speed * sin(expected_b->rotation)};
+    expected_vals[i] = expected;
+    result_vals[i] = ((Bullet) list_get(bs, i))->position;
   }
+
+  assert_eq_Vector2_arr(expected_vals, result_vals, 360, __func__);
 
   list_free(expected_bs);
   list_free(bs);

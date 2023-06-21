@@ -29,7 +29,7 @@ Player player_initialise(
   return player;
 }
 
-bool player_check_collision(Player player, List as) {
+bool player_check_collision(Player player, List as, int *score) {
   for (int i = 0; i < list_length(as); i++) {
     Asteroid a = list_get(as, i);
     if (collides_asteroid_spaceship(a, player->s)) {
@@ -43,6 +43,7 @@ bool player_check_collision(Player player, List as) {
         if (!asteroid_broken) {
           // Handle edge case where multiple bullets collide with the same asteroid
           // to avoid breaking the same asteroid more than once
+          (*score)++;
           asteroid_break(as, i);
           asteroid_broken = true;
         }

@@ -48,10 +48,11 @@ extern Player player_initialise(
  *
  * @param player The player.
  * @param as The list of asteroids.
+ * @param score The current score.
  *
  * @return Whether the game should terminate.
  */
-extern bool player_check_collision(Player player, List as);
+extern bool player_check_collision(Player player, List as, int *score);
 
 /**
  * Updates the player state based on the keyboard input.

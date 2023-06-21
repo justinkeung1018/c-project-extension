@@ -1,10 +1,13 @@
 #include <math.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "asteroid.h"
 #include "bullet.h"
 #include "collision.h"
+#include "highscore.h"
 #include "list.h"
 #include "loading.h"
 #include "player.h"
@@ -19,6 +22,7 @@
 #define SMALL_FONT_SIZE            40
 #define MEDIUM_FONT_SIZE           80
 #define LARGE_FONT_SIZE            100
+#define EXTRA_LARGE_FONT_SIZE      200
 
 // Text height
 #define SMALL_TEXT_HEIGHT          20
@@ -37,6 +41,9 @@
 #define HALF_SCREEN_WIDTH_SIZE     GetScreenWidth() / 2
 #define HALF_SCREEN_HEIGHT_SIZE    GetScreenHeight() / 2
 #define QUARTER_SCREEN_HEIGHT_SIZE GetScreenHeight() / 4
+
+// Score constants
+#define SCORE_BUFFER_SIZE          100
 
 static void display_exit_screen(void) {
   const char exit_message[] = "Are you sure you want to quit? [Y/N]";
@@ -92,6 +99,103 @@ static void display_debugging_stats(void) {
     );
 
   DrawFPS(GetScreenWidth() - FPS_PADDING, SMALL_PADDING + SMALL_TEXT_HEIGHT);
+}
+
+static void display_score(int score) {
+  char curr_score[SCORE_BUFFER_SIZE] = "Score: ";
+
+  char score_str[MAXIMUM_SCORE_STRING_LENGTH + 1];
+  sprintf(score_str, "%d", score);
+
+  strcat(curr_score, score_str);
+
+  int curr_score_text_width = MeasureText(curr_score, SMALL_FONT_SIZE);
+
+  DrawText(
+      curr_score,
+      HALF_SCREEN_WIDTH_SIZE - curr_score_text_width / 2,
+      SMALL_PADDING,
+      SMALL_FONT_SIZE,
+      GOLD
+    );
+}
+
+static void display_victory(void) {
+  int victory_text_width = MeasureText("Victory!", EXTRA_LARGE_FONT_SIZE);
+  int exit_instruction_text_width = MeasureText("Press ENTER to Exit", LARGE_FONT_SIZE);
+
+  DrawText(
+      "Victory!",
+      HALF_SCREEN_WIDTH_SIZE - victory_text_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE - LARGE_PADDING * 2,
+      EXTRA_LARGE_FONT_SIZE,
+      GOLD
+    );
+
+  DrawText(
+      "Press ENTER to Exit",
+      HALF_SCREEN_WIDTH_SIZE - exit_instruction_text_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE + LARGE_PADDING,
+      LARGE_FONT_SIZE,
+      GOLD
+    );
+}
+
+static void display_game_over(int score) {
+  int highscore = get_highscore();
+  char highscore_str[MAXIMUM_SCORE_STRING_LENGTH + 1];
+  sprintf(highscore_str, "%d", highscore);
+
+  char curr_highscore[] = "Current Highscore: ";
+  strcat(curr_highscore, highscore_str);
+
+  int game_over_text_width = MeasureText("Game Over!", EXTRA_LARGE_FONT_SIZE);
+  int exit_instruction_text_width = MeasureText("Press ENTER to Exit", LARGE_FONT_SIZE);
+  int highscore_text_width = MeasureText(curr_highscore, MEDIUM_FONT_SIZE);
+  int new_highscore_text_width_1 = MeasureText("Congratulations!", SMALL_FONT_SIZE);
+  int new_highscore_text_width_2 = MeasureText("new highscore detected", SMALL_FONT_SIZE);
+
+  DrawText(
+      "Game Over!",
+      HALF_SCREEN_WIDTH_SIZE - game_over_text_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE - LARGE_PADDING * 2,
+      EXTRA_LARGE_FONT_SIZE,
+      RED
+    );
+
+  DrawText(
+      curr_highscore,
+      HALF_SCREEN_WIDTH_SIZE - highscore_text_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE + LARGE_PADDING * 4,
+      MEDIUM_FONT_SIZE,
+      LIME
+    );
+
+  if (score > highscore) {
+    DrawText(
+        "Congratulations!",
+        HALF_SCREEN_WIDTH_SIZE - new_highscore_text_width_1 / 2,
+        HALF_SCREEN_HEIGHT_SIZE + LARGE_PADDING * 6,
+        SMALL_FONT_SIZE,
+        LIME
+      );
+
+    DrawText(
+        "new highscore detected",
+        HALF_SCREEN_WIDTH_SIZE - new_highscore_text_width_2 / 2,
+        HALF_SCREEN_HEIGHT_SIZE + LARGE_PADDING * 6 + SMALL_PADDING * 4,
+        SMALL_FONT_SIZE,
+        LIME
+      );
+  }
+
+  DrawText(
+      "Press ENTER to Exit",
+      HALF_SCREEN_WIDTH_SIZE - exit_instruction_text_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE,
+      LARGE_FONT_SIZE,
+      RED
+    );
 }
 
 static void display_help_ui(void) {
@@ -166,11 +270,16 @@ int main(void) {
 
   int shoot_counter = 0;
 
+  bool game_over_requested = false;
+
   // [Initialise exit variables]
   SetExitKey(KEY_NULL);
   bool exit_window_requested = false;
   bool exit_window_drawn = false;
   bool exit_window = false;
+
+  // [Initialise score]
+  int score = 0;
 
   while (!loader->fully_loaded) {
     BeginDrawing();
@@ -185,11 +294,21 @@ int main(void) {
   while (!exit_window) {
     BeginDrawing();
 
-    if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE) || list_length(as) == 0) {
+    display_score(score);
+
+    if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) {
       exit_window_requested = true;
     }
 
-    if (exit_window_requested) {
+    if (list_length(as) == 0) {
+      display_victory();
+      write_highscore(score);
+      if (IsKeyPressed(KEY_ENTER)) {
+        exit_window = true;
+      }
+    }
+
+    if (exit_window_requested && !game_over_requested && list_length(as) != 0) {
       if (!exit_window_drawn) {
         display_exit_screen();
         exit_window_drawn = true;
@@ -200,6 +319,14 @@ int main(void) {
       } else if (IsKeyPressed(KEY_N)) {
         exit_window_drawn = false;
         exit_window_requested = false;
+      }
+      EndDrawing();
+      continue;
+    }
+
+    if (game_over_requested) {
+      if (IsKeyDown(KEY_ENTER)) {
+        exit_window = true;
       }
       EndDrawing();
       continue;
@@ -234,8 +361,12 @@ int main(void) {
     }
 
     for (int i = 0; i < list_length(players); i++) {
-      bool player_lost = player_check_collision(list_get(players, i), as);
-      exit_window_requested = exit_window_requested || player_lost;
+      bool player_lost = player_check_collision(list_get(players, i), as, &score);
+      if (player_lost) {
+        game_over_requested = true;
+        display_game_over(score);
+        write_highscore(score);
+      }
     }
 
     asteroid_draw_all(as);

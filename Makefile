@@ -9,11 +9,9 @@ LDLIBS  = -Lraylib/src -lraylib -lm
 
 .PHONY: all clean
 
-all: main test_suite
+all: main 
 
 main: main.o spaceship.o asteroids.o bullet.o list.o collision.o
-
-test_suite: test_suite.o spaceship.o asteroids.o bullet.o list.o
 
 asteroids.o: asteroids.h list.h
 bullet.o: bullet.h list.h

@@ -74,11 +74,15 @@ static void test_spaceship_move_no_accel() {
   spaceship_free(s);
 }
 
+static void test_spaceship_move_accel() {
+  Spaceship s = spaceship_initialise();
+  s->position = (Vector2){0.0, 0.0};
+  spaceship_accelerate(s);
+  spaceship_move(s); 
+}
+
 void test_spaceship_move() {
   test_spaceship_move_no_accel();
-  /*
-  TODO
-  */
 }
 
 static void test_spaceship_shoot_1_bullet() {

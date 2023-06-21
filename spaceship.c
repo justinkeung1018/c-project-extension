@@ -46,14 +46,14 @@ static void update_collider(Spaceship s) {
   s->collider.vectors[2] = get_right(s);
 }
 
-Spaceship spaceship_initialise(void) {
+Spaceship spaceship_initialise(float pos_x, float pos_y, Color color) {
   Spaceship s = malloc(sizeof(struct Spaceship));
   if (s == NULL) {
     fprintf(stderr, "Memory allocation for spaceship failed.\n");
     exit(EXIT_FAILURE);
   }
 
-  s->position = (Vector2){ GetScreenWidth() / 2, GetScreenHeight() / 2 };
+  s->position = (Vector2){ pos_x, pos_y };
   s->velocity = (Vector2){ 0, 0 };
 
   Vector2 *vectors = malloc(sizeof(Vector2) * 3);
@@ -62,7 +62,7 @@ Spaceship spaceship_initialise(void) {
 
   s->acceleration = 0.0;
   s->rotation = 0.0;
-  s->color = RED;
+  s->color = color;
 
   return s;
 }
@@ -116,6 +116,6 @@ void spaceship_rotate_right(Spaceship s) {
 
 void spaceship_shoot(Spaceship s, List bs) {
   Vector2 tip = Vector2Add(s->position, Vector2Rotate((Vector2){ 0, -SPACESHIP_HEIGHT * 2 / 3 }, s->rotation));
-  list_push(bs, bullet_init(tip.x, tip.y, s->rotation - M_PI_2));
+  list_push(bs, bullet_init(tip.x, tip.y, s->rotation - M_PI_2, s->color));
 }
 

@@ -11,7 +11,7 @@
 #define WIDTH_INCREMENT_STEP   4
 #define HEIGHT_INCREMENT_STEP  4
 
-// Title constant
+// Title constants
 #define TITLE_CHARACTER_LENGTH 9
 #define LOADING_FONT_SIZE      30
 
@@ -23,7 +23,7 @@
 // Alpha constant
 #define ALPHA_DECREMENT_STEP   0.025f
 
-// Loading animation offset constants
+// Loading animation offsets
 #define EXTRA_SMALL_OFFSET     16
 #define SMALL_OFFSET           32
 #define MEDIUM_OFFSET          128

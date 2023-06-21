@@ -26,7 +26,7 @@ int get_highscore(void) {
 
 bool write_highscore(int score) {
   int highscore = get_highscore();
-  char buf[5];
+  char buf[MAXIMUM_SCORE_STRING_LENGTH];
 
   sprintf(buf, "%d", score);
 

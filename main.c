@@ -39,6 +39,9 @@
 #define HALF_SCREEN_HEIGHT_SIZE    GetScreenHeight() / 2
 #define QUARTER_SCREEN_HEIGHT_SIZE GetScreenHeight() / 4
 
+// Score constants
+#define SCORE_BUFFER_SIZE          100
+
 static void display_exit_screen(void) {
   const char exit_message[] = "Are you sure you want to quit? [Y/N]";
   const char save_message[] = "(your current progress will not be saved)";
@@ -96,9 +99,9 @@ static void display_debugging_stats(void) {
 }
 
 static void display_score(int score) {
-  char curr_score[100] = "Score: ";
+  char curr_score[SCORE_BUFFER_SIZE] = "Score: ";
 
-  char score_str[5];
+  char score_str[MAXIMUM_SCORE_STRING_LENGTH + 1];
   sprintf(score_str, "%d", score);
 
   strcat(curr_score, score_str);
@@ -108,20 +111,20 @@ static void display_score(int score) {
   DrawText(
       curr_score,
       HALF_SCREEN_WIDTH_SIZE - curr_score_text_width / 2,
-      10,
+      SMALL_PADDING,
       SMALL_FONT_SIZE,
       GOLD
     );
 }
 
 static void display_victory(void) {
-  int vtx = MeasureText("Victory!", EXTRA_LARGE_FONT_SIZE);
+  int victory_text_width = MeasureText("Victory!", EXTRA_LARGE_FONT_SIZE);
   int exit_instruction_text_width = MeasureText("Press ENTER to Exit", LARGE_FONT_SIZE);
 
   DrawText(
       "Victory!",
-      HALF_SCREEN_WIDTH_SIZE - vtx / 2,
-      HALF_SCREEN_HEIGHT_SIZE - 200,
+      HALF_SCREEN_WIDTH_SIZE - victory_text_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE - LARGE_PADDING * 2,
       EXTRA_LARGE_FONT_SIZE,
       GOLD
     );
@@ -129,7 +132,7 @@ static void display_victory(void) {
   DrawText(
       "Press ENTER to Exit",
       HALF_SCREEN_WIDTH_SIZE - exit_instruction_text_width / 2,
-      HALF_SCREEN_HEIGHT_SIZE + 100,
+      HALF_SCREEN_HEIGHT_SIZE + LARGE_PADDING,
       LARGE_FONT_SIZE,
       GOLD
     );
@@ -137,7 +140,7 @@ static void display_victory(void) {
 
 static void display_game_over(int score) {
   int highscore = get_highscore();
-  char highscore_str[5];
+  char highscore_str[MAXIMUM_SCORE_STRING_LENGTH + 1];
   sprintf(highscore_str, "%d", highscore);
 
   char curr_highscore[] = "Current Highscore: ";
@@ -152,7 +155,7 @@ static void display_game_over(int score) {
   DrawText(
       "Game Over!",
       HALF_SCREEN_WIDTH_SIZE - game_over_text_width / 2,
-      HALF_SCREEN_HEIGHT_SIZE - 200,
+      HALF_SCREEN_HEIGHT_SIZE - LARGE_PADDING * 2,
       EXTRA_LARGE_FONT_SIZE,
       RED
     );
@@ -160,7 +163,7 @@ static void display_game_over(int score) {
   DrawText(
       curr_highscore,
       HALF_SCREEN_WIDTH_SIZE - highscore_text_width / 2,
-      HALF_SCREEN_HEIGHT_SIZE + 400,
+      HALF_SCREEN_HEIGHT_SIZE + LARGE_PADDING * 4,
       MEDIUM_FONT_SIZE,
       LIME
     );
@@ -169,7 +172,7 @@ static void display_game_over(int score) {
     DrawText(
         "Congratulations!",
         HALF_SCREEN_WIDTH_SIZE - new_highscore_text_width_1 / 2,
-        HALF_SCREEN_HEIGHT_SIZE + 600,
+        HALF_SCREEN_HEIGHT_SIZE + LARGE_PADDING * 6,
         SMALL_FONT_SIZE,
         LIME
       );
@@ -177,7 +180,7 @@ static void display_game_over(int score) {
     DrawText(
         "new highscore detected",
         HALF_SCREEN_WIDTH_SIZE - new_highscore_text_width_2 / 2,
-        HALF_SCREEN_HEIGHT_SIZE + 640,
+        HALF_SCREEN_HEIGHT_SIZE + LARGE_PADDING * 6 + SMALL_PADDING * 4,
         SMALL_FONT_SIZE,
         LIME
       );

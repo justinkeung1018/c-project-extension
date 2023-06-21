@@ -21,7 +21,7 @@ typedef struct Spaceship *Spaceship;
  *
  * @return The initial spaceship.
  */
-extern Spaceship spaceship_initialise(void);
+extern Spaceship spaceship_initialise(float pos_x, float pos_y, Color color);
 
 /**
  * Frees the spaceship.

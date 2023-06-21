@@ -121,8 +121,14 @@ void display_loading_animation(Loader loader) {
       break;
 
     case LETTERS_APPEARING:
-      DrawRectangle(half_width, half_height, loader->top_line_width, SMALL_REC_HEIGHT, Fade(WHITE, loader->alpha));
-      DrawRectangle(half_width,
+      DrawRectangle(
+          half_width,
+          half_height,
+          loader->top_line_width,
+          SMALL_REC_HEIGHT,
+          Fade(WHITE, loader->alpha));
+      DrawRectangle(
+          half_width,
           half_height + EXTRA_SMALL_OFFSET,
           SMALL_REC_WIDTH,
           loader->left_line_height - SMALL_OFFSET,
@@ -135,7 +141,8 @@ void display_loading_animation(Loader loader) {
           loader->right_line_height - SMALL_OFFSET,
           Fade(WHITE, loader->alpha)
         );
-      DrawRectangle(half_width,
+      DrawRectangle(
+          half_width,
           half_height + LARGE_OFFSET,
           loader->bottom_line_width,
           SMALL_REC_HEIGHT,

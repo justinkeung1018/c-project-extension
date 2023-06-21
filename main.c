@@ -1,6 +1,8 @@
 #include <math.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "asteroids.h"
 #include "bullet.h"
@@ -14,6 +16,7 @@
 #define NUM_BULLETS_PER_SECOND     20
 
 // Font sizes
+#define EXTRA_LARGE_FONT_SIZE      200
 #define LARGE_FONT_SIZE            100
 #define MEDIUM_FONT_SIZE           80
 #define SMALL_FONT_SIZE            40
@@ -92,10 +95,101 @@ static void display_debugging_stats(void) {
   DrawFPS(GetScreenWidth() - FPS_PADDING, SMALL_PADDING + SMALL_TEXT_HEIGHT);
 }
 
-static void display_game_over(void) {
-  int game_over_text_width = MeasureText("Game Over!", LARGE_FONT_SIZE);
+static void display_score(int score) {
+  char curr_score[100] = "Score: ";
 
-  DrawText("Game Over!", HALF_SCREEN_WIDTH_SIZE - game_over_text_width/2, HALF_SCREEN_HEIGHT_SIZE, LARGE_FONT_SIZE, RED);
+  char score_str[5];
+  sprintf(score_str, "%d", score);
+
+  strcat(curr_score, score_str);
+
+  int curr_score_text_width = MeasureText(curr_score, SMALL_FONT_SIZE);
+
+  DrawText(
+      curr_score,
+      HALF_SCREEN_WIDTH_SIZE - curr_score_text_width / 2,
+      10,
+      SMALL_FONT_SIZE,
+      GOLD
+    );
+}
+
+static void display_victory(void) {
+  int vtx = MeasureText("Victory!", EXTRA_LARGE_FONT_SIZE);
+  int exit_instruction_text_width = MeasureText("Press ENTER to Exit", LARGE_FONT_SIZE);
+
+  DrawText(
+      "Victory!",
+      HALF_SCREEN_WIDTH_SIZE - vtx / 2,
+      HALF_SCREEN_HEIGHT_SIZE - 200,
+      EXTRA_LARGE_FONT_SIZE,
+      GOLD
+    );
+
+  DrawText(
+      "Press ENTER to Exit",
+      HALF_SCREEN_WIDTH_SIZE - exit_instruction_text_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE + 100,
+      LARGE_FONT_SIZE,
+      GOLD
+    );
+}
+
+static void display_game_over(int score) {
+  int highscore = get_highscore();
+  char highscore_str[5];
+  sprintf(highscore_str, "%d", highscore);
+
+  char curr_highscore[] = "Current Highscore: ";
+  strcat(curr_highscore, highscore_str);
+
+  int game_over_text_width = MeasureText("Game Over!", EXTRA_LARGE_FONT_SIZE);
+  int exit_instruction_text_width = MeasureText("Press ENTER to Exit", LARGE_FONT_SIZE);
+  int highscore_text_width = MeasureText(curr_highscore, MEDIUM_FONT_SIZE);
+  int new_highscore_text_width_1 = MeasureText("Congratulations!", SMALL_FONT_SIZE);
+  int new_highscore_text_width_2 = MeasureText("new highscore detected", SMALL_FONT_SIZE);
+
+  DrawText(
+      "Game Over!",
+      HALF_SCREEN_WIDTH_SIZE - game_over_text_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE - 200,
+      EXTRA_LARGE_FONT_SIZE,
+      RED
+    );
+
+  DrawText(
+      curr_highscore,
+      HALF_SCREEN_WIDTH_SIZE - highscore_text_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE + 400,
+      MEDIUM_FONT_SIZE,
+      LIME
+    );
+
+  if (score > highscore) {
+    DrawText(
+        "Congratulations!",
+        HALF_SCREEN_WIDTH_SIZE - new_highscore_text_width_1 / 2,
+        HALF_SCREEN_HEIGHT_SIZE + 600,
+        SMALL_FONT_SIZE,
+        LIME
+      );
+
+    DrawText(
+        "new highscore detected",
+        HALF_SCREEN_WIDTH_SIZE - new_highscore_text_width_2 / 2,
+        HALF_SCREEN_HEIGHT_SIZE + 640,
+        SMALL_FONT_SIZE,
+        LIME
+      );
+  }
+
+  DrawText(
+      "Press ENTER to Exit",
+      HALF_SCREEN_WIDTH_SIZE - exit_instruction_text_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE,
+      LARGE_FONT_SIZE,
+      RED
+    );
 }
 
 static void display_help_ui(void) {
@@ -140,16 +234,25 @@ int main(void) {
   bool exit_window_drawn = false;
   bool exit_window = false;
 
-  // [Highscore test]
-  int score = 1658235; // TODO()
+  // [Initialise score]
+  int score = 0;
 
   // [Drawing]
   while (!exit_window) {
     BeginDrawing();
 
-    if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE) || list_length(as) == 0) {
+    display_score(score);
+
+    if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) {
       // freeze all entities
       exit_window_requested = true;
+    }
+
+    if (list_length(as) == 0) {
+      display_victory();
+      if (IsKeyPressed(KEY_ENTER)) {
+        exit_window = true;
+      }
     }
 
     if (exit_window_requested && !game_over_requested) {
@@ -158,7 +261,6 @@ int main(void) {
         exit_window_drawn = true;
       }
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-        write_highscore(score);
         exit_window = true;
         exit_window_drawn = false;
       } else if (IsKeyPressed(KEY_N)) {
@@ -219,16 +321,17 @@ int main(void) {
       Asteroid a = list_get(as, i);
       if (collides_asteroid_spaceship(a, spaceship)) {
         game_over_requested = true;
-        display_game_over();
+        display_game_over(score);
+        write_highscore(score);
       }
       bool asteroid_broken = false;
       for (int j = 0; j < list_length(bullets); j++) {
         Bullet b = list_get(bullets, j);
         if (collides_asteroid_bullet(a, b)) {
           if (!asteroid_broken) {
-            // TODO: increment score here
             // Handle edge case where multiple bullets collide with the same asteroid
             // to avoid breaking the same asteroid more than once
+            score++;
             asteroid_break(as, i);
             asteroid_broken = true;
           }

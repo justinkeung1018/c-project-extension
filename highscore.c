@@ -8,7 +8,7 @@
 
 #define HIGHSCORE_FILE_NAME "highscore.data"
 
-static int get_highscore(void) {
+int get_highscore(void) {
   assert(FileExists(HIGHSCORE_FILE_NAME));
 
   int highscore = 0;
@@ -26,7 +26,7 @@ static int get_highscore(void) {
 
 bool write_highscore(int score) {
   int highscore = get_highscore();
-  char buf[100];
+  char buf[5];
 
   sprintf(buf, "%d", score);
 

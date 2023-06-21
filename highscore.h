@@ -3,6 +3,11 @@
 
 #include "raylib.h"
 
+//TODO
+// 1. include deoxygen documentation
+
+extern int get_highscore(void);
+
 extern bool write_highscore(int score);
 
 #endif

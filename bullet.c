@@ -22,8 +22,8 @@ static Bullet bullet_init_helper(float pos_x, float pos_y, float radius, float s
     exit(EXIT_FAILURE);
   }
 
-  b->pos.x = pos_x;
-  b->pos.y = pos_y;
+  b->position.x = pos_x;
+  b->position.y = pos_y;
   b->radius = radius;
   b->speed = speed;
   b->rotation = rotation;
@@ -41,12 +41,12 @@ void bullet_free(void *b) {
 }
 
 void bullet_draw(Bullet b) {
-  DrawCircleV(b->pos, b->radius, b->color);
+  DrawCircleV(b->position, b->radius, b->color);
 }
 
 void bullet_move(Bullet b) {
-  b->pos.x += cos(b->rotation) * b->speed;
-  b->pos.y += sin(b->rotation) * b->speed;
+  b->position.x += cos(b->rotation) * b->speed;
+  b->position.y += sin(b->rotation) * b->speed;
 }
 
 static void bullet_for_each_void(List bs, ForEachFunc function) {
@@ -68,7 +68,7 @@ List bullet_init_all() {
 }
 
 bool bullet_in_screen(Bullet b) {
-  return 0 <= b->pos.x && b->pos.x <= GetScreenWidth() && 0 <= b->pos.y && b->pos.y <= GetScreenHeight();
+  return 0 <= b->position.x && b->position.x <= GetScreenWidth() && 0 <= b->position.y && b->position.y <= GetScreenHeight();
 }
 
 void bullet_despawn_all_off_screen(List bs) {

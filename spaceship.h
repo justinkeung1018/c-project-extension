@@ -1,12 +1,14 @@
 #ifndef SPACESHIP_H
 #define SPACESHIP_H
 
+#include "collision.h"
 #include "list.h"
 #include "raylib.h"
 
 struct Spaceship {
   Vector2 position;
   Vector2 velocity;
+  Collider collider;
   double acceleration;
   double rotation;
   Color color;

@@ -141,7 +141,6 @@ int main(void) {
     );
 
   // if (multiplayer selected)
-  /*
   list_push(
       players,
       player_initialise(
@@ -158,7 +157,6 @@ int main(void) {
         shoot_sound
       )
     );
-  */
 
   List as = asteroids_create();
 
@@ -202,7 +200,7 @@ int main(void) {
     bool can_shoot = shoot_counter == 0;
 
     for (int i = 0; i < list_length(players); i++) {
-      player_control((Player)list_get(players, i), can_shoot);
+      player_control(list_get(players, i), can_shoot);
     }
 
     DrawText(
@@ -220,18 +218,18 @@ int main(void) {
     asteroids_move(as);
 
     for (int i = 0; i < list_length(players); i++) {
-      player_move((Player)list_get(players, i));
+      player_move(list_get(players, i));
     }
 
     for (int i = 0; i < list_length(players); i++) {
-      bool player_lost = player_check_collision((Player)list_get(players, i), as);
+      bool player_lost = player_check_collision(list_get(players, i), as);
       exit_window_requested = exit_window_requested || player_lost;
     }
 
     asteroids_draw(as);
 
     for (int i = 0; i < list_length(players); i++) {
-      player_draw((Player)list_get(players, i));
+      player_draw(list_get(players, i));
     }
 
     if (IsKeyDown(KEY_TAB)) {
@@ -243,14 +241,14 @@ int main(void) {
     EndDrawing();
 
     for (int i = 0; i < list_length(players); i++) {
-      player_despawn_all_off_screen((Player)list_get(players, i));
+      player_despawn_all_off_screen(list_get(players, i));
     }
   }
 
   // [Free]
 
   for (int i = 0; i < list_length(players); i++) {
-    player_free((Player)list_get(players, i));
+    player_free(list_get(players, i));
   }
   asteroids_free(as);
   UnloadMusicStream(music);

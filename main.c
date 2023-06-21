@@ -167,17 +167,9 @@ int main(void) {
       continue;
     }
 
-    UpdateMusicStream(music);
-
     ClearBackground(BLACK);
-
+    UpdateMusicStream(music);
     can_shoot = (can_shoot + 1) % (int)ceil(1.0 * FPS / NUM_BULLETS_PER_SECOND);
-
-    asteroids_move(as);
-    asteroids_draw(as);
-
-    spaceship_move(spaceship);
-    spaceship_draw(spaceship);
 
     if (IsKeyDown(KEY_SPACE) && can_shoot == 0) {
       spaceship_shoot(spaceship, bullets);

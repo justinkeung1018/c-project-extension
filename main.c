@@ -6,6 +6,7 @@
 #include "bullet.h"
 #include "collision.h"
 #include "list.h"
+#include "loading.h"
 #include "raylib.h"
 #include "spaceship.h"
 
@@ -13,10 +14,10 @@
 #define NUM_BULLETS_PER_SECOND     20
 
 // Font sizes
-#define LARGE_FONT_SIZE            100
-#define MEDIUM_FONT_SIZE           80
-#define SMALL_FONT_SIZE            40
 #define EXTRA_SMALL_FONT_SIZE      20
+#define SMALL_FONT_SIZE            40
+#define MEDIUM_FONT_SIZE           80
+#define LARGE_FONT_SIZE            100
 
 // Text height
 #define SMALL_TEXT_HEIGHT          20
@@ -112,6 +113,9 @@ int main(void) {
   ToggleFullscreen();
   SetTargetFPS(FPS);
 
+  // [Setup loading screen]
+  Loader loader = loading_initialise();
+
   // [Initialise variables]
   Spaceship spaceship = spaceship_initialise();
   List as = asteroids_create();
@@ -131,12 +135,20 @@ int main(void) {
   bool exit_window_drawn = false;
   bool exit_window = false;
 
+  while (!loader->fully_loaded) {
+    BeginDrawing();
+    ClearBackground(BLACK);
+
+    update_variables(loader);
+    display_loading_animation(loader);
+    EndDrawing();
+  }
+
   // [Drawing]
   while (!exit_window) {
     BeginDrawing();
 
     if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE) || list_length(as) == 0) {
-      // freeze all entities
       exit_window_requested = true;
     }
 
@@ -146,7 +158,6 @@ int main(void) {
         exit_window_drawn = true;
       }
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-        // save data here
         exit_window = true;
         exit_window_drawn = false;
       } else if (IsKeyPressed(KEY_N)) {
@@ -226,12 +237,13 @@ int main(void) {
       display_help_ui();
     }
 
-    EndDrawing();
-
     bullet_despawn_all_off_screen(bullets);
+
+    EndDrawing();
   }
 
   // [Free]
+  loader_free(loader);
   spaceship_free(spaceship);
   bullet_free_all(bullets);
   asteroids_free(as);

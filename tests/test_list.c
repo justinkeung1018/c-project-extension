@@ -58,10 +58,7 @@ static void test_list_grow(void) {
 
   List l = list_create(original_cap, mock_object_free);
 
-  for (int i = 0; i < NUM_OBJECTS; i++) {
-    MockObject mo = mock_object_create(i);
-    list_push(l, mo);
-  }
+  populate(l);
 
   bool pushed_all = l->len == NUM_OBJECTS;
   bool grew = original_cap < l->cap && l->cap > NUM_OBJECTS;

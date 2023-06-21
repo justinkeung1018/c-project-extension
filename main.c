@@ -168,6 +168,10 @@ int main(void) {
   // [Setup loading screen]
   Loader loader = loading_initialise();
 
+  // [Initialise game mode selection variables]
+  bool selected = false;
+  int selection = 0;
+
   // [Initialise variables]
   Spaceship spaceship = spaceship_initialise();
   List as = asteroids_create();
@@ -187,7 +191,6 @@ int main(void) {
   bool exit_window_drawn = false;
   bool exit_window = false;
 
-  /*
   while (!loader->fully_loaded) {
     BeginDrawing();
     ClearBackground(BLACK);
@@ -196,12 +199,6 @@ int main(void) {
     display_loading_animation(loader);
     EndDrawing();
   }
-  */
-
-
-
-  bool selected = false;
-  int selection = 0;
 
   while (!selected) {
     BeginDrawing();

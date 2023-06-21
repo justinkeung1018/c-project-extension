@@ -265,6 +265,7 @@ int main(void) {
 
     if (list_length(as) == 0) {
       display_victory();
+      write_highscore(score);
       if (IsKeyPressed(KEY_ENTER)) {
         exit_window = true;
       }

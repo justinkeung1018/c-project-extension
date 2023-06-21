@@ -9,6 +9,7 @@
 #include "collision.h"
 #include "highscore.h"
 #include "list.h"
+#include "loading.h"
 #include "raylib.h"
 #include "spaceship.h"
 
@@ -16,11 +17,11 @@
 #define NUM_BULLETS_PER_SECOND     20
 
 // Font sizes
-#define EXTRA_LARGE_FONT_SIZE      200
-#define LARGE_FONT_SIZE            100
-#define MEDIUM_FONT_SIZE           80
-#define SMALL_FONT_SIZE            40
 #define EXTRA_SMALL_FONT_SIZE      20
+#define SMALL_FONT_SIZE            40
+#define MEDIUM_FONT_SIZE           80
+#define LARGE_FONT_SIZE            100
+#define EXTRA_LARGE_FONT_SIZE      200
 
 // Text height
 #define SMALL_TEXT_HEIGHT          20
@@ -216,6 +217,9 @@ int main(void) {
   ToggleFullscreen();
   SetTargetFPS(FPS);
 
+  // [Setup loading screen]
+  Loader loader = loading_initialise();
+
   // [Initialise variables]
   Spaceship spaceship = spaceship_initialise();
   List as = asteroids_create();
@@ -240,6 +244,15 @@ int main(void) {
   // [Initialise score]
   int score = 0;
 
+  while (!loader->fully_loaded) {
+    BeginDrawing();
+    ClearBackground(BLACK);
+
+    update_variables(loader);
+    display_loading_animation(loader);
+    EndDrawing();
+  }
+
   // [Drawing]
   while (!exit_window) {
     BeginDrawing();
@@ -247,7 +260,6 @@ int main(void) {
     display_score(score);
 
     if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) {
-      // freeze all entities
       exit_window_requested = true;
     }
 
@@ -354,12 +366,13 @@ int main(void) {
       display_help_ui();
     }
 
-    EndDrawing();
-
     bullet_despawn_all_off_screen(bullets);
+
+    EndDrawing();
   }
 
   // [Free]
+  loader_free(loader);
   spaceship_free(spaceship);
   bullet_free_all(bullets);
   asteroids_free(as);

@@ -135,7 +135,12 @@ void display_loading_animation(Loader loader) {
           loader->right_line_height - SMALL_OFFSET,
           Fade(WHITE, loader->alpha)
         );
-      DrawRectangle(half_width, half_height + LARGE_OFFSET, loader->bottom_line_width, SMALL_REC_HEIGHT, Fade(WHITE, loader->alpha));
+      DrawRectangle(half_width,
+          half_height + LARGE_OFFSET,
+          loader->bottom_line_width,
+          SMALL_REC_HEIGHT,
+          Fade(WHITE, loader->alpha)
+        );
       DrawText(
           TextSubtext("asteroids", 0, loader->letters_count),
           GetScreenWidth() / 2 - title_string_width / 2,

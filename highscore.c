@@ -1,15 +1,17 @@
 #include "highscore.h"
 
-#include "raylib.h"
-
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "raylib.h"
+
 #define HIGHSCORE_FILE_NAME "highscore.data"
 
 int get_highscore(void) {
-  assert(FileExists(HIGHSCORE_FILE_NAME));
+  if (!FileExists(HIGHSCORE_FILE_NAME)) {
+    SaveFileText(HIGHSCORE_FILE_NAME, "0");
+  }
 
   int highscore = 0;
   char *buf;

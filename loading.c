@@ -1,9 +1,9 @@
-#include "raylib.h"
+#include "loading.h"
 
 #include <assert.h>
 #include <stdlib.h>
 
-#include "loading.h"
+#include "raylib.h"
 
 // Positional constants
 #define STARTING_POSITION      16

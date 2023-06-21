@@ -161,6 +161,7 @@ int main(void) {
         exit_window = true;
         exit_window_drawn = false;
       } else if (IsKeyPressed(KEY_N)) {
+        exit_window_drawn = false;
         exit_window_requested = false;
       }
       EndDrawing();

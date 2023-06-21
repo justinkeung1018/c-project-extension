@@ -1,4 +1,4 @@
-#include "asteroids.h"
+#include "asteroid.h"
 
 #include <assert.h>
 #include <math.h>
@@ -40,7 +40,7 @@ static void asteroid_free(void *a) {
   free((Asteroid)a);
 }
 
-void asteroids_free(List as) {
+void asteroid_free_all(List as) {
   list_free(as);
   unload_asteroid_texture();
 }
@@ -66,7 +66,7 @@ static Asteroid asteroid_create(void) {
   return a;
 }
 
-List asteroids_create(void) {
+List asteroid_create_all(void) {
   srand(SEED);
   load_asteroid_texture();
   List as = list_create(NUM_ASTEROIDS, asteroid_free);
@@ -79,7 +79,7 @@ List asteroids_create(void) {
   return as;
 }
 
-void asteroids_draw(List as) {
+void asteroid_draw_all(List as) {
   for (int i = 0; i < as->len; i++) {
     Asteroid a = list_get(as, i);
     Rectangle a_rec = { a->position.x, a->position.y, a->size, a->size };
@@ -95,7 +95,7 @@ void asteroids_draw(List as) {
   }
 }
 
-void asteroids_move(List as) {
+void asteroid_move_all(List as) {
   for (int i = 0; i < as->len; i++) {
     Asteroid a = list_get(as, i);
     a->position.x = Wrap(a->position.x + a->velocity.x, 0 - a->size, GetScreenWidth());

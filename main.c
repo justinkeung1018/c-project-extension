@@ -6,6 +6,7 @@
 #include "bullet.h"
 #include "collision.h"
 #include "list.h"
+#include "loading.h"
 #include "raylib.h"
 #include "spaceship.h"
 
@@ -13,10 +14,10 @@
 #define NUM_BULLETS_PER_SECOND     20
 
 // Font sizes
-#define LARGE_FONT_SIZE            100
-#define MEDIUM_FONT_SIZE           80
-#define SMALL_FONT_SIZE            40
 #define EXTRA_SMALL_FONT_SIZE      20
+#define SMALL_FONT_SIZE            40
+#define MEDIUM_FONT_SIZE           80
+#define LARGE_FONT_SIZE            100
 
 // Text height
 #define SMALL_TEXT_HEIGHT          20
@@ -91,11 +92,29 @@ static void display_debugging_stats(void) {
   DrawFPS(GetScreenWidth() - FPS_PADDING, SMALL_PADDING + SMALL_TEXT_HEIGHT);
 }
 
+static void display_help_ui(void) {
+  DrawText("Press Tab for Controls", SMALL_PADDING, SMALL_PADDING, SMALL_FONT_SIZE, WHITE);
+}
+
+static void display_controls(void) {
+  DrawRectangle(SMALL_PADDING, SMALL_PADDING, 875, 310, Fade(SKYBLUE, 0.5f));
+  DrawRectangleLines(SMALL_PADDING, SMALL_PADDING, 875, 310, BLUE);
+
+  DrawText("Spaceship Controls:", 20, 20, 50, BLACK);
+  DrawText("- [UP ARROW] to Accelerate", 40, 80, 50, BLACK);
+  DrawText("- [LEFT ARROW] to Steer Left", 40, 140, 50, BLACK);
+  DrawText("- [RIGHT ARROW] to Steer Right", 40, 200, 50, BLACK);
+  DrawText("- [SPACE] to Shoot", 40, 260, 50, BLACK);
+}
+
 int main(void) {
   // [Initialise screen]
   InitWindow(0, 0, "Asteroids");
   ToggleFullscreen();
   SetTargetFPS(FPS);
+
+  // [Setup loading screen]
+  Loader loader = loading_initialise();
 
   // [Initialise variables]
   Spaceship spaceship = spaceship_initialise();
@@ -116,12 +135,20 @@ int main(void) {
   bool exit_window_drawn = false;
   bool exit_window = false;
 
+  while (!loader->fully_loaded) {
+    BeginDrawing();
+    ClearBackground(BLACK);
+
+    update_variables(loader);
+    display_loading_animation(loader);
+    EndDrawing();
+  }
+
   // [Drawing]
   while (!exit_window) {
     BeginDrawing();
 
     if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE) || list_length(as) == 0) {
-      // freeze all entities
       exit_window_requested = true;
     }
 
@@ -131,10 +158,10 @@ int main(void) {
         exit_window_drawn = true;
       }
       if (IsKeyPressed(KEY_Y) || IsKeyPressed(KEY_ENTER)) {
-        // save data here
         exit_window = true;
         exit_window_drawn = false;
       } else if (IsKeyPressed(KEY_N)) {
+        exit_window_drawn = false;
         exit_window_requested = false;
       }
       EndDrawing();
@@ -205,12 +232,19 @@ int main(void) {
     bullet_draw_all(bullets);
     spaceship_draw(spaceship);
 
-    EndDrawing();
+    if (IsKeyDown(KEY_TAB)) {
+      display_controls();
+    } else {
+      display_help_ui();
+    }
 
     bullet_despawn_all_off_screen(bullets);
+
+    EndDrawing();
   }
 
   // [Free]
+  loader_free(loader);
   spaceship_free(spaceship);
   bullet_free_all(bullets);
   asteroid_free_all(as);

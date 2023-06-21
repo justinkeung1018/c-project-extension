@@ -19,6 +19,10 @@ typedef struct Spaceship *Spaceship;
 /**
  * Initialises the spaceship.
  *
+ * @param pos_x Initial x position of the spaceship.
+ * @param pos_y Initial y position of the spaceship.
+ * @param color Color of the spaceship.
+ *
  * @return The initial spaceship.
  */
 extern Spaceship spaceship_initialise(float pos_x, float pos_y, Color color);

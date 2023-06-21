@@ -1,6 +1,6 @@
 #include "collision.h"
 
-#include "asteroids.h"
+#include "asteroid.h"
 #include "bullet.h"
 #include "raymath.h"
 #include "spaceship.h"

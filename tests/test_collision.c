@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "asteroids.h"
+#include "asteroid.h"
 #include "bullet.h"
 #include "collision.h"
 #include "raylib.h"

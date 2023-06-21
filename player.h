@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#include "asteroids.h"
+#include "asteroid.h"
 #include "bullet.h"
 #include "spaceship.h"
 

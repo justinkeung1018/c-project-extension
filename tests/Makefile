@@ -11,9 +11,10 @@ LDLIBS = -L../raylib/src -lraylib -lm
 
 all: src test
 
-test: test.o test_collision.o test_utils.o ../collision.o ../spaceship.o ../list.o ../bullet.o
+test: test.o test_collision.o test_list.o test_utils.o ../collision.o ../spaceship.o ../list.o ../bullet.o
 
 test_collision.o: test_collision.h test_utils.h
+test_list.o: test_list.h test_utils.h
 test_utils.o: test_utils.h
 
 src:

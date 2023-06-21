@@ -11,7 +11,7 @@ LDLIBS  = -Lraylib/src -lraylib -lm
 
 all: main 
 
-main: main.o spaceship.o asteroid.o bullet.o list.o collision.o loading.o
+main: main.o spaceship.o asteroid.o bullet.o list.o collision.o highscore.o loading.o
 
 asteroid.o: asteroid.h list.h
 bullet.o: bullet.h list.h

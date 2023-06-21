@@ -2,6 +2,7 @@
 #include "test_bullet.h"
 #include "test_collision.h"
 #include "test_spaceship.h"
+#include "test_list.h"
 
 int main(void) {
   test_collides_asteroid_spaceship();
@@ -17,6 +18,7 @@ int main(void) {
   test_bullet_despawn_all_off_screen();
   test_asteroid_move_all();
   test_asteroid_break();
+  test_list();
   return 0;
 }
 

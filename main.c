@@ -271,7 +271,7 @@ int main(void) {
       }
     }
 
-    if (exit_window_requested && !game_over_requested) {
+    if (exit_window_requested && !game_over_requested && list_length(as) != 0) {
       if (!exit_window_drawn) {
         display_exit_screen();
         exit_window_drawn = true;

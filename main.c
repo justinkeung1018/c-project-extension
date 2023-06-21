@@ -10,6 +10,7 @@
 #include "highscore.h"
 #include "list.h"
 #include "loading.h"
+#include "player.h"
 #include "raylib.h"
 #include "spaceship.h"
 
@@ -32,6 +33,7 @@
 #define LARGE_PADDING              100
 #define EXTRA_LARGE_PADDING        1000
 #define FPS_PADDING                80
+#define SPACESHIP_SEPARATION       100
 
 // Various screen sizes
 #define SCREEN_WIDTH               GetScreenWidth()
@@ -220,20 +222,55 @@ int main(void) {
   // [Setup loading screen]
   Loader loader = loading_initialise();
 
-  // [Initialise variables]
-  Spaceship spaceship = spaceship_initialise();
-  List as = asteroid_create_all();
-  List bullets = bullet_init_all();
-  int can_shoot = 0;
-
-  bool game_over_requested = false;
-
   // [Initialise audio]
   InitAudioDevice();
   Music music = LoadMusicStream("resources/bgm.mp3");
-  Sound sound = LoadSound("resources/shoot.wav");
-  // to implement explosion when we combine other files
+  Sound shoot_sound = LoadSound("resources/shoot.wav");
   PlayMusicStream(music);
+
+  // [Initialise variables]
+  List players = list_create(2, player_free);
+
+  list_push(
+      players,
+      player_initialise(
+        spaceship_initialise(
+            HALF_SCREEN_WIDTH_SIZE - SPACESHIP_SEPARATION,
+            HALF_SCREEN_HEIGHT_SIZE,
+            RED
+          ),
+        bullet_init_all(),
+        KEY_UP,
+        KEY_LEFT,
+        KEY_RIGHT,
+        KEY_DOWN,
+        shoot_sound
+      )
+    );
+
+  // if (multiplayer selected)
+  list_push(
+      players,
+      player_initialise(
+        spaceship_initialise(
+            HALF_SCREEN_WIDTH_SIZE + SPACESHIP_SEPARATION,
+            HALF_SCREEN_HEIGHT_SIZE,
+            BLUE
+          ),
+        bullet_init_all(),
+        KEY_W,
+        KEY_A,
+        KEY_D,
+        KEY_S,
+        shoot_sound
+      )
+    );
+
+  List as = asteroid_create_all();
+
+  int shoot_counter = 0;
+
+  bool game_over_requested = false;
 
   // [Initialise exit variables]
   SetExitKey(KEY_NULL);
@@ -297,25 +334,12 @@ int main(void) {
 
     ClearBackground(BLACK);
     UpdateMusicStream(music);
-    can_shoot = (can_shoot + 1) % (int)ceil(1.0 * FPS / NUM_BULLETS_PER_SECOND);
 
-    if (IsKeyDown(KEY_SPACE) && can_shoot == 0) {
-      spaceship_shoot(spaceship, bullets);
-      PlaySound(sound); // combine this with other components
-    }
+    shoot_counter = (shoot_counter + 1) % (int)ceil(1.0 * FPS / NUM_BULLETS_PER_SECOND);
+    bool can_shoot = shoot_counter == 0;
 
-    if (IsKeyDown(KEY_UP)) {
-      spaceship_accelerate(spaceship);
-    } else {
-      spaceship_reset_acceleration(spaceship);
-    }
-
-    if (IsKeyDown(KEY_LEFT)) {
-      spaceship_rotate_left(spaceship);
-    }
-
-    if (IsKeyDown(KEY_RIGHT)) {
-      spaceship_rotate_right(spaceship);
+    for (int i = 0; i < list_length(players); i++) {
+      player_control(list_get(players, i), can_shoot);
     }
 
     DrawText(
@@ -331,36 +355,25 @@ int main(void) {
     }
 
     asteroid_move_all(as);
-    bullet_move_all(bullets);
-    spaceship_move(spaceship);
 
-    for (int i = 0; i < list_length(as); i++) {
-      Asteroid a = list_get(as, i);
-      if (collides_asteroid_spaceship(a, spaceship)) {
+    for (int i = 0; i < list_length(players); i++) {
+      player_move(list_get(players, i));
+    }
+
+    for (int i = 0; i < list_length(players); i++) {
+      bool player_lost = player_check_collision(list_get(players, i), as, &score);
+      if (player_lost) {
         game_over_requested = true;
         display_game_over(score);
         write_highscore(score);
       }
-      bool asteroid_broken = false;
-      for (int j = 0; j < list_length(bullets); j++) {
-        Bullet b = list_get(bullets, j);
-        if (collides_asteroid_bullet(a, b)) {
-          if (!asteroid_broken) {
-            // Handle edge case where multiple bullets collide with the same asteroid
-            // to avoid breaking the same asteroid more than once
-            score++;
-            asteroid_break(as, i);
-            asteroid_broken = true;
-          }
-          list_remove(bullets, j);
-          bullet_free(b);
-        }
-      }
     }
 
     asteroid_draw_all(as);
-    bullet_draw_all(bullets);
-    spaceship_draw(spaceship);
+
+    for (int i = 0; i < list_length(players); i++) {
+      player_draw(list_get(players, i));
+    }
 
     if (IsKeyDown(KEY_TAB)) {
       display_controls();
@@ -368,15 +381,18 @@ int main(void) {
       display_help_ui();
     }
 
-    bullet_despawn_all_off_screen(bullets);
+    for (int i = 0; i < list_length(players); i++) {
+      player_despawn_all_off_screen(list_get(players, i));
+    }
 
     EndDrawing();
   }
 
   // [Free]
+  for (int i = 0; i < list_length(players); i++) {
+    player_free(list_get(players, i));
+  }
   loader_free(loader);
-  spaceship_free(spaceship);
-  bullet_free_all(bullets);
   asteroid_free_all(as);
   UnloadMusicStream(music);
   CloseAudioDevice();

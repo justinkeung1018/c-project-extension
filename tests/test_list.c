@@ -36,19 +36,14 @@ static void populate(List l) {
 
 static void test_list_initialise(void) {
   List l = list_create(NUM_OBJECTS, mock_object_free);
+  bool correct_init = true;
 
-  bool not_null = l != NULL;
-  bool empty = l->len == 0;
-  bool correct_capacity = l->cap == NUM_OBJECTS;
-  bool correct_ff = l->ff == mock_object_free;
+  correct_init = correct_init && l != NULL;
+  correct_init = correct_init && l->len == 0;
+  correct_init = correct_init && l->cap == NUM_OBJECTS;
+  correct_init = correct_init && l->ff == mock_object_free;
 
-  assert_true(
-      not_null
-      && empty
-      && correct_capacity
-      && correct_ff,
-      __func__
-    );
+  assert_true(correct_init, __func__);
 
   list_free(l);
 }

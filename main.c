@@ -38,6 +38,9 @@ int main(void) {
   PlayMusicStream(music);
 
   // [Initialise variables]
+  int shoot_counter = 0;
+  bool game_over_requested = false;
+  List as = asteroid_create_all();
   List players = list_create(2, player_free);
 
   list_push(
@@ -57,12 +60,6 @@ int main(void) {
       )
     );
 
-  List as = asteroid_create_all();
-
-  int shoot_counter = 0;
-
-  bool game_over_requested = false;
-
   // [Initialise exit variables]
   SetExitKey(KEY_NULL);
   bool exit_window_requested = false;
@@ -72,6 +69,7 @@ int main(void) {
   // [Initialise score]
   int score = 0;
 
+  // [Loading screen]
   while (!loader->fully_loaded) {
     BeginDrawing();
     ClearBackground(BLACK);
@@ -81,6 +79,7 @@ int main(void) {
     EndDrawing();
   }
 
+  // [Gamemode selection screen]
   while (!selected) {
     BeginDrawing();
     ClearBackground(BLACK);

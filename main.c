@@ -15,8 +15,8 @@
 #include "spaceship.h"
 #include "userinterface.h"
 
-#define FPS                        60
-#define NUM_BULLETS_PER_SECOND     20
+#define FPS                    60
+#define NUM_BULLETS_PER_SECOND 20
 
 int main(void) {
   // [Initialise screen]

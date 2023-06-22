@@ -39,7 +39,6 @@
  */
 extern void display_and_select_gamemode(int selection);
 
-
 /*
  * Displays the exit screen user interface.
  */

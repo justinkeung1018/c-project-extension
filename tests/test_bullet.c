@@ -11,11 +11,11 @@ void test_bullet_move() {
   Vector2 expected_vals[360];
   Vector2 result_vals[360];
   for (int i = 0; i < 360; i++) {
-    Radians rotation = ((double) i) / 180 * M_PI;
+    Radians rotation = ((double)i) / 180 * M_PI;
     Bullet b = bullet_init(1920, 1080, rotation, BLACK);
 
     Vector2 before = {1920, 1080};
-    Vector2 expected = (Vector2) {before.x + 25 * cos(rotation), before.y + 25 * sin(rotation)};
+    Vector2 expected = (Vector2){ before.x + 25 * cos(rotation), before.y + 25 * sin(rotation) };
 
     bullet_move(b);
 
@@ -43,7 +43,7 @@ void test_bullet_move_all() {
   Vector2 expected_vals[360];
   Vector2 result_vals[360];
   for (int i = 0; i < 360; i++) {
-    Bullet expected_b = (Bullet) list_get(expected_bs, i);
+    Bullet expected_b = (Bullet)list_get(expected_bs, i);
     Vector2 expected = (Vector2) {expected_b->position.x + expected_b->speed * cos(expected_b->rotation), expected_b->position.y + expected_b->speed * sin(expected_b->rotation)};
     expected_vals[i] = expected;
     result_vals[i] = ((Bullet) list_get(bs, i))->position;
@@ -57,7 +57,7 @@ void test_bullet_move_all() {
 
 static void test_bullet_in_screen_true() {
   Bullet b = bullet_init(1, 1, 0, BLACK);
-  assert_true(bullet_in_screen(b) ,__func__);
+  assert_true(bullet_in_screen(b), __func__);
   bullet_free(b);
 }
 

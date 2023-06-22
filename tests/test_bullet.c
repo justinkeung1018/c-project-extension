@@ -64,25 +64,25 @@ static void test_bullet_in_screen_true() {
 
 static void test_bullet_in_screen_false_1() {
   Bullet b = bullet_init(1921, 1080, 0, BLACK);
-  assert_false(bullet_in_screen(b) ,__func__);
+  assert_false(bullet_in_screen(b), __func__);
   bullet_free(b);
 }
 
 static void test_bullet_in_screen_false_2() {
   Bullet b = bullet_init(1920, 1081, 0, BLACK);
-  assert_false(bullet_in_screen(b) ,__func__);
+  assert_false(bullet_in_screen(b), __func__);
   bullet_free(b);
 }
 
 static void test_bullet_in_screen_false_3() {
   Bullet b = bullet_init(1921, 1081, 0, BLACK);
-  assert_false(bullet_in_screen(b) ,__func__);
+  assert_false(bullet_in_screen(b), __func__);
   bullet_free(b);
 }
 
 static void test_bullet_in_screen_false_4() {
   Bullet b = bullet_init(-1, -1, 0, BLACK);
-  assert_false(bullet_in_screen(b) ,__func__);
+  assert_false(bullet_in_screen(b), __func__);
   bullet_free(b);
 }
 

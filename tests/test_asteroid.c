@@ -9,7 +9,6 @@
 #include "raymath.h"
 #include "test_utils.h"
 
-
 void test_asteroid_move_all(void) {
   InitWindow(1920, 1080, "test");
   List as = asteroid_create_all();

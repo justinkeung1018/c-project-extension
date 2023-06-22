@@ -155,6 +155,7 @@ int main(void) {
 
     if (game_over_requested) {
       if (IsKeyDown(KEY_ENTER)) {
+        write_highscore(score);
         exit_window = true;
       }
       EndDrawing();
@@ -194,7 +195,6 @@ int main(void) {
       if (player_lost) {
         game_over_requested = true;
         display_game_over(score);
-        write_highscore(score);
       }
     }
 

@@ -6,33 +6,56 @@
 #include "highscore.h"
 #include "raylib.h"
 
-// Font sizes
-#define EXTRA_SMALL_FONT_SIZE      20
-#define SMALL_FONT_SIZE            40
-#define MEDIUM_FONT_SIZE           80
-#define LARGE_FONT_SIZE            100
-#define EXTRA_LARGE_FONT_SIZE      200
+void display_and_select_gamemode(int selection) {
+  int select_gamemode_string_width = MeasureText("Select Gamemode", EXTRA_LARGE_FONT_SIZE);
+  int singleplayer_string_width = MeasureText("Singleplayer", LARGE_FONT_SIZE);
+  int multiplayer_string_width = MeasureText("Multiplayer", LARGE_FONT_SIZE);
+  int confirmation_string_width = MeasureText("Press ENTER to Confirm", SMALL_FONT_SIZE);
 
-// Text height
-#define SMALL_TEXT_HEIGHT          20
+  int singleplayer_string_x = HALF_SCREEN_WIDTH_SIZE - singleplayer_string_width - LARGE_PADDING;
+  int multiplayer_string_x = HALF_SCREEN_WIDTH_SIZE + LARGE_PADDING;
+  int selection_string_y = HALF_SCREEN_HEIGHT_SIZE;
 
-// Padding
-#define SMALL_PADDING              10
-#define MEDIUM_PADDING             50
-#define LARGE_PADDING              100
-#define EXTRA_LARGE_PADDING        1000
-#define FPS_PADDING                80
-#define SPACESHIP_SEPARATION       100
+  DrawText(
+      "Select Gamemode",
+      HALF_SCREEN_WIDTH_SIZE - select_gamemode_string_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE - LARGE_PADDING * 5,
+      EXTRA_LARGE_FONT_SIZE,
+      WHITE
+    );
 
-// Various screen sizes
-#define SCREEN_WIDTH               GetScreenWidth()
-#define SCREEN_HEIGHT              GetScreenHeight()
-#define HALF_SCREEN_WIDTH_SIZE     GetScreenWidth() / 2
-#define HALF_SCREEN_HEIGHT_SIZE    GetScreenHeight() / 2
-#define QUARTER_SCREEN_HEIGHT_SIZE GetScreenHeight() / 4
+  DrawText(
+      "Singleplayer",
+      singleplayer_string_x,
+      selection_string_y,
+      LARGE_FONT_SIZE,
+      WHITE
+    );
 
-// Score constants
-#define SCORE_BUFFER_SIZE          100
+  DrawText(
+      "Multiplayer",
+      multiplayer_string_x,
+      selection_string_y,
+      LARGE_FONT_SIZE,
+      WHITE
+    );
+
+  DrawRectangle(
+      (selection == 0 ? singleplayer_string_x : multiplayer_string_x),
+      selection_string_y + LARGE_PADDING + SMALL_PADDING * 2,
+      (selection == 0 ? singleplayer_string_width : multiplayer_string_width),
+      10,
+      WHITE
+    );
+
+  DrawText(
+      "Press ENTER to Confirm",
+      HALF_SCREEN_WIDTH_SIZE - confirmation_string_width / 2,
+      HALF_SCREEN_HEIGHT_SIZE + QUARTER_SCREEN_HEIGHT_SIZE / 2,
+      SMALL_FONT_SIZE,
+      PURPLE
+    );
+}
 
 void display_exit_screen(void) {
   const char exit_message[] = "Are you sure you want to quit? [Y/N]";

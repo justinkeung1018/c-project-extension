@@ -35,7 +35,7 @@
  * Displays the screen for the user to select Singleplayer or Multiplayer.
  * Draws an underscore on the option currently selected by the user.
  *
- * @param 0 for Singleplayer and 1 for Multiplayer.
+ * @param selection 0 for Singleplayer and 1 for Multiplayer.
  */
 extern void display_and_select_gamemode(int selection);
 
@@ -53,7 +53,7 @@ extern void display_debugging_stats(void);
 /*
  * Displays the user's current score on the top of the screen.
  *
- * @param The user's current score.
+ * @param score The user's current score.
  */
 extern void display_score(int score);
 
@@ -65,7 +65,7 @@ extern void display_victory(void);
 /*
  * Displays the game over screen which includes the highscore.
  *
- * @param The user's score for the session.
+ * @param score The user's score for the session.
  */
 extern void display_game_over(int score);
 

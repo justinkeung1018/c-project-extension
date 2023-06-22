@@ -77,7 +77,7 @@ static void test_collides_asteroid_spaceship_no_intersect_2(Asteroid a, Spaceshi
   a->position = (Vector2){ 3055, 1259 };
   a->size = 256;
 
-  s = spaceship_initialise();
+  s = spaceship_initialise(GetScreenWidth(), GetScreenHeight(), BLACK);
 
   assert_false(collides_asteroid_spaceship(a, s), __func__);
 }
@@ -86,7 +86,7 @@ static void test_collides_asteroid_spaceship_no_intersect_3(Asteroid a, Spaceshi
   a->position = (Vector2){ 3558.712891, 824.832153 };
   a->size = 256;
 
-  s = spaceship_initialise();
+  s = spaceship_initialise(GetScreenWidth(), GetScreenHeight(), BLACK);
   s->position = (Vector2){ 1920, 1080 };
 
   assert_false(collides_asteroid_spaceship(a, s), __func__);

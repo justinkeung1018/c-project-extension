@@ -18,34 +18,6 @@
 #define FPS                        60
 #define NUM_BULLETS_PER_SECOND     20
 
-// Font sizes
-#define EXTRA_SMALL_FONT_SIZE      20
-#define SMALL_FONT_SIZE            40
-#define MEDIUM_FONT_SIZE           80
-#define LARGE_FONT_SIZE            100
-#define EXTRA_LARGE_FONT_SIZE      200
-
-// Text height
-#define SMALL_TEXT_HEIGHT          20
-
-// Padding
-#define SMALL_PADDING              10
-#define MEDIUM_PADDING             50
-#define LARGE_PADDING              100
-#define EXTRA_LARGE_PADDING        1000
-#define FPS_PADDING                80
-#define SPACESHIP_SEPARATION       100
-
-// Various screen sizes
-#define SCREEN_WIDTH               GetScreenWidth()
-#define SCREEN_HEIGHT              GetScreenHeight()
-#define HALF_SCREEN_WIDTH_SIZE     GetScreenWidth() / 2
-#define HALF_SCREEN_HEIGHT_SIZE    GetScreenHeight() / 2
-#define QUARTER_SCREEN_HEIGHT_SIZE GetScreenHeight() / 4
-
-// Score constants
-#define SCORE_BUFFER_SIZE          100
-
 int main(void) {
   // [Initialise screen]
   InitWindow(0, 0, "Asteroids");
@@ -54,6 +26,10 @@ int main(void) {
 
   // [Setup loading screen]
   Loader loader = loading_initialise();
+
+  // [Initialise game mode selection variables]
+  bool selected = false;
+  int selection = 0;
 
   // [Initialise audio]
   InitAudioDevice();
@@ -77,24 +53,6 @@ int main(void) {
         KEY_LEFT,
         KEY_RIGHT,
         KEY_DOWN,
-        shoot_sound
-      )
-    );
-
-  // if (multiplayer selected)
-  list_push(
-      players,
-      player_initialise(
-        spaceship_initialise(
-            HALF_SCREEN_WIDTH_SIZE + SPACESHIP_SEPARATION,
-            HALF_SCREEN_HEIGHT_SIZE,
-            BLUE
-          ),
-        bullet_init_all(),
-        KEY_W,
-        KEY_A,
-        KEY_D,
-        KEY_S,
         shoot_sound
       )
     );
@@ -123,6 +81,45 @@ int main(void) {
     EndDrawing();
   }
 
+  while (!selected) {
+    BeginDrawing();
+    ClearBackground(BLACK);
+
+    if (IsKeyPressed(KEY_LEFT)) {
+      selection = 0;
+    }
+
+    if (IsKeyPressed(KEY_RIGHT)) {
+      selection = 1;
+    }
+
+    if (IsKeyPressed(KEY_ENTER)) {
+      selected = true;
+    }
+
+    display_and_select_gamemode(selection);
+    EndDrawing();
+  }
+
+  if (selection == 1) {
+    list_push(
+        players,
+        player_initialise(
+          spaceship_initialise(
+              HALF_SCREEN_WIDTH_SIZE + SPACESHIP_SEPARATION,
+              HALF_SCREEN_HEIGHT_SIZE,
+              BLUE
+            ),
+          bullet_init_all(),
+          KEY_W,
+          KEY_A,
+          KEY_D,
+          KEY_S,
+          shoot_sound
+        )
+      );
+  }
+
   // [Drawing]
   while (!exit_window) {
     BeginDrawing();
@@ -135,8 +132,8 @@ int main(void) {
 
     if (list_length(as) == 0) {
       display_victory();
-      write_highscore(score);
       if (IsKeyPressed(KEY_ENTER)) {
+        write_highscore(score);
         exit_window = true;
       }
     }

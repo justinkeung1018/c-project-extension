@@ -32,7 +32,7 @@ void test_bullet_move_all() {
   List bs = bullet_init_all();
   List expected_bs = bullet_init_all();
   for (int i = 0; i < 360; i++) {
-    Bullet b = bullet_init(GetScreenWidth(), GetScreenHeight(), ((double) i) / 180 * M_PI, BLACK);
+    Bullet b = bullet_init(GetScreenWidth(), GetScreenHeight(), ((double)i) / 180 * M_PI, BLACK);
     Bullet expected_b = bullet_init(GetScreenWidth(), GetScreenHeight(), ((double) i) / 180 * M_PI, BLACK);
     list_push(bs, b);
     list_push(expected_bs, expected_b);
@@ -42,6 +42,7 @@ void test_bullet_move_all() {
 
   Vector2 expected_vals[360];
   Vector2 result_vals[360];
+
   for (int i = 0; i < 360; i++) {
     Bullet expected_b = (Bullet)list_get(expected_bs, i);
     Vector2 expected = (Vector2) {expected_b->position.x + expected_b->speed * cos(expected_b->rotation), expected_b->position.y + expected_b->speed * sin(expected_b->rotation)};

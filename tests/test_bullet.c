@@ -131,3 +131,4 @@ void test_bullet_despawn_all_off_screen() {
   test_bullet_despawn_all_off_screen_5();
   CloseWindow();
 }
+

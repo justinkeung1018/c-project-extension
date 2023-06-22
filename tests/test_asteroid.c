@@ -42,3 +42,4 @@ void test_asteroid_break(void) {
   asteroid_break(as, 1);
   assert_eq_int(before_len + 1, as->len, __func__);
 }
+

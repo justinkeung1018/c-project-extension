@@ -81,3 +81,4 @@ void assert_eq_Vector2_arr(Vector2 expected[], Vector2 result[], int arr_length,
     printf("%-*s: OK\n", WIDTH, testname);
   } 
 }
+
